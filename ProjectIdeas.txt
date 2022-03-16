@@ -1,0 +1,6 @@
+Conway's game of life
+Flashcard
+Calendar w/ appt dates and weather
+Pong
+Card game
+Platformer (Very hard for Lauren)
