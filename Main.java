@@ -10,7 +10,9 @@ public class Main {
     }
 
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        // Make our UI look like the user's OS
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        // Call createAndShowGUI from the Swing event thread
         SwingUtilities.invokeLater(Main::createAndShowGUI);
     }
 }

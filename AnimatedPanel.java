@@ -32,6 +32,8 @@ public class AnimatedPanel extends JPanel implements Runnable {
     public void run() {
         while (true) {
             x += 1;
+            if (x > 250 + character.getWidth())
+                x = -character.getWidth();
             if (brightnessDirection) {
                 brightness--;
                 if (brightness <= 0)
@@ -41,8 +43,6 @@ public class AnimatedPanel extends JPanel implements Runnable {
                 if (brightness >= 255)
                     brightnessDirection = true;
             }
-            if (x > 250 + character.getWidth())
-                x = -character.getWidth();
             repaint();
             try {
                 Thread.sleep(10);
