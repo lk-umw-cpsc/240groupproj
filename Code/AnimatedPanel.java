@@ -1,3 +1,5 @@
+package Code;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -19,7 +21,7 @@ public class AnimatedPanel extends JPanel implements Runnable {
     
     public AnimatedPanel() {
         try {
-            character = ImageIO.read(new File("sprite.png"));
+            character = ImageIO.read(new File(".//Sprites//sprite1.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

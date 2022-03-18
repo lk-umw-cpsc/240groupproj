@@ -25,7 +25,13 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 3/17/2022
+Person: Joon
+Log: Updated locations of project code and sprite window to improve project location.
 
+Date: 3/16/2022
+Person: Lauren
+Log: Created Animation window with sprite
 
 Date: 3/15/2022
 Person: Joon
