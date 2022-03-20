@@ -6,9 +6,6 @@ package code.schedule;
  * 
  * Implementation assigned to Jayden
  * 
- * TO-DO: Any subclass appearing in the calendar needs to eventually extend
- * this class.
- * 
  * A ScheduledReminder has:
  * name (mandatory) - String
  * date (mandatory) - type to be determined
