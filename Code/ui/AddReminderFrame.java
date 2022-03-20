@@ -1,48 +1,73 @@
 package code.ui;
 
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 import code.BackgroundDaemon;
 
 public class AddReminderFrame extends JFrame {
+
+    private static final int PADDING = 16;
+
+    /**
+     * Reminder form:
+     * 
+     * Name:
+     * [field]
+     * 
+     * Description (optional):
+     * [field]
+     * 
+     * Date:
+     * [field] (button that opens date picker)
+     * 
+     * Time:
+     * [field][field][drop down]
+     */
 
     private BackgroundDaemon daemon;
         
     public AddReminderFrame(BackgroundDaemon daemon) {
         super("Create new reminder");
         this.daemon = daemon;
+        setResizable(false);
     }
     
     public void build() {
-        // Create a vertical box, which will display its children
-        // from top to bottom in the order they're added
+        Box horizontallyPaddedPanel = Box.createHorizontalBox();
         Box mainPanel = Box.createVerticalBox();
-        // mainPanel.setPreferredSize(new Dimension(200, 100));
-        add(mainPanel);
-        // Add vertical glue, which resizes as the window is resized
-        // This glue, plus another glue after our content, will cause the
-        // content to be centered vertically within the window.
-        mainPanel.add(Box.createVerticalGlue());
+
+        horizontallyPaddedPanel.add(Box.createHorizontalStrut(PADDING));
+        horizontallyPaddedPanel.add(mainPanel);
+        horizontallyPaddedPanel.add(Box.createHorizontalStrut(PADDING));
+        
+        mainPanel.add(Box.createVerticalStrut(PADDING));
         // Create another box whose children are displayed left to right
-        Box centeredPanel = Box.createHorizontalBox();
+        Box layer = Box.createHorizontalBox();
 
-            centeredPanel.add(new JLabel("I'm left-aligned"));
+            layer.add(new JLabel("Name:"));
             // Add horizontal glue after the label, left-aligning the label
-            centeredPanel.add(Box.createHorizontalGlue());
-        mainPanel.add(centeredPanel);
+            layer.add(Box.createHorizontalGlue());
+        mainPanel.add(layer);
+        mainPanel.add(new JTextField(24));
 
-        centeredPanel = Box.createHorizontalBox();
-            centeredPanel.add(Box.createHorizontalGlue());
-            // add something here...
-            centeredPanel.add(new JLabel("I'm centered"));
-            centeredPanel.add(Box.createHorizontalGlue());
-        mainPanel.add(centeredPanel);
-        mainPanel.add(Box.createVerticalGlue());
+        layer = Box.createHorizontalBox();
+            layer.add(new JLabel("Description (optional):"));
+            layer.add(Box.createHorizontalGlue());
+        mainPanel.add(layer);
+        mainPanel.add(new JTextField(24));
 
+        mainPanel.add(new JButton("Create Reminder"));
+
+        mainPanel.add(Box.createVerticalStrut(PADDING));
+
+        add(horizontallyPaddedPanel);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         pack();
+        setLocationRelativeTo(null);
     }
 
     public void appear(boolean daily) {
