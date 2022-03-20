@@ -1,4 +1,4 @@
-package code.schedule;
+package test.schedule;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package code.ui.systemtray;
+package test.ui.systemtray;
 
 import java.awt.AWTException;
 import java.awt.PopupMenu;
@@ -12,10 +12,10 @@ import java.awt.Image;
 
 import java.util.Calendar;
 
-import java.io.IOException;
+import test.BackgroundDaemon;
+import test.ui.AddReminderFrame;
 
-import code.BackgroundDaemon;
-import code.ui.AddReminderFrame;
+import java.io.IOException;
 
 /**
  * The SystemTrayManager class creates a system tray icon for our app,

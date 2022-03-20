@@ -1,4 +1,4 @@
-package code.schedule.medical;
+package test.schedule.medical;
 import java.util.ArrayList;
 
 

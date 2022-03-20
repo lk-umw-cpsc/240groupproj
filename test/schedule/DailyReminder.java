@@ -1,4 +1,4 @@
-package code.schedule;
+package test.schedule;
 
 /**
  * The DailyReminder class generates a new ScheduledReminder

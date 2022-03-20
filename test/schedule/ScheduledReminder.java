@@ -1,4 +1,4 @@
-package code.schedule;
+package test.schedule;
 
 /**
  * Base class for reminders. Anything that should prompt the user
