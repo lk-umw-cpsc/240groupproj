@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.JFrame;
+
 import code.schedule.DailyReminder;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
@@ -29,6 +31,8 @@ public class BackgroundDaemon implements Runnable {
     private List<ScheduledReminder> reminders;
     private List<DailyReminder> dailyReminders;
     private List<ScheduledEvent> events;
+
+    private JFrame[] applicationWindows;
 
     // Guards critical section: reminders, daily reminders, and events
     private Lock lock = new ReentrantLock();
