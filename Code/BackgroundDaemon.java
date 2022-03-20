@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import code.schedule.DailyReminder;
+import code.schedule.ScheduleIO;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
 import code.ui.systemtray.SystemTrayManager;
@@ -45,6 +46,9 @@ public class BackgroundDaemon implements Runnable {
         reminders = new ArrayList<>();
         dailyReminders = new ArrayList<>();
         events = new ArrayList<>();
+
+        // Load data structures from file
+        ScheduleIO.loadSchedule(reminders, dailyReminders, events);
 
         // build UI on Swing event thread
         SwingUtilities.invokeLater(this::buildGUI);
@@ -177,7 +181,7 @@ public class BackgroundDaemon implements Runnable {
             } catch (InterruptedException e) {}
         }
 
-        // Save data structures here.
+        ScheduleIO.saveSchedule(reminders, dailyReminders, events);
         System.exit(0);
     }
 
