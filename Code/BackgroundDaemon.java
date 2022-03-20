@@ -43,7 +43,7 @@ public class BackgroundDaemon implements Runnable {
             lock.lock(); //ensure the following actions are atomic
             /*
             for (ScheduledReminder r : reminders) {
-                if (r.isDue()) {
+                if (r.isDue() && !r.hasBeenDisplayed()) {
                     systemTrayManager.showNotification(r);
                 }
             }
