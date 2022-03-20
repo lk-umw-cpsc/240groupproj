@@ -6,6 +6,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import code.schedule.DailyReminder;
+import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
 
 /**
@@ -23,17 +24,55 @@ public class BackgroundDaemon implements Runnable {
 
     private List<ScheduledReminder> reminders;
     private List<DailyReminder> dailyReminders;
+    private List<ScheduledEvent> events;
 
-    // Guards critical section: reminders and dailyReminders
+    // Guards critical section: reminders, daily reminders, and events
     private Lock lock = new ReentrantLock();
 
     public BackgroundDaemon() {
         reminders = new ArrayList<>();
         dailyReminders = new ArrayList<>();
+        events = new ArrayList<>();
     }
 
     public Lock getLock() {
         return lock;
+    }
+
+    public void cancel(DailyReminder dr) {
+        lock.lock();
+        dailyReminders.remove(dr);
+        lock.unlock();
+    }
+
+    public void cancel(ScheduledReminder r) {
+        lock.lock();
+        reminders.remove(r);
+        lock.unlock();
+    }
+
+    public void cancel(ScheduledEvent e) {
+        lock.lock();
+        events.remove(e);
+        lock.unlock();
+    }
+
+    public void add(DailyReminder dr) {
+        lock.lock();
+        dailyReminders.add(dr);
+        lock.unlock();
+    }
+
+    public void add(ScheduledReminder r) {
+        lock.lock();
+        reminders.add(r);
+        lock.unlock();
+    }
+
+    public void add(ScheduledEvent e) {
+        lock.lock();
+        events.add(e);
+        lock.unlock();
     }
     
     public void run() {
