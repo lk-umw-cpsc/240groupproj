@@ -5,6 +5,7 @@ import java.awt.PopupMenu;
 import java.awt.MenuItem;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Image;
@@ -87,7 +88,7 @@ public class SystemTrayManager {
     }
 
     public void showNotification(String title, String message) {
-        // to-do: implement me
+        trayIcon.displayMessage(title, message, MessageType.INFO);
     }
 
     public void dayChanged() {

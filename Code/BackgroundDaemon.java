@@ -2,6 +2,7 @@ package code;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -29,6 +30,8 @@ public class BackgroundDaemon implements Runnable {
 
     private Thread thread;
 
+    private Semaphore readySignal;
+
     private volatile boolean running;
 
     private List<ScheduledReminder> reminders;
@@ -47,6 +50,8 @@ public class BackgroundDaemon implements Runnable {
         dailyReminders = new ArrayList<>();
         events = new ArrayList<>();
 
+        readySignal = new Semaphore(0);
+
         // Load data structures from file
         ScheduleIO.loadSchedule(reminders, dailyReminders, events);
 
@@ -64,6 +69,7 @@ public class BackgroundDaemon implements Runnable {
         addReminderFrame.build();
         // addEventFrame = new AddEventFrame(this);
         trayManager = new SystemTrayManager(this, addReminderFrame);
+        readySignal.release();
     }
 
     /**
@@ -155,8 +161,13 @@ public class BackgroundDaemon implements Runnable {
     }
     
     public void run() {
+        try {
+            readySignal.acquire();
+        } catch (InterruptedException e1) {}
+
         thread = Thread.currentThread();
         running = true;
+        trayManager.showNotification("Hello, world!", "This is an alert :)");
         // To-do: implement me.
         // Date previousDate = ...
         while (running) {
