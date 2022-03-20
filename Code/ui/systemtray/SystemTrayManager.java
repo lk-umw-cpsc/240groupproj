@@ -18,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-public class SystemTrayIcons {
+public class SystemTrayManager {
 
     private static JFrame window;
     private static Calendar cal = Calendar.getInstance();
@@ -64,11 +64,11 @@ public class SystemTrayIcons {
             PopupMenu popupMenu = new PopupMenu();
 
             MenuItem showOption = new MenuItem("Show...");
-            showOption.addActionListener(SystemTrayIcons::show);
+            showOption.addActionListener(SystemTrayManager::show);
             popupMenu.add(showOption);
 
             MenuItem exitOption = new MenuItem("Exit");
-            exitOption.addActionListener(SystemTrayIcons::exit);
+            exitOption.addActionListener(SystemTrayManager::exit);
             popupMenu.add(exitOption);
 
             icon.setPopupMenu(popupMenu);
@@ -109,6 +109,6 @@ public class SystemTrayIcons {
         window.requestFocus();
     }
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(SystemTrayIcons::createAndShowGUI);
+        SwingUtilities.invokeLater(SystemTrayManager::createAndShowGUI);
     }
 }
