@@ -74,6 +74,8 @@ public class SystemTrayManager {
         showOption.addActionListener(this::addReminder);
         popupMenu.add(showOption);
 
+        popupMenu.addSeparator();
+
         MenuItem exitOption = new MenuItem("Exit");
         exitOption.addActionListener(this::exit);
         popupMenu.add(exitOption);
