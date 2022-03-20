@@ -1,4 +1,4 @@
-package Code;
+package code;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -11,9 +11,15 @@ public class Main {
         frame.createAndShow();
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+    public static void main(String[] args) {
         // Make our UI look like the user's OS
-        //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException 
+                | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            System.out.println("Unable to set system L&F");
+        }
         // Call createAndShowGUI from the Swing event thread
         //SwingUtilities.invokeLater(Main::createAndShowGUI);
 

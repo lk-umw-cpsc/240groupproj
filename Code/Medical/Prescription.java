@@ -1,4 +1,4 @@
-package Code.Medical;
+package code.medical;
 
 public class Prescription 
 {

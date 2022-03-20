@@ -1,4 +1,4 @@
-package Code.SystemTray;
+package code.systemtray;
 
 import java.awt.AWTException;
 import java.awt.PopupMenu;

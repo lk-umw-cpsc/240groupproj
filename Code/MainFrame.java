@@ -1,4 +1,4 @@
-package Code;
+package code;
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
