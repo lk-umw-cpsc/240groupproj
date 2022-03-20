@@ -166,6 +166,7 @@ public class BackgroundDaemon implements Runnable {
                 for (DailyReminder dr : dailyReminders) {
                     reminders.add(dr.generate());
                 }
+                trayManager.dayChanged();
             }
             previousDate = currentDate;
             */

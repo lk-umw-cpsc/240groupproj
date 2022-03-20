@@ -13,10 +13,7 @@ import java.util.Calendar;
 
 import java.io.IOException;
 
-import javax.swing.Box;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
+import code.BackgroundDaemon;
 
 /**
  * The SystemTrayManager class creates a system tray icon for our app,
@@ -30,99 +27,72 @@ import javax.swing.SwingUtilities;
  */
 public class SystemTrayManager {
 
-    private static JFrame window;
-    private static Calendar cal = Calendar.getInstance();
-    private static BufferedImage calendarSprite = null;
-    //private static boolean notification = false;
+    private BufferedImage calendarSprite;
 
-    static void createAndShowGUI() {
-        if (SystemTray.isSupported()) {
-            SystemTray systemTray = SystemTray.getSystemTray();
-            TrayIcon icon = null;
-            //TrayIcon icon2 = null;
-            BufferedImageLoader loader = new BufferedImageLoader();
+    private BackgroundDaemon daemon;
 
-            
+    private TrayIcon trayIcon;
 
-            try {
-                int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
-                calendarSprite = loader.loadImage("Sprites/CalendarSprites.png");
-                // calendarSprite = loader.loadImage(".\\Sprites\\CalendarSprites.png");
-                SpriteSheet calendarDay = new SpriteSheet(calendarSprite);
-                Image daySprite = calendarDay.grabImage(dayNumber);
+    public SystemTrayManager(BackgroundDaemon d) {
+        daemon = d;
+        SystemTray systemTray = SystemTray.getSystemTray();
+        //TrayIcon icon2 = null;
+        BufferedImageLoader loader = new BufferedImageLoader();
 
-                ;
-                icon = new TrayIcon(daySprite, SysTrayInfoBuilder.buildInfo());
-                
-                //Image alertNotify = calendarDay.grabImage(32);
-                //icon2 = new TrayIcon(alertNotify);
+        Calendar cal = Calendar.getInstance();
+        int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
+        Image daySprite = null;
+        try {
+            calendarSprite = loader.loadImage("Sprites/CalendarSprites.png");
+            // calendarSprite = loader.loadImage(".\\Sprites\\CalendarSprites.png");
+            SpriteSheet calendarDay = new SpriteSheet(calendarSprite);
+            daySprite = calendarDay.grabImage(dayNumber);
 
-                /*
-                notification = true;
-                if (notification)
-                {
-                    Image alertNotify = calendarDay.grabImage(32);
-                }
-                */
+            //Image alertNotify = calendarDay.grabImage(32);
+            //icon2 = new TrayIcon(alertNotify);
 
-
-            } catch (IOException e) {
-                System.out.println("Error loading tray icon");
-                return;
+            /*
+            notification = true;
+            if (notification)
+            {
+                Image alertNotify = calendarDay.grabImage(32);
             }
-            
-            PopupMenu popupMenu = new PopupMenu();
-
-            MenuItem showOption = new MenuItem("Show...");
-            showOption.addActionListener(SystemTrayManager::show);
-            popupMenu.add(showOption);
-
-            MenuItem exitOption = new MenuItem("Exit");
-            exitOption.addActionListener(SystemTrayManager::exit);
-            popupMenu.add(exitOption);
-
-            icon.setPopupMenu(popupMenu);
-            try {
-                //systemTray.add(icon2);
-                systemTray.add(icon);
-            } catch (AWTException e) {
-                System.out.println("Unable to create tray icon!");
-            }
+            */
+        } catch (IOException e) {
+            System.out.println("Error loading tray icon");
+            return;
         }
-
-        window = new JFrame("System Tray Test");
-        window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        Box horizontal = Box.createHorizontalBox();
-        Box vertical = Box.createVerticalBox();
         
-        horizontal.add(Box.createHorizontalStrut(10));
-        horizontal.add(vertical);
-        horizontal.add(Box.createHorizontalStrut(10));
+        trayIcon = new TrayIcon(daySprite, SysTrayInfoBuilder.buildInfo());
+        
+        PopupMenu popupMenu = new PopupMenu();
 
-        vertical.add(Box.createVerticalStrut(10));
-        vertical.add(new JLabel("Try closing me!"));
-        vertical.add(new JLabel("Then try to open me from the system tray."));
-        vertical.add(Box.createVerticalStrut(10));
+        MenuItem showOption = new MenuItem("Show...");
+        // showOption.addActionListener(SystemTrayManager::show);
+        popupMenu.add(showOption);
 
-        window.add(horizontal);
-        window.pack();
-        window.setVisible(true);
-    }
+        MenuItem exitOption = new MenuItem("Exit");
+        exitOption.addActionListener(this::exit);
+        popupMenu.add(exitOption);
 
-    private static void exit(ActionEvent e) {
-        System.exit(0);
-    }
-
-    private static void show(ActionEvent e) {
-        window.setVisible(true);
-        window.toFront();
-        window.requestFocus();
-    }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(SystemTrayManager::createAndShowGUI);
+        trayIcon.setPopupMenu(popupMenu);
+        try {
+            //systemTray.add(icon2);
+            systemTray.add(trayIcon);
+        } catch (AWTException e) {
+            System.out.println("Unable to create tray icon!");
+        }
     }
 
     public void showNotification(String message) {
         // to-do: implement me
+    }
+
+    public void dayChanged() {
+        // update icon to show new date
+    }
+
+    private void exit(ActionEvent e) {
+        daemon.exit();
     }
 }
