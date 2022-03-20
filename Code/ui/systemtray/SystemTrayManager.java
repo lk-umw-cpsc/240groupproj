@@ -18,6 +18,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
+/**
+ * The SystemTrayManager class creates a system tray icon for our app,
+ * including a popupmenu of options to interact with the application.
+ * 
+ * The showNotification method will be called by the event manager to
+ * prompt the user about the reminder they set.
+ * 
+ * TO-DO: Change from static to non-static methods, requiring an instance of
+ * a SystemTrayManager to be created.
+ */
 public class SystemTrayManager {
 
     private static JFrame window;
@@ -110,5 +120,9 @@ public class SystemTrayManager {
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(SystemTrayManager::createAndShowGUI);
+    }
+
+    public void showNotification(String message) {
+        // to-do: implement me
     }
 }
