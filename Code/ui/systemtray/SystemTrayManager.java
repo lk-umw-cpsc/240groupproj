@@ -88,11 +88,12 @@ public class SystemTrayManager {
     }
 
     public void showNotification(String title, String message) {
+        // to-do: figure out how to change the icon associated with this notification
         trayIcon.displayMessage(title, message, MessageType.INFO);
     }
 
     public void dayChanged() {
-        // update icon to show new date
+        // to-do: update icon to show new date
     }
 
     private void addReminder(ActionEvent e) {
