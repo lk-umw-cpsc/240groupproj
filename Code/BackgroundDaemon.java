@@ -18,7 +18,7 @@ import code.schedule.ScheduledReminder;
  * tray. To-do: move ui component instantation and creation to this class
  * 
  * This class will also generate a new ScheduledReminder for each of the 
- * user's DailyReminder at 12:00AM.
+ * user's DailyReminders at 12:00AM.
  */
 public class BackgroundDaemon implements Runnable {
 
