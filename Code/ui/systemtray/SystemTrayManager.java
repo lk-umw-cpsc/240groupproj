@@ -70,7 +70,7 @@ public class SystemTrayManager {
         PopupMenu popupMenu = new PopupMenu();
 
         MenuItem showOption = new MenuItem("Add reminder...");
-        showOption.addActionListener(this::showAddReminderFrame);
+        showOption.addActionListener(this::addReminder);
         popupMenu.add(showOption);
 
         MenuItem exitOption = new MenuItem("Exit");
@@ -94,7 +94,7 @@ public class SystemTrayManager {
         // update icon to show new date
     }
 
-    private void showAddReminderFrame(ActionEvent e) {
+    private void addReminder(ActionEvent e) {
         addReminderFrame.appear(false);
     }
 
