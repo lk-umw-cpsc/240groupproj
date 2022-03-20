@@ -1,4 +1,4 @@
-package test.schedule;
+package code.schedule;
 
 /**
  * This represents a blocked out portion of the user's schedule.

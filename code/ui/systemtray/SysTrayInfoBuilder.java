@@ -1,4 +1,4 @@
-package test.ui.systemtray;
+package code.ui.systemtray;
 
 public class SysTrayInfoBuilder 
 {

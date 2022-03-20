@@ -1,4 +1,4 @@
-package test;
+package code;
 
 import java.awt.SystemTray;
 import java.awt.Taskbar;

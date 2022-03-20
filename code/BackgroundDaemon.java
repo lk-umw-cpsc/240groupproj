@@ -1,4 +1,4 @@
-package test;
+package code;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.SwingUtilities;
 
-import test.schedule.DailyReminder;
-import test.schedule.ScheduleIO;
-import test.schedule.ScheduledEvent;
-import test.schedule.ScheduledReminder;
-import test.ui.AddReminderFrame;
-import test.ui.systemtray.SystemTrayManager;
+import code.schedule.DailyReminder;
+import code.schedule.ScheduleIO;
+import code.schedule.ScheduledEvent;
+import code.schedule.ScheduledReminder;
+import code.ui.AddReminderFrame;
+import code.ui.systemtray.SystemTrayManager;
 
 /**
  * This class will handle determining whether any of the user's

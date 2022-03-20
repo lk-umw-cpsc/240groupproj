@@ -1,4 +1,4 @@
-package test.ui.systemtray;
+package code.ui.systemtray;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

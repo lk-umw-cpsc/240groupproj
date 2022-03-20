@@ -1,4 +1,4 @@
-package test.ui;
+package code.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;

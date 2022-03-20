@@ -1,4 +1,4 @@
-package test.ui;
+package code.ui;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import test.BackgroundDaemon;
+import code.BackgroundDaemon;
 
 public class AddReminderFrame extends JFrame {
 

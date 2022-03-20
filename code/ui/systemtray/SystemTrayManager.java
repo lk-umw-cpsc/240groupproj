@@ -1,4 +1,4 @@
-package test.ui.systemtray;
+package code.ui.systemtray;
 
 import java.awt.AWTException;
 import java.awt.PopupMenu;
@@ -12,8 +12,8 @@ import java.awt.Image;
 
 import java.util.Calendar;
 
-import test.BackgroundDaemon;
-import test.ui.AddReminderFrame;
+import code.BackgroundDaemon;
+import code.ui.AddReminderFrame;
 
 import java.io.IOException;
 
