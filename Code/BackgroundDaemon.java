@@ -57,7 +57,7 @@ public class BackgroundDaemon implements Runnable {
         
         // addReminderFrame = new AddReminderFrame(this);
         // addEventFrame = new AddEventFrame(this);
-        // trayManager = new SystemTrayManager(this, ...);
+        trayManager = new SystemTrayManager(this);
     }
 
     /**
@@ -178,6 +178,7 @@ public class BackgroundDaemon implements Runnable {
         }
 
         // Save data structures here.
+        System.exit(0);
     }
 
 }
