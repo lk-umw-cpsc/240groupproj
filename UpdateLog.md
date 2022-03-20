@@ -25,6 +25,17 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 3/20/2022
+Person: Joon
+Log: Added Medical folder/System tray folder and moved files, created medical class,
+prescription class, doctors class, added data folder with doctors/prescription.txt
+Doctor class/prescription are constructors and have get/set methods
+txt files have "dummy" data.
+
+Date: 3/19/2022
+Person: Lauren
+Log: Added info for Project Idea's and updated file location for system tray sprite sheet
+
 Date: 3/19/2022
 Person: Joon
 Log: Added System tray from other project here, added a sprite sheet and code that pulls

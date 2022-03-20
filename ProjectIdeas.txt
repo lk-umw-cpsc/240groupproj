@@ -1,6 +1,36 @@
-Conway's game of life
-Flashcard
-Calendar w/ appt dates and weather
-Pong
-Card game
-Platformer (Very hard for Lauren)
+Calendar Project
+
+Class files:
+
+MonthViewFrame
+WeekViewFrame (encompasses current week, next week, specific week)
+DayViewFrame (contains a custom-made JPanel that lists the day’s reminders, with to-the-minute degree of detail. User can cancel/modify an event from here)
+
+NewReminderFrame (allows user to create a new reminder. Has options for every day, every day at a specific time, every week on <day of the week>, or a specific hour on a specific day. Would like to have option to remind user of the event X days/hours prior to the event)
+
+ManageRemindersFrame (allows user to see and modify existing reminders)
+
+DayWidget (appears in grid within MonthViewFrame and WeekViewFrame. Contains a day’s events/reminders at a glance. Double clicking opens a DayViewFrame for that day)
+
+Reminder (description, date required. Time, location, others optional)
+BackgroundWorker (handles checking if an event is due once every 60 seconds. Occurs on separate thread and spawns a notification in the system tray when one is due. Clicking on the notification bubble opens window where user can dismiss the reminder)
+
+ReminderIO (handles opening and saving the user’s list of reminders from a file. User should be able to specify file location? (would allow saving to iCloud/OneDrive/other service for cross-device, cross-platform app usage))
+
+Medical utilizes doctor and prescription tab contains methods and builds/saves doctor prescription information
+Doctor class to contain basic get/set and to make it constructor for doctors
+Prescription class to contain basic get/set and to make it constructor for prescription
+
+
+Additional behavior for tray menu: (these are not separate classes)
+•	Popup notification appears when a reminder has “expired” (important!)
+•	Opening the notification could open the “ManageRemindersFrame”, allowing the user to dismiss the reminder. If the user decides not to, the tray icon should continue showing a “!” because they haven’t dismissed an overdue reminder (they might still need to exercise, take a pill, etc. for that day)
+•	Add new reminder… (opens a NewReminderFrame)
+•	Manage reminders… (opens a ManageRemindersFrame)
+•	View today (opens a DayViewFrame for today)
+•	View tomorrow (opens a DayViewFrame for tomorrow)
+•	View this week (opens a WeekViewFrame for the current week)
+•	View next week (opens a WeekViewFrame for the coming week)
+•	View this month (opens a MonthViewFrame for the current month)
+•	Calendar Access (Ability to access calendar from tray)
+•	Settings (Opens up window to check doctors tab, prescription tab, event tab, tabs will show list of info with ability to edit)

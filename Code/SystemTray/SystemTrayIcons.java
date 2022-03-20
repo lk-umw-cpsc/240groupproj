@@ -1,4 +1,4 @@
-package Code;
+package Code.SystemTray;
 
 import java.awt.AWTException;
 import java.awt.PopupMenu;
@@ -32,13 +32,17 @@ public class SystemTrayIcons {
             //TrayIcon icon2 = null;
             BufferedImageLoader loader = new BufferedImageLoader();
 
+            
+
             try {
                 int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
                 calendarSprite = loader.loadImage("Sprites/CalendarSprites.png");
                 // calendarSprite = loader.loadImage(".\\Sprites\\CalendarSprites.png");
                 SpriteSheet calendarDay = new SpriteSheet(calendarSprite);
                 Image daySprite = calendarDay.grabImage(dayNumber);
-                icon = new TrayIcon(daySprite);
+
+                ;
+                icon = new TrayIcon(daySprite, SysTrayInfoBuilder.buildInfo());
                 
                 //Image alertNotify = calendarDay.grabImage(32);
                 //icon2 = new TrayIcon(alertNotify);

@@ -17,6 +17,7 @@ public class Main {
         // Call createAndShowGUI from the Swing event thread
         //SwingUtilities.invokeLater(Main::createAndShowGUI);
 
-        SystemTrayIcons.createAndShowGUI();
+        //SystemTrayIcons.createAndShowGUI();
+        
     }
 }
