@@ -4,6 +4,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import code.ui.MainFrame;
+
 public class Main {
     
     private static void createAndShowGUI() {
