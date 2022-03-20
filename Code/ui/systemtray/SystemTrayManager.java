@@ -21,9 +21,6 @@ import code.BackgroundDaemon;
  * 
  * The showNotification method will be called by the event manager to
  * prompt the user about the reminder they set.
- * 
- * TO-DO: Change from static to non-static methods, requiring an instance of
- * a SystemTrayManager to be created.
  */
 public class SystemTrayManager {
 
@@ -62,7 +59,7 @@ public class SystemTrayManager {
             System.out.println("Error loading tray icon");
             return;
         }
-        
+
         trayIcon = new TrayIcon(daySprite, SysTrayInfoBuilder.buildInfo());
         
         PopupMenu popupMenu = new PopupMenu();
@@ -84,7 +81,7 @@ public class SystemTrayManager {
         }
     }
 
-    public void showNotification(String message) {
+    public void showNotification(String title, String message) {
         // to-do: implement me
     }
 
@@ -93,6 +90,7 @@ public class SystemTrayManager {
     }
 
     private void exit(ActionEvent e) {
+        // Check to see if any windows are open first?
         daemon.exit();
     }
 }
