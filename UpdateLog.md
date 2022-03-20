@@ -25,6 +25,11 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 3/19/2022
+Person: Joon
+Log: Added System tray from other project here, added a sprite sheet and code that pulls
+sprite sheet according to number of day. 
+
 Date: 3/17/2022
 Person: Joon
 Log: Updated locations of project code and sprite window to improve project location.
