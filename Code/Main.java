@@ -39,5 +39,8 @@ public class Main {
             Taskbar taskbar = Taskbar.getTaskbar();
             taskbar.setIconImage(ImageIO.read(new File("calendar.png")));
         } catch (IOException e) {}
+        catch (UnsupportedOperationException e) {
+            System.out.println("System does not support changing taskbar icon.");
+        }
     }
 }
