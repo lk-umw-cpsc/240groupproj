@@ -60,7 +60,10 @@ public class AddReminderFrame extends JFrame {
         mainPanel.add(layer);
         mainPanel.add(new JTextField(24));
 
-        mainPanel.add(new JButton("Create Reminder"));
+        layer = Box.createHorizontalBox();
+        layer.add(new JButton("Create Reminder"));
+        layer.add(Box.createHorizontalGlue());
+        mainPanel.add(layer);
 
         mainPanel.add(Box.createVerticalStrut(PADDING));
 
