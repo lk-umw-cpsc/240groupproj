@@ -6,10 +6,12 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import code.schedule.DailyReminder;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
+import code.ui.systemtray.SystemTrayManager;
 
 /**
  * This class will handle determining whether any of the user's
@@ -34,6 +36,8 @@ public class BackgroundDaemon implements Runnable {
 
     private JFrame[] applicationWindows;
 
+    private SystemTrayManager trayManager;
+
     // Guards critical section: reminders, daily reminders, and events
     private Lock lock = new ReentrantLock();
 
@@ -41,6 +45,19 @@ public class BackgroundDaemon implements Runnable {
         reminders = new ArrayList<>();
         dailyReminders = new ArrayList<>();
         events = new ArrayList<>();
+
+        // build UI on Swing event thread
+        SwingUtilities.invokeLater(this::buildGUI);
+    }
+
+    private void buildGUI () {
+        // dayViewFrame = new DayViewFrame(this);
+        // weekViewFrame = new WeekViewFrame(this);
+        // monthViewFrame = new MonthViewFrame(this);
+        
+        // addReminderFrame = new AddReminderFrame(this);
+        // addEventFrame = new AddEventFrame(this);
+        // trayManager = new SystemTrayManager(this, ...);
     }
 
     /**
