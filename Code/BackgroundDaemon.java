@@ -2,6 +2,8 @@ package code;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import code.schedule.DailyReminder;
 import code.schedule.ScheduledReminder;
@@ -22,15 +24,23 @@ public class BackgroundDaemon implements Runnable {
     private List<ScheduledReminder> reminders;
     private List<DailyReminder> dailyReminders;
 
+    // Guards critical section: reminders and dailyReminders
+    private Lock lock = new ReentrantLock();
+
     public BackgroundDaemon() {
         reminders = new ArrayList<>();
         dailyReminders = new ArrayList<>();
+    }
+
+    public Lock getLock() {
+        return lock;
     }
     
     public void run() {
         // To-do: implement me.
         // Date previousDate = ...
         while (true) {
+            lock.lock();
             /*
             for (ScheduledReminder r : reminders) {
                 if (r.isDue()) {
@@ -44,9 +54,12 @@ public class BackgroundDaemon implements Runnable {
                 }
             }
             previousDate = currentDate;
+            */
+            lock.unlock();
 
-            Thread.sleep(60000); // one minute
-             */
+            try {
+                Thread.sleep(60000); // rest for one minute
+            } catch (InterruptedException e) {}
         }
     }
 
