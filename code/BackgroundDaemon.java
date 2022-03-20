@@ -194,7 +194,8 @@ public class BackgroundDaemon implements Runnable {
             lock.unlock();
 
             try {
-                Thread.sleep(60000); // rest for one minute
+                long minuteOverflow = System.currentTimeMillis() % 60000;
+                Thread.sleep(60000 - minuteOverflow); // rest until the next minute
             } catch (InterruptedException e) {}
         }
 
