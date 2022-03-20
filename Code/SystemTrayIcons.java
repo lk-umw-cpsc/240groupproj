@@ -34,7 +34,8 @@ public class SystemTrayIcons {
 
             try {
                 int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
-                calendarSprite = loader.loadImage(".\\Sprites\\CalendarSprites.png");
+                calendarSprite = loader.loadImage("Sprites/CalendarSprites.png");
+                // calendarSprite = loader.loadImage(".\\Sprites\\CalendarSprites.png");
                 SpriteSheet calendarDay = new SpriteSheet(calendarSprite);
                 Image daySprite = calendarDay.grabImage(dayNumber);
                 icon = new TrayIcon(daySprite);
