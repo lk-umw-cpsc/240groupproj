@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.io.IOException;
 
 import code.BackgroundDaemon;
+import code.ui.AddReminderFrame;
 
 /**
  * The SystemTrayManager class creates a system tray icon for our app,
@@ -26,12 +27,16 @@ public class SystemTrayManager {
 
     private BufferedImage calendarSprite;
 
+    private AddReminderFrame addReminderFrame;
+
     private BackgroundDaemon daemon;
 
     private TrayIcon trayIcon;
 
-    public SystemTrayManager(BackgroundDaemon d) {
+    public SystemTrayManager(BackgroundDaemon d, 
+            AddReminderFrame addReminderFrame) {
         daemon = d;
+        this.addReminderFrame = addReminderFrame;
         SystemTray systemTray = SystemTray.getSystemTray();
         //TrayIcon icon2 = null;
         BufferedImageLoader loader = new BufferedImageLoader();
@@ -64,8 +69,8 @@ public class SystemTrayManager {
         
         PopupMenu popupMenu = new PopupMenu();
 
-        MenuItem showOption = new MenuItem("Show...");
-        // showOption.addActionListener(SystemTrayManager::show);
+        MenuItem showOption = new MenuItem("Add reminder...");
+        showOption.addActionListener(this::showAddReminderFrame);
         popupMenu.add(showOption);
 
         MenuItem exitOption = new MenuItem("Exit");
@@ -87,6 +92,10 @@ public class SystemTrayManager {
 
     public void dayChanged() {
         // update icon to show new date
+    }
+
+    private void showAddReminderFrame(ActionEvent e) {
+        addReminderFrame.appear(false);
     }
 
     private void exit(ActionEvent e) {

@@ -12,6 +12,7 @@ import code.schedule.DailyReminder;
 import code.schedule.ScheduleIO;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
+import code.ui.AddReminderFrame;
 import code.ui.systemtray.SystemTrayManager;
 
 /**
@@ -35,7 +36,7 @@ public class BackgroundDaemon implements Runnable {
     private List<DailyReminder> dailyReminders;
     private List<ScheduledEvent> events;
 
-    private JFrame[] applicationWindows;
+    private AddReminderFrame addReminderFrame;
 
     private SystemTrayManager trayManager;
 
@@ -59,9 +60,11 @@ public class BackgroundDaemon implements Runnable {
         // weekViewFrame = new WeekViewFrame(this);
         // monthViewFrame = new MonthViewFrame(this);
         
-        // addReminderFrame = new AddReminderFrame(this);
+        addReminderFrame = new AddReminderFrame(this);
+
+        addReminderFrame.build();
         // addEventFrame = new AddEventFrame(this);
-        trayManager = new SystemTrayManager(this);
+        trayManager = new SystemTrayManager(this, addReminderFrame);
     }
 
     /**
