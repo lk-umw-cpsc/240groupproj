@@ -9,8 +9,7 @@ package code.schedule;
  * A ScheduledReminder has:
  * name (mandatory) - String
  * date (mandatory) - type to be determined
- * a time (optional) - type to be determined
- * location (optional) - String
+ * a time (optional) - type to be determined. if not provided, defaults to 12:00AM midnight
  * description (optional) - String; any extra details are displayed here.
  * 
  * notificationShown - boolean; determines whether this reminder's notification has
