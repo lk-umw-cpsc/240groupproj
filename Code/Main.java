@@ -1,7 +1,11 @@
 package code;
 
 import java.awt.SystemTray;
+import java.awt.Taskbar;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -26,12 +30,14 @@ public class Main {
     private static void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            System.setProperty("apple.laf.useScreenMenuBar", "true");
-            System.setProperty("apple.awt.application.name", "app name");
 
         } catch (ClassNotFoundException | InstantiationException 
                 | IllegalAccessException | UnsupportedLookAndFeelException e) {
             System.out.println("Unable to set system L&F");
         }
+        try {
+            Taskbar taskbar = Taskbar.getTaskbar();
+            taskbar.setIconImage(ImageIO.read(new File("calendar.png")));
+        } catch (IOException e) {}
     }
 }

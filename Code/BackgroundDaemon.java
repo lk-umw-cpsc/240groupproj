@@ -2,6 +2,7 @@ package code;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -69,6 +70,8 @@ public class BackgroundDaemon implements Runnable {
         addReminderFrame.build();
         // addEventFrame = new AddEventFrame(this);
         trayManager = new SystemTrayManager(this, addReminderFrame);
+        
+        // Signal to run() that it can start
         readySignal.release();
     }
 
@@ -161,6 +164,7 @@ public class BackgroundDaemon implements Runnable {
     }
     
     public void run() {
+        // Wait until buildGUI finishes
         try {
             readySignal.acquire();
         } catch (InterruptedException e1) {}
