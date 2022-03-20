@@ -40,11 +40,11 @@ public class BackgroundDaemon implements Runnable {
         // To-do: implement me.
         // Date previousDate = ...
         while (true) {
-            lock.lock();
+            lock.lock(); //ensure the following actions are atomic
             /*
             for (ScheduledReminder r : reminders) {
                 if (r.isDue()) {
-                    systemTrayManager.showNotification();
+                    systemTrayManager.showNotification(r);
                 }
             }
             Date currentDate = ...;
