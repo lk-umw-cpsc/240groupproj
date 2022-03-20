@@ -22,6 +22,10 @@ import code.schedule.ScheduledReminder;
  */
 public class BackgroundDaemon implements Runnable {
 
+    private Thread thread;
+
+    private volatile boolean running;
+
     private List<ScheduledReminder> reminders;
     private List<DailyReminder> dailyReminders;
     private List<ScheduledEvent> events;
@@ -35,8 +39,48 @@ public class BackgroundDaemon implements Runnable {
         events = new ArrayList<>();
     }
 
+    /**
+     * Obtains this BackgroundDaemon's Lock
+     * 
+     * Anything accessing the BackgroundDaemon's data structures
+     * should be locking and unlocking this lock.
+     * @return The lock for this BackgroundDaemon's data structures
+     */
     public Lock getLock() {
         return lock;
+    }
+
+    /**
+     * Gets a list of the user's scheduled reminders.
+     * 
+     * Lock must be locked when accessing the returned data structure.
+     * See getLock().
+     * @return A List<ScheduledReminder> containing user's scheduled reminders
+     */
+    public List<ScheduledReminder> getReminders() {
+        return reminders;
+    }
+
+    /**
+     * Gets a list of the user's scheduled daily reminders.
+     * 
+     * Lock must be locked when accessing the returned data structure.
+     * See getLock().
+     * @return A List<DailyReminder> containing user's daily reminders.
+     */
+    public List<DailyReminder> getDailyReminders() {
+        return dailyReminders;
+    }
+
+    /**
+     * Gets a list of the user's scheduled events.
+     * 
+     * Lock must be locked when accessing the returned data structure.
+     * See getLock().
+     * @return A List<ScheduledEvent> containing user's scheduled events.
+     */
+    public List<ScheduledEvent> getEvents() {
+        return events;
     }
 
     public void cancel(DailyReminder dr) {
@@ -74,11 +118,21 @@ public class BackgroundDaemon implements Runnable {
         events.add(e);
         lock.unlock();
     }
+
+    /**
+     * Method called by SystemTrayManager when Exit option is pressed
+     */
+    public void exit() {
+        running = false;
+        thread.interrupt(); // wake run() from its long sleep
+    }
     
     public void run() {
+        thread = Thread.currentThread();
+        running = true;
         // To-do: implement me.
         // Date previousDate = ...
-        while (true) {
+        while (running) {
             lock.lock(); //ensure the following actions are atomic
             /*
             for (ScheduledReminder r : reminders) {
@@ -100,6 +154,8 @@ public class BackgroundDaemon implements Runnable {
                 Thread.sleep(60000); // rest for one minute
             } catch (InterruptedException e) {}
         }
+
+        // Save data structures here.
     }
 
 }
