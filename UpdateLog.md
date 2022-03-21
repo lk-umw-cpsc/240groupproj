@@ -28,7 +28,7 @@ Paste over new entry here.
 Date: 3/21/2022
 Person: Joon
 Log: Updated Medical class added create doctor/prescript and get dr prescript(needs work)
-Updated Updatelog to include updates
+Updated Update log to include updates
 
 Date: 3/20/2022
 Person: Jayden

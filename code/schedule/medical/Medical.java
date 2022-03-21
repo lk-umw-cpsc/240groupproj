@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+//import java.io.IOException;
 
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.time.format.TextStyle;
+//import java.io.FileOutputStream;
+//import java.io.PrintWriter;
+//import java.time.format.TextStyle;
 
 
 public class Medical 
