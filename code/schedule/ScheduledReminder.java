@@ -12,9 +12,6 @@ package code.schedule;
  * a time (optional) - type to be determined. if not provided, defaults to 12:00AM midnight
  * description (optional) - String; any extra details are displayed here.
  * 
- * notificationShown - boolean; determines whether this reminder's notification has
- * been displayed.
- * 
  * getters/setters for the above fields
  * an isDue() method that returns true if this reminder is due
  */
