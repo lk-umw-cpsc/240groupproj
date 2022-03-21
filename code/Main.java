@@ -3,11 +3,14 @@ package code;
 import java.awt.SystemTray;
 import java.awt.Taskbar;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import code.schedule.medical.Medical;
 
 /**
  * Project entry point. Spawns the BackgroundDaemon, which will
@@ -15,7 +18,8 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+        //Medical.buildMedical();
         if (!SystemTray.isSupported()) {
             System.out.println("System tray is not supported on this OS. Exiting.");
             return;
@@ -44,4 +48,5 @@ public class Main {
             System.out.println("System does not support changing taskbar icon.");
         }
     }
+
 }

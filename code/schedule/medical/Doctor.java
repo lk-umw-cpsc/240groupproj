@@ -5,24 +5,36 @@ import java.util.ArrayList;
 public class Doctor
 {
     
-    private String lastVisit;
     private String name;
+    private String lastVisit;
     private String phoneNumber;
-    private ArrayList<Prescription> prescriptionList;  
+    private static ArrayList<Prescription> prescriptionList;  
     private String officeLocation;
     private String website;
     private String specialization;
     
     public Doctor()
     {
-        this.lastVisit = "No Last Visit";
         this.name = "";
-        this.phoneNumber = "";
-        this.prescriptionList = new ArrayList<Prescription>();
-        this.officeLocation = "";
+        this.lastVisit = "No Last Visit";
+        this.phoneNumber = "No Phone Number";
+        Doctor.prescriptionList = new ArrayList<Prescription>();
+        this.officeLocation = "No Location";
         this.website = "No Website";
-        this.specialization = "";
+        this.specialization = "No Specialization";
     }
+
+    public Doctor(String name, String lastVisit, String phoneNumber, String officeLocation, String website, String specialization)
+    {
+        this.name = name;
+        this.lastVisit = lastVisit;
+        this.phoneNumber = phoneNumber;
+        Doctor.prescriptionList = new ArrayList<Prescription>();
+        this.officeLocation = officeLocation;
+        this.website = website;
+        this.specialization = specialization;
+    }
+
 
     public String getLastVisit()
     {
@@ -84,18 +96,23 @@ public class Doctor
         this.specialization = specialization;
     }
 
-    public void addPrescription(Prescription prescription)
+    public void addDrPrescription(Prescription prescription)
     {
         prescriptionList.add(prescription);
     }
 
-    public void viewDoctorPrescriptions()
+    public ArrayList<Prescription> getDrPrescription()
     {
-        System.out.printf("%-30s" + "%4s" + "%4s", "" ,"Prescription", "Quantity", "Refills");
+        return prescriptionList;
+    }
+
+    public static void viewDoctorPrescriptions()
+    {
+        System.out.printf("%-25s" + "%4s" + "%4s\n", "Prescription", "Quantity", "Refills");
 
         for (int i=0; i<prescriptionList.size(); i++) 
         {
-            System.out.printf("%-30s" + "%4s" + "%4s", prescriptionList.get(i).getPrescriptionName(), prescriptionList.get(i).getPrescriptionQuantity(), prescriptionList.get(i).getPrescriptionRefills());
+            System.out.printf("%-25s" + "%4s" + "%4s\n", prescriptionList.get(i).getPrescriptionName(), prescriptionList.get(i).getPrescriptionQuantity(), prescriptionList.get(i).getPrescriptionRefills());
         }
         
     }

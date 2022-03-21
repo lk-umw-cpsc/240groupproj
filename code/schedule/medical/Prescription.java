@@ -15,6 +15,13 @@ public class Prescription
         this.refills = 0;
         this.doctorName = "";
     }
+    public Prescription(String name, int quantity, int refills, String doctorName)
+    {
+        this.name = name;
+        this.quantity = quantity;
+        this.refills = refills;
+        this.doctorName = doctorName;
+    }
 
     public String getPrescriptionName()
     {
