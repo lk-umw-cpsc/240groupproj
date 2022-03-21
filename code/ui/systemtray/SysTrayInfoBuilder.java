@@ -9,7 +9,7 @@ public class SysTrayInfoBuilder
         int events = 0;
         String noteCounter = "";
 
-        if (events == 0)
+        if (events == 1)
         {
             noteCounter =  "(" + events + ") event today!";
         }
