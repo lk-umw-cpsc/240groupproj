@@ -54,3 +54,7 @@ Person: Joon
 Log: Added project folders
 Updated ReadMe
 Added and updated UpdateLog
+
+Date: 3/20/2022
+Person: Jayden
+Log: Created skeleton of the ScheduledReminder class, added Set/Get methods, and isDue method.
