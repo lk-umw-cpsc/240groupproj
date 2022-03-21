@@ -1,11 +1,11 @@
-Prescription||Qty||Refill||Prescriber
-Atorvastatin||30||3||Dr. Elizabeth Blackwell
-Levothyroxine||40||2||Sir Alexander Fleming
-Lisinopril||50||1||Dr. Helen Taussig
-Metformin||40||2||Dr. Helene Gayle
-Metoprolol||45||3||Dr. Elizabeth Blackwell
-Amlodipine||52||0||Sir Alexander Fleming
-Albuterol||32||1||Dr. Helen Taussig
-Omeprazole||10||2||Dr. Helene Gayle
-Losartan||8||2||Dr. Elizabeth Blackwell
-Gabapentin||5||3||Sir Alexander Fleming
+Prescription###Qty###Refill###Prescriber
+Atorvastatin###30###3###Dr. Elizabeth Blackwell
+Levothyroxine###40###2###Sir Alexander Fleming
+Lisinopril###50###1###Dr. Helen Taussig
+Metformin###40###2###Dr. Helene Gayle
+Metoprolol###45###3###Dr. Elizabeth Blackwell
+Amlodipine###52###0###Sir Alexander Fleming
+Albuterol###32###1###Dr. Helen Taussig
+Omeprazole###10###2###Dr. Helene Gayle
+Losartan###8###2###Dr. Elizabeth Blackwell
+Gabapentin###5###3###Sir Alexander Fleming
