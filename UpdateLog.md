@@ -58,3 +58,7 @@ Added and updated UpdateLog
 Date: 3/20/2022
 Person: Jayden
 Log: Created skeleton of the ScheduledReminder class, added Set/Get methods, and isDue method.
+
+Date: 3/21/2022
+Person: Jayden
+Log: Added functiond to ScheduledReminder class, rpeetition of reminders. Fixed isDue, need to add time comparison.

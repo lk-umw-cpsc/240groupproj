@@ -24,6 +24,9 @@ public class ScheduledReminder {
     
     private LocalDate date;
     private LocalTime time;
+
+    private boolean repeated;
+    private int daysbetweenReps;
     
     /**
      * Setter method for the name of the Reminder
@@ -96,6 +99,23 @@ public class ScheduledReminder {
     public LocalTime getTime() {
         return this.time;
     }
+
+    /**
+     * Getter method for the repeated variable
+     * @return repeatded variable
+     */
+    public boolean doesRepeat() {
+        return repeated;
+    }
+
+    public void setRepetition() {
+        repeated = false;
+    }
+
+    public void setRepetition(boolean rep, int i) {
+        repeated = rep;
+        daysbetweenReps = i;
+    }
     
     /**
      * Method used to determine if the reminder is due or not
@@ -103,6 +123,15 @@ public class ScheduledReminder {
      * @return True is the reminder is due, false if it is not due
      */
     public boolean isDue() {
-        return ((date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now())) && (time.isAfter(LocalTime.now()) || time.equals(LocalTime.now())));
+        //return ((date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now())) && (time.isAfter(LocalTime.now()) || time.equals(LocalTime.now())));
+        //Use compare to method, rather than multiple instances of LocalDate or LocalTime
+
+        LocalDate today = LocalDate.now();
+
+        if (today.compareTo(date) <= 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
