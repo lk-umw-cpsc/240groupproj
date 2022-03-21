@@ -2,16 +2,23 @@ package code.ui.systemtray;
 
 public class SysTrayInfoBuilder 
 {
-    public int prescriptionAlert;
-    public String prescriptionName;
     
     public static String buildInfo()
     {
-        //+ prescriptionAlert + " " + prescriptionName + " are left."
-        String info = "SystemTray Demo\n";
+        //calculates events available and posts on notification.
+        int events = 0;
+        String noteCounter = "";
 
+        if (events == 0)
+        {
+            noteCounter =  "(" + events + ") event today!";
+        }
+        else
+        {
+            noteCounter =  "(" + events + ") events today!";
+        }
 
-
+        String info = "Cal the Assistant\n" + noteCounter;
 
         return info;
     }

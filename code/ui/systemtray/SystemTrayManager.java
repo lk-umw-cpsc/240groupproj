@@ -47,7 +47,6 @@ public class SystemTrayManager {
         Image daySprite = null;
         try {
             calendarSprite = loader.loadImage("Sprites/CalendarSprites.png");
-            // calendarSprite = loader.loadImage(".\\Sprites\\CalendarSprites.png");
             SpriteSheet calendarDay = new SpriteSheet(calendarSprite);
             daySprite = calendarDay.grabImage(dayNumber);
 
