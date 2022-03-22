@@ -26,6 +26,10 @@ Add below this line!
 Paste over new entry here.
 
 Date: 3/21/2022
+Person: Lauren
+Log: Daemon now spawns a reminder 1 minute in the future upon running
+
+Date: 3/21/2022
 Person: Joon
 Log: Updated Medical class added create doctor/prescript and get dr prescript(needs work)
 Updated Update log to include updates
