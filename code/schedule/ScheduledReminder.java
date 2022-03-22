@@ -20,44 +20,38 @@ import java.time.LocalDateTime;
 public class ScheduledReminder {
     private String name;
     private String description; 
-    private LocalDateTime whenDue;
-    private boolean repeated;
-    private int daysbetweenReps;
+    private LocalDateTime dueDateTime;
+    private int daysBetweenRepetitions;
 
     public ScheduledReminder(String name, String date, int reps) {
         this.name = name;
-        whenDue = LocalDateTime.parse(date + "T06:00:00");
+        dueDateTime = LocalDateTime.parse(date + "T06:00:00");
         description = "";
-        if (reps > 0) {
-            repeated = true;
-        } else {
-            repeated = false;
-        }
-        daysbetweenReps = reps;
+        
+        daysBetweenRepetitions = reps;
     }
 
     public ScheduledReminder(String name, String description, String date, int reps) {
         this.name = name;
         this.description = description;
-        whenDue = LocalDateTime.parse(date + "T06:00:00");
-        if (reps > 0) {
-            repeated = true;
-        } else {
-            repeated = false;
-        }
-        daysbetweenReps = reps;
+        dueDateTime = LocalDateTime.parse(date + "T06:00:00");
+        
+        daysBetweenRepetitions = reps;
+    }
+
+    public ScheduledReminder(String name, String description, LocalDateTime whenDue, int reps) {
+        this.name = name;
+        this.description = description;
+        this.dueDateTime = whenDue;
+        daysBetweenRepetitions = reps;
     }
 
     public ScheduledReminder(String name, String description, String date, String time, int reps) {
         this.name = name;
         this.description = description;
-        whenDue = LocalDateTime.parse(date + "T" + time);
-        if (reps > 0) {
-            repeated = true;
-        } else {
-            repeated = false;
-        }
-        daysbetweenReps = reps;
+        dueDateTime = LocalDateTime.parse(date + "T" + time);
+        
+        daysBetweenRepetitions = reps;
     }
 
     
@@ -94,37 +88,36 @@ public class ScheduledReminder {
     }
 
     public void setWhenDue(String date) {
-        whenDue = LocalDateTime.parse(date + "T6:00:00");
+        dueDateTime = LocalDateTime.parse(date + "T6:00:00");
     }
 
     public void setWhenDue(String date, String time) {
-        whenDue = LocalDateTime.parse(date + "T" + time);
+        dueDateTime = LocalDateTime.parse(date + "T" + time);
     }
 
 
     public LocalDateTime getWhenDue() {
-        return whenDue;
+        return dueDateTime;
     }
 
     /**
      * Getter method for the repeated variable
      * @return repeatded variable
      */
-    public boolean doesRepeat() {
-        return repeated;
+    public boolean repeats() {
+        return daysBetweenRepetitions > 0;
     }
 
-    public void setRepetition() {
-        repeated = false;
+    public void repeat() {
+        dueDateTime = dueDateTime.plusDays(daysBetweenRepetitions);
     }
 
-    public void setRepetition(boolean rep, int i) {
-        repeated = rep;
-        daysbetweenReps = i;
+    public void setDaysBetweenRepetitions(int i) {
+        daysBetweenRepetitions = i;
     }
 
-    public int getDaysBetweenReps() {
-        return daysbetweenReps;
+    public int getDaysBetweenRepetitions() {
+        return daysBetweenRepetitions;
     }
     
     /**
@@ -135,16 +128,12 @@ public class ScheduledReminder {
     public boolean isDue() {
         //Use compare to method, rather than multiple instances of LocalDate or LocalTime
 
-        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
 
-        if (today.compareTo(whenDue) <= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return now.compareTo(dueDateTime) >= 0;
     }
     @Override
     public String toString() {
-        return this.name + " " + this.description + " " + whenDue.toString() + " " + repeated + " " + daysbetweenReps;
+        return this.name + " " + this.description + " " + dueDateTime.toString() + " " + daysBetweenRepetitions;
     }
 }

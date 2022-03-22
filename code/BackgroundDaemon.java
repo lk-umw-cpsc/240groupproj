@@ -161,26 +161,27 @@ public class BackgroundDaemon implements Runnable {
 
             for (int i = 0; i < reminders.size(); i++) {
                 ScheduledReminder r = reminders.get(i);
-                /*LocalDate rd = r.getDate();
-                LocalTime rt = r.getTime();
-                if (t.compareTo(rt) >= 0 && currentDate.compareTo(rd) >= 0) {
+                if (r.isDue()) {
                     trayManager.showNotification(r.getName(), r.getDescription());
                     System.out.println(r.getName() + " expired!");
-                    if (r.doesRepeat()) {
-
+                    if (r.repeats()) {
+                        
                     } else {
                         reminders.remove(i);
                         i--; // don't skip next one!
                         changed = true;
                     }
-                }*/
+                }
             }
+
             if (changed) {
                 ScheduleIO.saveSchedule(reminders, events);
             }
+
             if (previousDate.getDayOfMonth() != currentDate.getDayOfMonth()) {
                 trayManager.dayChanged();
             }
+            
             previousDate = currentDate;
             
             lock.unlock();

@@ -307,10 +307,10 @@ public class AddReminderFrame extends JFrame {
         if (days > 0)
             System.out.println("Repeating every " + days + " days");
 
-        // ScheduledReminder r = new ScheduledReminder(name, description, time, date);
+        ScheduledReminder r = new ScheduledReminder(name, description, scheduledDateTime, days);
 
         // Needs fixing
-        // daemon.add(new ScheduledReminder(name, description, scheduledDateTime));
+        daemon.add(r);
         setVisible(false);
     }
 
