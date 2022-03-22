@@ -84,13 +84,16 @@ public class AddReminderFrame extends JFrame {
         layer = Box.createHorizontalBox();
             layer.add(new JLabel("Date:"));
             layer.add(Box.createHorizontalGlue());
+        layerPanel.add(layer);
+
+        layer = Box.createHorizontalBox();
+            dateField = new JTextField(24);
+            layer.add(dateField);
+            
             JButton calendarButton = new JButton("...");
             calendarButton.addActionListener(this::showCalendarPressed);
             layer.add(calendarButton);
         layerPanel.add(layer);
-
-            dateField = new JTextField(24);
-        layerPanel.add(dateField);
 
         badDateLayer = Box.createHorizontalBox();
             errorLabel = new JLabel("Please enter a valid date");
