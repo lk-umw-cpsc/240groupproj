@@ -1,10 +1,12 @@
 package code.ui;
 
 import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.regex.Pattern;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -18,6 +20,9 @@ import code.schedule.ScheduledReminder;
 
 public class AddReminderFrame extends JFrame {
 
+    private static final Pattern datePattern = Pattern.compile("^([1-9]|1[0-2])/([1-9]|[12]\\d|3[01])/(\\d\\d\\d\\d)$");
+    private static final Pattern timePattern = Pattern.compile("^(1[012]|[1-9]):([0-5]\\d)(AM|am|PM|pm)$");
+
     private static final int PADDING = 16;
 
     private JTextField nameField;
@@ -28,6 +33,11 @@ public class AddReminderFrame extends JFrame {
     private JCheckBox repeatCheckbox;
     private JTextField repeatField;
     private Box repeatLayer;
+
+    private Box badNameLayer;
+    private Box badDateLayer;
+    private Box badTimeLayer;
+    private Box badRepeatLayer;
 
     private BackgroundDaemon daemon;
         
@@ -56,6 +66,14 @@ public class AddReminderFrame extends JFrame {
             nameField = new JTextField(24);
         layerPanel.add(nameField);
 
+        badNameLayer = Box.createHorizontalBox();
+            JLabel errorLabel = new JLabel("Please enter a name");
+            errorLabel.setForeground(Color.RED);
+            badNameLayer.add(errorLabel);
+            badNameLayer.add(Box.createHorizontalGlue());
+            badNameLayer.setVisible(false);
+        layerPanel.add(badNameLayer);
+
         layer = Box.createHorizontalBox();
             layer.add(new JLabel("Description (optional):"));
             layer.add(Box.createHorizontalGlue());
@@ -72,6 +90,14 @@ public class AddReminderFrame extends JFrame {
             dateField = new JTextField(24);
         layerPanel.add(dateField);
 
+        badDateLayer = Box.createHorizontalBox();
+            errorLabel = new JLabel("Please enter a valid date");
+            errorLabel.setForeground(Color.RED);
+            badDateLayer.add(errorLabel);
+            badDateLayer.add(Box.createHorizontalGlue());
+            badDateLayer.setVisible(false);
+        layerPanel.add(badDateLayer);
+
         layer = Box.createHorizontalBox();
             layer.add(new JLabel("Time (optional):"));
             layer.add(Box.createHorizontalGlue());
@@ -79,6 +105,14 @@ public class AddReminderFrame extends JFrame {
 
             timeField = new JTextField(24);
         layerPanel.add(timeField);
+
+        badTimeLayer = Box.createHorizontalBox();
+            errorLabel = new JLabel("Please enter a valid time (e.g. 6:00AM)");
+            errorLabel.setForeground(Color.RED);
+            badTimeLayer.add(errorLabel);
+            badTimeLayer.add(Box.createHorizontalGlue());
+            badTimeLayer.setVisible(false);
+        layerPanel.add(badTimeLayer);
 
         layer = Box.createHorizontalBox();
             repeatCheckbox = new JCheckBox("Repeat");
@@ -96,6 +130,14 @@ public class AddReminderFrame extends JFrame {
             repeatLayer.add(Box.createHorizontalGlue());
         repeatLayer.setVisible(false);
         layerPanel.add(repeatLayer);
+
+        badRepeatLayer = Box.createHorizontalBox();
+            errorLabel = new JLabel("Please enter a positive number");
+            errorLabel.setForeground(Color.RED);
+            badRepeatLayer.add(errorLabel);
+            badRepeatLayer.add(Box.createHorizontalGlue());
+            badRepeatLayer.setVisible(false);
+        layerPanel.add(badRepeatLayer);
 
         layer = Box.createHorizontalBox();
             JButton addButton = new JButton("Add Reminder");
@@ -121,15 +163,12 @@ public class AddReminderFrame extends JFrame {
             repeatLayer.setVisible(true);
             pack();
         } else {
-            // String timeString = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(now);
-            // timeField.setText(timeString);
             repeatCheckbox.setSelected(false);
             repeatField.setText("");
             repeatLayer.setVisible(false);
             pack();
         }
-        String dateString = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT).format(now);
-        dateField.setText(dateString);
+        dateField.setText(now.getMonthValue() + "/" + now.getDayOfMonth() + "/" + now.getYear());
         setVisible(true);
     }
 
@@ -137,20 +176,78 @@ public class AddReminderFrame extends JFrame {
         if (repeatCheckbox.isSelected()) {
             repeatField.setText("1");
             repeatLayer.setVisible(true);
+            badRepeatLayer.setVisible(false);
             pack();
         } else {
             repeatField.setText("");
             repeatLayer.setVisible(false);
+            badRepeatLayer.setVisible(false);
             pack();
         }
     }
 
     private void addReminderPressed(ActionEvent e) {
-        // to-do: form validation
+        // ^([1-9]|1[0-2])/([1-9]|[12]\d|3[01])/(\d\d\d\d)$
+        // ^(1[012]|[1-9]):([0-5]\d)(AM|am|PM|pm)$
         String name = nameField.getText();
         String description = descriptionField.getText();
         String time = timeField.getText();
         String date = dateField.getText();
+
+        boolean formContainsErrors = false;
+
+        if (name.isEmpty()) {
+            formContainsErrors = true;
+            badNameLayer.setVisible(true);
+        } else {
+            badNameLayer.setVisible(false);
+        }
+
+        if (!(time.isEmpty() || timePattern.matcher(time).matches())) {
+            formContainsErrors = true;
+            badTimeLayer.setVisible(true);
+        } else {
+            badTimeLayer.setVisible(false);
+        }
+
+        if (!datePattern.matcher(date).matches()) {
+            formContainsErrors = true;
+            badDateLayer.setVisible(true);
+        } else {
+            badDateLayer.setVisible(false);
+        }
+        int days = 0;
+        boolean repeatError = false;
+        if (repeatCheckbox.isSelected()) {
+            try {
+                days = Integer.parseUnsignedInt(repeatField.getText());
+                if (days < 1) {
+                    formContainsErrors = true;
+                    repeatError = true;
+                }
+            } catch (NumberFormatException err) {
+                formContainsErrors = true;
+                repeatError = true;
+            }
+        }
+        badRepeatLayer.setVisible(repeatError);
+        pack();
+        if (formContainsErrors) {
+            return;
+        }
+        System.out.println("Valid form submission:");
+        System.out.println(name);
+        System.out.println(description);
+        System.out.println(date);
+        if (time.isEmpty())
+            System.out.println("No time given");
+        else
+            System.out.println(time);
+        if (days > 0)
+            System.out.println("Repeating every " + days + " days");
+
+        // ScheduledReminder r = new ScheduledReminder(name, description, time, date);
+
         // Needs fixing
         // daemon.add(new ScheduledReminder(name, description, time, date));
         setVisible(false);
