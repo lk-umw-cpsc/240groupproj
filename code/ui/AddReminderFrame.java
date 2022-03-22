@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.time.LocalDateTime;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.Box;
@@ -83,6 +84,9 @@ public class AddReminderFrame extends JFrame {
         layer = Box.createHorizontalBox();
             layer.add(new JLabel("Date:"));
             layer.add(Box.createHorizontalGlue());
+            JButton calendarButton = new JButton("...");
+            calendarButton.addActionListener(this::showCalendarPressed);
+            layer.add(calendarButton);
         layerPanel.add(layer);
 
             dateField = new JTextField(24);
@@ -184,6 +188,10 @@ public class AddReminderFrame extends JFrame {
         }
     }
 
+    private void showCalendarPressed(ActionEvent e) {
+        // hook up with month view here
+    }
+
     private void addReminderPressed(ActionEvent e) {
         // ^([1-9]|1[0-2])/([1-9]|[12]\d|3[01])/(\d\d\d\d)$
         // ^(1[012]|[1-9]):([0-5]\d)(AM|am|PM|pm)$
@@ -200,18 +208,40 @@ public class AddReminderFrame extends JFrame {
         } else {
             badNameLayer.setVisible(false);
         }
-
-        if (!(time.isEmpty() || timePattern.matcher(time).matches())) {
-            formContainsErrors = true;
-            badTimeLayer.setVisible(true);
+        Matcher matcher;
+        int hour = -1;
+        int minute = -1;
+        if (!time.isEmpty()) {
+            matcher = timePattern.matcher(time);
+            if (!matcher.matches()) {
+                formContainsErrors = true;
+                badTimeLayer.setVisible(true);
+            } else {
+                hour = Integer.parseInt(matcher.group(1));
+                minute = Integer.parseInt(matcher.group(2));
+                String amPM = matcher.group(3);
+                if (amPM.equalsIgnoreCase("pm")) {
+                    if (hour < 12)
+                        hour += 12;
+                } else if (hour == 12) {
+                    hour = 0;
+                }
+            }
         } else {
             badTimeLayer.setVisible(false);
         }
 
-        if (!datePattern.matcher(date).matches()) {
+        int month = -1;
+        int day = -1;
+        int year = -1;
+        matcher = datePattern.matcher(date);
+        if (!matcher.matches()) {
             formContainsErrors = true;
             badDateLayer.setVisible(true);
         } else {
+            month = Integer.parseInt(matcher.group(1));
+            day = Integer.parseInt(matcher.group(2));
+            year = Integer.parseInt(matcher.group(3));
             badDateLayer.setVisible(false);
         }
         int days = 0;
@@ -233,10 +263,11 @@ public class AddReminderFrame extends JFrame {
         if (formContainsErrors) {
             return;
         }
+        LocalDateTime scheduledDateTime = LocalDateTime.of(year, month, day, hour, minute);
         System.out.println("Valid form submission:");
         System.out.println(name);
         System.out.println(description);
-        System.out.println(date);
+        System.out.println(scheduledDateTime);
         if (time.isEmpty())
             System.out.println("No time given");
         else
