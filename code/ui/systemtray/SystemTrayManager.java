@@ -14,6 +14,7 @@ import java.util.Calendar;
 
 import code.BackgroundDaemon;
 import code.ui.AddReminderFrame;
+import code.ui.ReminderManagerFrame;
 
 import java.io.IOException;
 
@@ -29,15 +30,17 @@ public class SystemTrayManager {
     private BufferedImage calendarSprite;
 
     private AddReminderFrame addReminderFrame;
+    private ReminderManagerFrame reminderManagerFrame;
 
     private BackgroundDaemon daemon;
 
     private TrayIcon trayIcon;
 
     public SystemTrayManager(BackgroundDaemon d, 
-            AddReminderFrame addReminderFrame) {
+            AddReminderFrame arf, ReminderManagerFrame rmf) {
         daemon = d;
-        this.addReminderFrame = addReminderFrame;
+        this.addReminderFrame = arf;
+        this.reminderManagerFrame = rmf;
         SystemTray systemTray = SystemTray.getSystemTray();
         //TrayIcon icon2 = null;
         BufferedImageLoader loader = new BufferedImageLoader();
@@ -85,6 +88,10 @@ public class SystemTrayManager {
         option.addActionListener(this::addMonthlyReminder);
         popupMenu.add(option);
 
+        option = new MenuItem("Manage reminders...");
+        option.addActionListener(this::manageReminders);
+        popupMenu.add(option);
+
         popupMenu.addSeparator();
 
         MenuItem exitOption = new MenuItem("Exit");
@@ -123,6 +130,10 @@ public class SystemTrayManager {
 
     private void addMonthlyReminder(ActionEvent e) {
         addReminderFrame.appear(30);
+    }
+
+    private void manageReminders(ActionEvent e) {
+        reminderManagerFrame.setVisible(true);
     }
 
     private void exit(ActionEvent e) {
