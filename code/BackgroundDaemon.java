@@ -9,7 +9,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.SwingUtilities;
 
-import code.schedule.DailyReminder;
 import code.schedule.ScheduleIO;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
@@ -36,7 +35,6 @@ public class BackgroundDaemon implements Runnable {
     private volatile boolean running;
 
     private List<ScheduledReminder> reminders;
-    private List<DailyReminder> dailyReminders;
     private List<ScheduledEvent> events;
 
     private AddReminderFrame addReminderFrame;
@@ -48,7 +46,6 @@ public class BackgroundDaemon implements Runnable {
 
     public BackgroundDaemon() {
         reminders = new ArrayList<>();
-        dailyReminders = new ArrayList<>();
         events = new ArrayList<>();
 
         readySignal = new Semaphore(0);
@@ -98,17 +95,6 @@ public class BackgroundDaemon implements Runnable {
     }
 
     /**
-     * Gets a list of the user's scheduled daily reminders.
-     * 
-     * Lock must be locked when accessing the returned data structure.
-     * See getLock().
-     * @return A List<DailyReminder> containing user's daily reminders.
-     */
-    public List<DailyReminder> getDailyReminders() {
-        return dailyReminders;
-    }
-
-    /**
      * Gets a list of the user's scheduled events.
      * 
      * Lock must be locked when accessing the returned data structure.
@@ -117,12 +103,6 @@ public class BackgroundDaemon implements Runnable {
      */
     public List<ScheduledEvent> getEvents() {
         return events;
-    }
-
-    public void cancel(DailyReminder dr) {
-        lock.lock();
-        dailyReminders.remove(dr);
-        lock.unlock();
     }
 
     public void cancel(ScheduledReminder r) {
@@ -134,12 +114,6 @@ public class BackgroundDaemon implements Runnable {
     public void cancel(ScheduledEvent e) {
         lock.lock();
         events.remove(e);
-        lock.unlock();
-    }
-
-    public void add(DailyReminder dr) {
-        lock.lock();
-        dailyReminders.add(dr);
         lock.unlock();
     }
 
