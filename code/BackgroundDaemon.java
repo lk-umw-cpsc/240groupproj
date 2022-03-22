@@ -1,8 +1,6 @@
 package code;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +42,7 @@ public class BackgroundDaemon implements Runnable {
 
     private SystemTrayManager trayManager;
 
-    // Guards critical section: reminders, daily reminders, and events
+    // Guards critical section: reminders and events
     private Lock lock = new ReentrantLock();
 
     public BackgroundDaemon() {
@@ -148,29 +146,19 @@ public class BackgroundDaemon implements Runnable {
 
         thread = Thread.currentThread();
         running = true;
-        // trayManager.showNotification("Hello, world!", "This is an alert :)");
 
-        LocalDate previousDate = LocalDate.now();
-        LocalTime oneMinuteFromNow = LocalTime.now().plusMinutes(1);
-        ScheduledReminder test = new ScheduledReminder();
-        test.setDate(previousDate.toString());
-        test.setTime(oneMinuteFromNow.getHour() + ":" + oneMinuteFromNow.getMinute());
-        test.setName("Test");
-        test.setDescription("Test description");
-        System.out.println(test.getDate());
-        System.out.println(test.getTime());
-        System.out.println(LocalDateTime.now());
-        reminders.add(test);
+        LocalDateTime previousDate = LocalDateTime.now();
+        // String timeString = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(previousDate);
+        
         while (running) {
             lock.lock(); //ensure the following actions are atomic
             
-            LocalDate currentDate = LocalDate.now();
-            LocalTime t = LocalTime.now();
+            LocalDateTime currentDate = LocalDateTime.now();
             boolean changed = false;
 
             for (int i = 0; i < reminders.size(); i++) {
                 ScheduledReminder r = reminders.get(i);
-                LocalDate rd = r.getDate();
+                /*LocalDate rd = r.getDate();
                 LocalTime rt = r.getTime();
                 if (t.compareTo(rt) >= 0 && currentDate.compareTo(rd) >= 0) {
                     trayManager.showNotification(r.getName(), r.getDescription());
@@ -182,12 +170,12 @@ public class BackgroundDaemon implements Runnable {
                         i--; // don't skip next one!
                         changed = true;
                     }
-                }
+                }*/
             }
             if (changed) {
                 ScheduleIO.saveSchedule(reminders, events);
             }
-            if (!previousDate.equals(currentDate)) {
+            if (previousDate.getDayOfMonth() != currentDate.getDayOfMonth()) {
                 trayManager.dayChanged();
             }
             previousDate = currentDate;

@@ -69,9 +69,21 @@ public class SystemTrayManager {
         
         PopupMenu popupMenu = new PopupMenu();
 
-        MenuItem showOption = new MenuItem("Add reminder...");
-        showOption.addActionListener(this::addReminder);
-        popupMenu.add(showOption);
+        MenuItem option = new MenuItem("Add reminder...");
+        option.addActionListener(this::addReminder);
+        popupMenu.add(option);
+
+        option = new MenuItem("Add daily reminder...");
+        option.addActionListener(this::addDailyReminder);
+        popupMenu.add(option);
+
+        option = new MenuItem("Add weekly reminder...");
+        option.addActionListener(this::addWeeklyReminder);
+        popupMenu.add(option);
+
+        option = new MenuItem("Add monthly reminder...");
+        option.addActionListener(this::addMonthlyReminder);
+        popupMenu.add(option);
 
         popupMenu.addSeparator();
 
@@ -98,7 +110,19 @@ public class SystemTrayManager {
     }
 
     private void addReminder(ActionEvent e) {
-        addReminderFrame.appear(false);
+        addReminderFrame.appear(0);
+    }
+
+    private void addDailyReminder(ActionEvent e) {
+        addReminderFrame.appear(1);
+    }
+
+    private void addWeeklyReminder(ActionEvent e) {
+        addReminderFrame.appear(7);
+    }
+
+    private void addMonthlyReminder(ActionEvent e) {
+        addReminderFrame.appear(30);
     }
 
     private void exit(ActionEvent e) {
