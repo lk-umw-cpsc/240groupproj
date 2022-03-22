@@ -25,6 +25,10 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 3/22/2022
+Person: Lauren
+Log: AddReminderFrame completed. Next focus will be on a reminder manager frame.
+
 Date: 3/21/2022
 Person: Lauren
 Log: Daemon now spawns a reminder 1 minute in the future upon running
