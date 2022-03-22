@@ -9,6 +9,11 @@ package code.schedule;
  * Includes a List of optional ScheduledReminders to remind
  * the user about the event/appointment/etc.
  * 
+ * Start time
+ * End time/duration
+ * Desc
+ * Location?
+ * 
  * Implementation assigned to Jayden
  */
 public class ScheduledEvent {

@@ -84,3 +84,7 @@ Log: Created skeleton of the ScheduledReminder class, added Set/Get methods, and
 Date: 3/21/2022
 Person: Jayden
 Log: Added functiond to ScheduledReminder class, rpeetition of reminders. Fixed isDue, need to add time comparison.
+
+Date: 3/22/2022
+Person: Jayden
+Log: Changed sepperate variables into combined LocalDateTime, added constructors for ScheduledReminder class, tested constructors.

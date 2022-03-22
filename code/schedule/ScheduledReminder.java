@@ -1,7 +1,6 @@
 package code.schedule;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 /**
  * Base class for reminders. Anything that should prompt the user
@@ -20,13 +19,47 @@ import java.time.LocalTime;
  */
 public class ScheduledReminder {
     private String name;
-    private String description;
-    
-    private LocalDate date;
-    private LocalTime time;
-
+    private String description; 
+    private LocalDateTime whenDue;
     private boolean repeated;
     private int daysbetweenReps;
+
+    public ScheduledReminder(String name, String date, int reps) {
+        this.name = name;
+        whenDue = LocalDateTime.parse(date + "T06:00:00");
+        description = "";
+        if (reps > 0) {
+            repeated = true;
+        } else {
+            repeated = false;
+        }
+        daysbetweenReps = reps;
+    }
+
+    public ScheduledReminder(String name, String description, String date, int reps) {
+        this.name = name;
+        this.description = description;
+        whenDue = LocalDateTime.parse(date + "T06:00:00");
+        if (reps > 0) {
+            repeated = true;
+        } else {
+            repeated = false;
+        }
+        daysbetweenReps = reps;
+    }
+
+    public ScheduledReminder(String name, String description, String date, String time, int reps) {
+        this.name = name;
+        this.description = description;
+        whenDue = LocalDateTime.parse(date + "T" + time);
+        if (reps > 0) {
+            repeated = true;
+        } else {
+            repeated = false;
+        }
+        daysbetweenReps = reps;
+    }
+
     
     /**
      * Setter method for the name of the Reminder
@@ -60,44 +93,17 @@ public class ScheduledReminder {
         return this.description;
     }
 
-    /**
-     * Setter method for the date
-     * @param date LocalDate variable of the day for the reminder to be triggered
-     */
-    public void setDate(String date) {
-        this.date = LocalDate.parse(date);
+    public void setWhenDue(String date) {
+        whenDue = LocalDateTime.parse(date + "T6:00:00");
     }
 
-    /**
-     * Getter method for the date variable
-     * @return LocalDate of the due date for the reminder
-     */
-    public LocalDate getDate() {
-        return this.date;
+    public void setWhenDue(String date, String time) {
+        whenDue = LocalDateTime.parse(date + "T" + time);
     }
 
-    /**
-     * Default setter for Time variable
-     * Sets time to midnight, or 0:00
-     */
-    public void setTime() {
-        time = LocalTime.of(0,0);
-    }
 
-    /**
-     * Non-default setter for time variable
-     * @param time User input of what time the reminder will be activated
-     */
-    public void setTime(String time) {
-        this.time = LocalTime.parse(time);
-    }
-
-    /**
-     * Getter method for the time variable
-     * @return LocalTime of the time when the reminder should trigger
-     */
-    public LocalTime getTime() {
-        return this.time;
+    public LocalDateTime getWhenDue() {
+        return whenDue;
     }
 
     /**
@@ -116,6 +122,10 @@ public class ScheduledReminder {
         repeated = rep;
         daysbetweenReps = i;
     }
+
+    public int getDaysBetweenReps() {
+        return daysbetweenReps;
+    }
     
     /**
      * Method used to determine if the reminder is due or not
@@ -123,15 +133,18 @@ public class ScheduledReminder {
      * @return True is the reminder is due, false if it is not due
      */
     public boolean isDue() {
-        //return ((date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now())) && (time.isAfter(LocalTime.now()) || time.equals(LocalTime.now())));
         //Use compare to method, rather than multiple instances of LocalDate or LocalTime
 
-        LocalDate today = LocalDate.now();
+        LocalDateTime today = LocalDateTime.now();
 
-        if (today.compareTo(date) <= 0) {
+        if (today.compareTo(whenDue) <= 0) {
             return true;
         } else {
             return false;
         }
+    }
+    @Override
+    public String toString() {
+        return this.name + " " + this.description + " " + whenDue.toString() + " " + repeated + " " + daysbetweenReps;
     }
 }
