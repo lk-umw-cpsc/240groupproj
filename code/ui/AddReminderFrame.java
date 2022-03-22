@@ -29,22 +29,6 @@ public class AddReminderFrame extends JFrame {
     private JTextField repeatField;
     private Box repeatLayer;
 
-    /**
-     * Reminder form:
-     * 
-     * Name:
-     * [field]
-     * 
-     * Description (optional):
-     * [field]
-     * 
-     * Date:
-     * [field] (button that opens date picker)
-     * 
-     * Time:
-     * [field][field][drop down]
-     */
-
     private BackgroundDaemon daemon;
         
     public AddReminderFrame(BackgroundDaemon daemon) {
