@@ -89,7 +89,7 @@ public class AddReminderFrame extends JFrame {
         layer = Box.createHorizontalBox();
             dateField = new JTextField(24);
             layer.add(dateField);
-            
+
             JButton calendarButton = new JButton("...");
             calendarButton.addActionListener(this::showCalendarPressed);
             layer.add(calendarButton);
@@ -266,7 +266,36 @@ public class AddReminderFrame extends JFrame {
         if (formContainsErrors) {
             return;
         }
-        LocalDateTime scheduledDateTime = LocalDateTime.of(year, month, day, hour, minute);
+        LocalDateTime scheduledDateTime;
+        if (hour < 0) {
+            LocalDateTime now = LocalDateTime.now();
+            // If the date give is today's date
+            if (now.getYear() == year && now.getMonthValue() == month &&
+                    now.getDayOfMonth() == day) {
+                LocalDateTime oneHourInTheFuture = now.plusHours(1);
+                // If one hour in the future falls after 9:00PM,
+                // Set time to 8AM tomorrow
+                if (oneHourInTheFuture.getHour() >= 21) {
+                    LocalDateTime tomorrow = now.plusDays(1);
+                    scheduledDateTime = LocalDateTime.of(tomorrow.getYear(),
+                            tomorrow.getMonthValue(),
+                            tomorrow.getDayOfMonth(), 8, 0);
+                } else if (oneHourInTheFuture.getHour() < 8) {
+                    // If reminder would be in the early AM, set hour to 8AM
+                    scheduledDateTime = LocalDateTime.of(oneHourInTheFuture.getYear(),
+                            oneHourInTheFuture.getMonthValue(),
+                            oneHourInTheFuture.getDayOfMonth(), 8, 0);
+                } else {
+                    // one hour ahead was okay
+                    scheduledDateTime = now;
+                }
+            } else {
+                // Otherwise, set time to 8AM that day.
+                scheduledDateTime = LocalDateTime.of(year, month, day, 8, 0);
+            }
+        } else {
+            scheduledDateTime = LocalDateTime.of(year, month, day, hour, minute);
+        }
         System.out.println("Valid form submission:");
         System.out.println(name);
         System.out.println(description);
