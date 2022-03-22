@@ -54,7 +54,7 @@ public class BackgroundDaemon implements Runnable {
         readySignal = new Semaphore(0);
 
         // Load data structures from file
-        ScheduleIO.loadSchedule(reminders, dailyReminders, events);
+        ScheduleIO.loadSchedule(reminders, events);
 
         // build UI on Swing event thread
         SwingUtilities.invokeLater(this::buildGUI);
@@ -199,7 +199,7 @@ public class BackgroundDaemon implements Runnable {
             } catch (InterruptedException e) {}
         }
 
-        ScheduleIO.saveSchedule(reminders, dailyReminders, events);
+        ScheduleIO.saveSchedule(reminders, events);
         System.exit(0);
     }
 

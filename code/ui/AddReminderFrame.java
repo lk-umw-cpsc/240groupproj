@@ -52,7 +52,8 @@ public class AddReminderFrame extends JFrame {
             // Add horizontal glue after the label, left-aligning the label
             layer.add(Box.createHorizontalGlue());
         mainPanel.add(layer);
-        mainPanel.add(new JTextField(24));
+        JTextField nameField = new JTextField(24);
+        mainPanel.add(nameField);
 
         layer = Box.createHorizontalBox();
             layer.add(new JLabel("Description (optional):"));
@@ -61,7 +62,7 @@ public class AddReminderFrame extends JFrame {
         mainPanel.add(new JTextField(24));
 
         layer = Box.createHorizontalBox();
-        layer.add(new JButton("Tester"));
+        layer.add(new JButton("Add Reminder"));
         layer.add(Box.createHorizontalGlue());
         mainPanel.add(layer);
 
