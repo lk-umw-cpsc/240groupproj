@@ -92,7 +92,7 @@ public class AddReminderFrame extends JFrame {
 
             JButton calendarButton = new JButton("...");
             calendarButton.addActionListener(this::showCalendarPressed);
-            layer.add(calendarButton);
+            // layer.add(calendarButton);
         layerPanel.add(layer);
 
         badDateLayer = Box.createHorizontalBox();
@@ -310,7 +310,7 @@ public class AddReminderFrame extends JFrame {
         // ScheduledReminder r = new ScheduledReminder(name, description, time, date);
 
         // Needs fixing
-        // daemon.add(new ScheduledReminder(name, description, time, date));
+        // daemon.add(new ScheduledReminder(name, description, scheduledDateTime));
         setVisible(false);
     }
 

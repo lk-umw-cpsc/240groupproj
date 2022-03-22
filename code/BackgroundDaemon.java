@@ -14,6 +14,7 @@ import code.schedule.ScheduleIO;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
 import code.ui.AddReminderFrame;
+import code.ui.ReminderManagerFrame;
 import code.ui.systemtray.SystemTrayManager;
 
 /**
@@ -39,6 +40,7 @@ public class BackgroundDaemon implements Runnable {
     private List<ScheduledEvent> events;
 
     private AddReminderFrame addReminderFrame;
+    private ReminderManagerFrame reminderManagerFrame;
 
     private SystemTrayManager trayManager;
 
@@ -66,8 +68,9 @@ public class BackgroundDaemon implements Runnable {
         addReminderFrame = new AddReminderFrame(this);
 
         addReminderFrame.build();
+        reminderManagerFrame = new ReminderManagerFrame(this);
         // addEventFrame = new AddEventFrame(this);
-        trayManager = new SystemTrayManager(this, addReminderFrame);
+        trayManager = new SystemTrayManager(this, addReminderFrame, reminderManagerFrame);
         
         // Signal to run() that it can start
         readySignal.release();
