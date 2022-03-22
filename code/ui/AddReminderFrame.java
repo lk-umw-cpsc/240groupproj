@@ -92,7 +92,7 @@ public class AddReminderFrame extends JFrame {
 
             JButton calendarButton = new JButton("...");
             calendarButton.addActionListener(this::showCalendarPressed);
-            layer.add(calendarButton);
+            // layer.add(calendarButton);
         layerPanel.add(layer);
 
         badDateLayer = Box.createHorizontalBox();
