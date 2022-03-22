@@ -1,5 +1,8 @@
 package code;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,26 +148,50 @@ public class BackgroundDaemon implements Runnable {
 
         thread = Thread.currentThread();
         running = true;
-        trayManager.showNotification("Hello, world!", "This is an alert :)");
-        // To-do: implement me.
-        // Date previousDate = ...
+        // trayManager.showNotification("Hello, world!", "This is an alert :)");
+
+        LocalDate previousDate = LocalDate.now();
+        LocalTime oneMinuteFromNow = LocalTime.now().plusMinutes(1);
+        ScheduledReminder test = new ScheduledReminder();
+        test.setDate(previousDate.toString());
+        test.setTime(oneMinuteFromNow.getHour() + ":" + oneMinuteFromNow.getMinute());
+        test.setName("Test");
+        test.setDescription("Test description");
+        System.out.println(test.getDate());
+        System.out.println(test.getTime());
+        System.out.println(LocalDateTime.now());
+        reminders.add(test);
         while (running) {
             lock.lock(); //ensure the following actions are atomic
-            /*
-            for (ScheduledReminder r : reminders) {
-                if (r.isDue() && !r.hasBeenDisplayed()) {
-                    systemTrayManager.showNotification(r);
+            
+            LocalDate currentDate = LocalDate.now();
+            LocalTime t = LocalTime.now();
+            boolean changed = false;
+
+            for (int i = 0; i < reminders.size(); i++) {
+                ScheduledReminder r = reminders.get(i);
+                LocalDate rd = r.getDate();
+                LocalTime rt = r.getTime();
+                if (t.compareTo(rt) >= 0 && currentDate.compareTo(rd) >= 0) {
+                    trayManager.showNotification(r.getName(), r.getDescription());
+                    System.out.println(r.getName() + " expired!");
+                    if (r.doesRepeat()) {
+
+                    } else {
+                        reminders.remove(i);
+                        i--; // don't skip next one!
+                        changed = true;
+                    }
                 }
             }
-            Date currentDate = ...;
+            if (changed) {
+                ScheduleIO.saveSchedule(reminders, events);
+            }
             if (!previousDate.equals(currentDate)) {
-                for (DailyReminder dr : dailyReminders) {
-                    reminders.add(dr.generate());
-                }
                 trayManager.dayChanged();
             }
             previousDate = currentDate;
-            */
+            
             lock.unlock();
 
             try {
