@@ -339,7 +339,6 @@ public class AddReminderFrame extends JFrame {
 
         ScheduledReminder r = new ScheduledReminder(name, description, scheduledDateTime, days);
 
-        // Needs fixing
         daemon.add(r);
         setVisible(false);
     }
