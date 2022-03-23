@@ -170,13 +170,16 @@ public class BackgroundDaemon implements Runnable {
                     } else {
                         reminders.remove(i);
                         i--; // don't skip next one!
-                        changed = true;
                     }
+                    changed = true;
                 }
             }
 
             if (changed) {
                 ScheduleIO.saveSchedule(reminders, events);
+                if (reminderManagerFrame.isVisible()) {
+                    SwingUtilities.invokeLater(reminderManagerFrame::updateList);
+                }
             }
 
             if (previousDate.getDayOfMonth() != currentDate.getDayOfMonth()) {

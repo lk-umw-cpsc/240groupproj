@@ -133,7 +133,7 @@ public class SystemTrayManager {
     }
 
     private void manageReminders(ActionEvent e) {
-        reminderManagerFrame.setVisible(true);
+        reminderManagerFrame.appear();;
     }
 
     private void exit(ActionEvent e) {
