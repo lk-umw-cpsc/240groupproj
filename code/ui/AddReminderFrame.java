@@ -186,6 +186,8 @@ public class AddReminderFrame extends JFrame {
         badTimeLayer.setVisible(false);
         badRepeatLayer.setVisible(false);
         timeIsInThePastLayer.setVisible(false);
+
+        nameField.setText("");
         descriptionField.setText("");
         dateField.setText(now.getMonthValue() + "/" + now.getDayOfMonth() + "/" + now.getYear());
         timeField.setText("");
