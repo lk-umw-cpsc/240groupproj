@@ -93,3 +93,7 @@ Log: Added functiond to ScheduledReminder class, rpeetition of reminders. Fixed 
 Date: 3/22/2022
 Person: Jayden
 Log: Changed sepperate variables into combined LocalDateTime, added constructors for ScheduledReminder class, tested constructors.
+
+Date: 3/23/2023
+Person: Jayden
+Log: Created Skeleton of ScheduledEvent class, has 2 constructors, one taking start and end dates/times, another taking a start date, and a duration int
