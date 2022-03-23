@@ -36,6 +36,7 @@ public class AddReminderFrame extends JFrame {
     private Box badNameLayer;
     private Box badDateLayer;
     private Box badTimeLayer;
+    private Box timeIsInThePastLayer;
     private Box badRepeatLayer;
 
     private BackgroundDaemon daemon;
@@ -119,6 +120,14 @@ public class AddReminderFrame extends JFrame {
             badTimeLayer.setVisible(false);
         layerPanel.add(badTimeLayer);
 
+        timeIsInThePastLayer = Box.createHorizontalBox();
+            errorLabel = new JLabel("Please enter a future date & time");
+            errorLabel.setForeground(Color.RED);
+            timeIsInThePastLayer.add(errorLabel);
+            timeIsInThePastLayer.add(Box.createHorizontalGlue());
+            timeIsInThePastLayer.setVisible(false);
+        layerPanel.add(timeIsInThePastLayer);
+
         layer = Box.createHorizontalBox();
             repeatCheckbox = new JCheckBox("Repeat");
             repeatCheckbox.addActionListener(this::repeatCheckboxChanged);
@@ -162,18 +171,25 @@ public class AddReminderFrame extends JFrame {
 
     public void appear(int daysBetweenRepeats) {
         LocalDateTime now = LocalDateTime.now().plusMinutes(1);
+
         if (daysBetweenRepeats > 0) {
             repeatCheckbox.setSelected(true);
             repeatField.setText(Integer.toString(daysBetweenRepeats));
             repeatLayer.setVisible(true);
-            pack();
         } else {
             repeatCheckbox.setSelected(false);
             repeatField.setText("");
             repeatLayer.setVisible(false);
-            pack();
         }
+        badDateLayer.setVisible(false);
+        badNameLayer.setVisible(false);
+        badTimeLayer.setVisible(false);
+        badRepeatLayer.setVisible(false);
+        timeIsInThePastLayer.setVisible(false);
+        descriptionField.setText("");
         dateField.setText(now.getMonthValue() + "/" + now.getDayOfMonth() + "/" + now.getYear());
+        timeField.setText("");
+        pack();
         setVisible(true);
     }
 
@@ -219,6 +235,7 @@ public class AddReminderFrame extends JFrame {
             if (!matcher.matches()) {
                 formContainsErrors = true;
                 badTimeLayer.setVisible(true);
+                timeIsInThePastLayer.setVisible(false);
             } else {
                 hour = Integer.parseInt(matcher.group(1));
                 minute = Integer.parseInt(matcher.group(2));
@@ -262,13 +279,14 @@ public class AddReminderFrame extends JFrame {
             }
         }
         badRepeatLayer.setVisible(repeatError);
-        pack();
+        LocalDateTime now = LocalDateTime.now();
+
         if (formContainsErrors) {
+            pack();
             return;
         }
         LocalDateTime scheduledDateTime;
         if (hour < 0) {
-            LocalDateTime now = LocalDateTime.now();
             // If the date give is today's date
             if (now.getYear() == year && now.getMonthValue() == month &&
                     now.getDayOfMonth() == day) {
@@ -296,6 +314,14 @@ public class AddReminderFrame extends JFrame {
         } else {
             scheduledDateTime = LocalDateTime.of(year, month, day, hour, minute);
         }
+        if (scheduledDateTime.compareTo(now) <= 0) {
+            timeIsInThePastLayer.setVisible(true);
+            pack();
+            return;
+        } else {
+            timeIsInThePastLayer.setVisible(false);
+        }
+        pack();
         System.out.println("Valid form submission:");
         System.out.println(name);
         System.out.println(description);
