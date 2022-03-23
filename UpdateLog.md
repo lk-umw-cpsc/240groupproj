@@ -25,6 +25,11 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 3/22/2022 (evening)
+Person: Lauren
+Log: Began work on ReminderManagerFrame. I would like to make this frame look
+nicer... it's very 90's-chic right now :)
+
 Date: 3/22/2022
 Person: Lauren
 Log: AddReminderFrame completed. Next focus will be on a reminder manager frame.
