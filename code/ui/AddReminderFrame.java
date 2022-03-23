@@ -191,6 +191,8 @@ public class AddReminderFrame extends JFrame {
         descriptionField.setText("");
         dateField.setText(now.getMonthValue() + "/" + now.getDayOfMonth() + "/" + now.getYear());
         timeField.setText("");
+
+        nameField.requestFocus();
         pack();
         setVisible(true);
     }
