@@ -1,6 +1,5 @@
 package code.schedule;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -24,18 +23,22 @@ public class ScheduledEvent {
    private LocalDateTime startTime;
    private LocalDateTime endTime;
    private int duration;
+    
 
+   /*
    public ScheduledEvent(String desc, String sDate, String sTime, String eDate, String eTime) {
        this.description = desc;
        startTime = LocalDateTime.parse(sDate + "T" + sTime);
        endTime = LocalDateTime.parse(eDate + "T" + eTime);
    }
+   */
+
 
    public ScheduledEvent(String desc, String sDate, String sTime, int duration) {
        Long lDur = Long.valueOf(duration);   
        this.description = desc; 
        startTime = LocalDateTime.parse(sDate + "T" + sTime);
-       endTime = startTime.plusHours(lDur);
+       endTime = startTime.plusMinutes(lDur);
     }
 
    public String getDescription() {

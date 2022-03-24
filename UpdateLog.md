@@ -97,3 +97,7 @@ Log: Changed sepperate variables into combined LocalDateTime, added constructors
 Date: 3/23/2023
 Person: Jayden
 Log: Created Skeleton of ScheduledEvent class, has 2 constructors, one taking start and end dates/times, another taking a start date, and a duration int
+
+Date: 3/23/2023
+Person: Jayden
+Log: Changed constructors of Scheduled Event class, using only duration variable, also made it so duration is handeled in minutes, conversion to take place outside of ScheduledReminder Class
