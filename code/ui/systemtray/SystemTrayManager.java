@@ -2,6 +2,7 @@ package code.ui.systemtray;
 
 import java.awt.AWTException;
 import java.awt.PopupMenu;
+import java.awt.Menu;
 import java.awt.MenuItem;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
@@ -72,6 +73,8 @@ public class SystemTrayManager {
         
         PopupMenu popupMenu = new PopupMenu();
 
+        //convert menuitem to menu and menuitem is a submenu
+        //Note for myself (Joon)
         MenuItem option = new MenuItem("Add reminder...");
         option.addActionListener(this::addReminder);
         popupMenu.add(option);

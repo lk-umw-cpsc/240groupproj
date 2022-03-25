@@ -1,5 +1,7 @@
 package code;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +49,15 @@ public class BackgroundDaemon implements Runnable {
     // Guards critical section: reminders and events
     private Lock lock = new ReentrantLock();
 
-    public BackgroundDaemon() {
+    public BackgroundDaemon() throws FileNotFoundException {
         reminders = new ArrayList<>();
         events = new ArrayList<>();
 
         readySignal = new Semaphore(0);
 
         // Load data structures from file
-        ScheduleIO.loadSchedule(reminders, events);
+        ScheduleIO.loadSchedules();
+        //ScheduleIO.loadSchedule(reminders, events);
 
         // build UI on Swing event thread
         SwingUtilities.invokeLater(this::buildGUI);
@@ -175,8 +178,15 @@ public class BackgroundDaemon implements Runnable {
                 }
             }
 
-            if (changed) {
-                ScheduleIO.saveSchedule(reminders, events);
+            if (changed) 
+            {
+                try 
+                {
+                    ScheduleIO.saveSchedules();
+                } catch (IOException e) 
+                {
+                    
+                }
                 if (reminderManagerFrame.isVisible()) {
                     SwingUtilities.invokeLater(reminderManagerFrame::updateList);
                 }
@@ -196,7 +206,13 @@ public class BackgroundDaemon implements Runnable {
             } catch (InterruptedException e) {}
         }
 
-        ScheduleIO.saveSchedule(reminders, events);
+        try 
+        {
+            ScheduleIO.saveSchedules();
+        } catch (IOException e) 
+        {
+            
+        }
         System.exit(0);
     }
 

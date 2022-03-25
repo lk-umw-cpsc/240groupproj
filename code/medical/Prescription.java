@@ -1,4 +1,4 @@
-package code.schedule.medical;
+package code.medical;
 
 public class Prescription 
 {
