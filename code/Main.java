@@ -10,7 +10,10 @@ import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import code.schedule.medical.Medical;
+import code.medical.Medical;
+import code.schedule.ScheduleIO;
+import code.schedule.ScheduledEvent;
+import code.schedule.ScheduledReminder;
 
 /**
  * Project entry point. Spawns the BackgroundDaemon, which will
@@ -18,8 +21,13 @@ import code.schedule.medical.Medical;
  */
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         //Medical.buildMedical();
+        ScheduleIO.loadSchedules();
+        ScheduleIO.scheduledReminders.add(new ScheduledReminder("Reminder Tester", "Description for reminder tester", "2022-03-24", 1));
+        ScheduleIO.scheduledEvents.add(new ScheduledEvent("Event Tester", "2022-03-24", "17:00", 3));
+        ScheduleIO.saveSchedules();
+        
         if (!SystemTray.isSupported()) {
             System.out.println("System tray is not supported on this OS. Exiting.");
             return;
