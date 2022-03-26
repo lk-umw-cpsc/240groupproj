@@ -2,10 +2,23 @@ package code.schedule;
 
 import java.util.List;
 import java.util.Scanner;
+
+import code.medical.MedicalIO;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * All saving and loading of app data should be performed within this class's methods.
+ * 
+ * loadSchedule is called by BackgroundDaemon upon application launch. All loading should be
+ * done within loadSchedule.
+ * 
+ * saveSchedule is called upon program exit, upon a reminder expiring, or upon the user adding
+ * or removing an event/reminder. All saving of program data should be performed within
+ * saveSchedule.
+ */
 public class ScheduleIO 
 {
         private static final File EVENTS_FILE = new File("Data/Events.txt");
@@ -15,6 +28,10 @@ public class ScheduleIO
         {
                 loadEvents(events);
                 loadReminders(reminders);
+
+                // Moved this here to match program design. Saving of Medical info should be done in
+                // saveSchedule once implemented.
+                MedicalIO.buildMedical();
         }
 
         public static void saveSchedule(List<ScheduledReminder> reminders, List<ScheduledEvent> events)
