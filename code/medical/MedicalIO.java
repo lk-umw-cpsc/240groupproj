@@ -47,24 +47,6 @@ public class MedicalIO
 
     }
 
-    public static void buildDoctorList() throws FileNotFoundException
-    {
-
-        FileInputStream fileInName = new FileInputStream("240GROUPPROJ/../data/Doctors.txt");
-        Scanner fileIn = new Scanner(fileInName);
-
-        //this deletes the first line which contains   Name###LastVisit###PhoneNumber###officeLocation###website###specialization
-        String newLine = fileIn.nextLine();
-        while (fileIn.hasNextLine())
-        {
-            newLine = fileIn.nextLine();
-            String[] parser = newLine.split("###");
-            Doctor temp = new Doctor(parser[0], parser[1], parser[2],parser[3], parser[4], parser[5]);
-            doctorList.add(temp);
-        }
-        fileIn.close();
-
-    }
 
     public static void listDoctors()
     {
@@ -79,24 +61,7 @@ public class MedicalIO
         }
     }
 
-    public static void buildPrescriptionList() throws FileNotFoundException
-    {
-
-        FileInputStream fileInName = new FileInputStream("240GROUPPROJ/../data/Prescriptions.txt");
-        Scanner fileIn = new Scanner(fileInName);
-
-        //this deletes the first line which contains   Prescription###Qty###Refill###DoctorName
-        String newLine = fileIn.nextLine();
-        while (fileIn.hasNextLine())
-        {
-            newLine = fileIn.nextLine();
-            String[] parser = newLine.split("###");
-            Prescription temp = new Prescription(parser[0], Integer.parseInt(parser[1]), Integer.parseInt(parser[2]),parser[3]);
-            prescriptionList.add(temp);
-        }
-        fileIn.close();
-
-    }
+    
 
     public static void listPrescriptions()
     {
@@ -131,5 +96,42 @@ public class MedicalIO
     }
 
     
+    public static void buildDoctorList() throws FileNotFoundException
+    {
+
+        FileInputStream fileInName = new FileInputStream("240GROUPPROJ/../data/Doctors.txt");
+        Scanner fileIn = new Scanner(fileInName);
+
+        //this deletes the first line which contains   Name###LastVisit###PhoneNumber###officeLocation###website###specialization
+        String newLine = fileIn.nextLine();
+        while (fileIn.hasNextLine())
+        {
+            newLine = fileIn.nextLine();
+            String[] parser = newLine.split("###");
+            Doctor temp = new Doctor(parser[0], parser[1], parser[2],parser[3], parser[4], parser[5]);
+            doctorList.add(temp);
+        }
+        fileIn.close();
+
+    }
+    
+    public static void buildPrescriptionList() throws FileNotFoundException
+    {
+
+        FileInputStream fileInName = new FileInputStream("240GROUPPROJ/../data/Prescriptions.txt");
+        Scanner fileIn = new Scanner(fileInName);
+
+        //this deletes the first line which contains   Prescription###Qty###Refill###DoctorName
+        String newLine = fileIn.nextLine();
+        while (fileIn.hasNextLine())
+        {
+            newLine = fileIn.nextLine();
+            String[] parser = newLine.split("###");
+            Prescription temp = new Prescription(parser[0], Integer.parseInt(parser[1]), Integer.parseInt(parser[2]),parser[3]);
+            prescriptionList.add(temp);
+        }
+        fileIn.close();
+
+    }
 
 }

@@ -25,6 +25,13 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 3/26/2022
+Person: Joon
+Log: Update ScheduleIO to update days, added fully functional system that saves 
+and loads from txt files. Prints to list for use. Confirmed working WindowsOS.
+Updated MedicalIO to print doctors prescriptions on request, build doctor prescriptions
+based of doctors name in prescriptions list. Added print full prescription list.
+
 Date: 3/22/2022 (evening)
 Person: Lauren
 Log: Began work on ReminderManagerFrame. I would like to make this frame look
