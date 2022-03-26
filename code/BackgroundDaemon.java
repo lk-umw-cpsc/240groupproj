@@ -2,6 +2,7 @@ package code;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import java.util.concurrent.Semaphore;
@@ -60,6 +61,8 @@ public class BackgroundDaemon implements Runnable {
 
         // Load data structures from file
         ScheduleIO.loadSchedule(reminders, events);
+        Collections.sort(reminders);
+        // Collections.sort(events);
 
         // build UI on Swing event thread
         SwingUtilities.invokeLater(this::buildGUI);
@@ -116,25 +119,43 @@ public class BackgroundDaemon implements Runnable {
 
     public void cancel(ScheduledReminder r) {
         lock.lock();
-        reminders.remove(r);
+        if (reminders.contains(r)) {
+            reminders.remove(r);
+            if (reminderManagerFrame.isVisible()) {
+                SwingUtilities.invokeLater(reminderManagerFrame::updateList);
+            }
+        }
         lock.unlock();
     }
 
     public void cancel(ScheduledEvent e) {
         lock.lock();
-        events.remove(e);
+        if (events.contains(e)) {
+            events.remove(e);
+            if (reminderManagerFrame.isVisible()) {
+                SwingUtilities.invokeLater(reminderManagerFrame::updateList);
+            }
+        }
         lock.unlock();
     }
 
     public void add(ScheduledReminder r) {
         lock.lock();
         reminders.add(r);
+        Collections.sort(reminders);
+        if (reminderManagerFrame.isVisible()) {
+            SwingUtilities.invokeLater(reminderManagerFrame::updateList);
+        }
         lock.unlock();
     }
 
     public void add(ScheduledEvent e) {
         lock.lock();
         events.add(e);
+        // Collections.sort(events);
+        if (reminderManagerFrame.isVisible()) {
+            SwingUtilities.invokeLater(reminderManagerFrame::updateList);
+        }
         lock.unlock();
     }
 

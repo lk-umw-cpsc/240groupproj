@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * getters/setters for the above fields
  * an isDue() method that returns true if this reminder is due
  */
-public class ScheduledReminder {
+public class ScheduledReminder implements Comparable<ScheduledReminder> {
     private String name;
     private String description; 
     private LocalDateTime dueDateTime;
@@ -135,5 +135,10 @@ public class ScheduledReminder {
     @Override
     public String toString() {
         return this.name + " " + this.description + " " + dueDateTime.toString() + " " + daysBetweenRepetitions;
+    }
+
+    @Override
+    public int compareTo(ScheduledReminder o) {
+        return dueDateTime.compareTo(o.dueDateTime);
     }
 }
