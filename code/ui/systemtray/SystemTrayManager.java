@@ -237,7 +237,7 @@ public class SystemTrayManager {
     }
 
     private void manageReminders(ActionEvent e) {
-        reminderManagerFrame.appear();;
+        reminderManagerFrame.appear();
     }
 
     private void exit(ActionEvent e) 
