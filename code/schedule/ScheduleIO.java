@@ -2,14 +2,14 @@ package code.schedule;
 
 import java.util.List;
 import java.util.Scanner;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class ScheduleIO 
 {
+        private static final File EVENTS_FILE = new File("Data/Events.txt");
+        private static final File REMINDERS_FILE = new File("Data/Reminders.txt");
 
         public static void loadSchedule(List<ScheduledReminder> reminders, List<ScheduledEvent> events)
         {
@@ -27,9 +27,12 @@ public class ScheduleIO
         
         public static void loadEvents(List<ScheduledEvent> events)
         {
+                if (!EVENTS_FILE.exists())
+                {
+                        return;
+                }
 
-                try (FileInputStream fileInName = new FileInputStream("240GROUPPROJ/../data/Events.txt")) {
-                        Scanner fileIn = new Scanner(fileInName);
+                try (Scanner fileIn = new Scanner(EVENTS_FILE)) {
 
                         //this deletes the first line which contains Description###StartDateTStartTime###Duration
                         String newLine = fileIn.nextLine();
@@ -51,9 +54,11 @@ public class ScheduleIO
 
         public static void loadReminders(List<ScheduledReminder> reminders)
         {
+                if (!REMINDERS_FILE.exists()) {
+                        return;
+                }
 
-                try (FileInputStream fileInName = new FileInputStream("240GROUPPROJ/../data/Reminders.txt")) {
-                        Scanner fileIn = new Scanner(fileInName);
+                try (Scanner fileIn = new Scanner(REMINDERS_FILE)) {
 
                         //this deletes the first line which contains Name###Description###Date###Reps
                         String newLine = fileIn.nextLine();
@@ -76,8 +81,7 @@ public class ScheduleIO
         public static void saveEvents(List<ScheduledEvent> events)
         {
                 
-                try (FileOutputStream fileOutName = new FileOutputStream("240GROUPPROJ/../data/Events.txt")) {
-                        PrintWriter fileOut = new PrintWriter(fileOutName);
+                try (PrintWriter fileOut = new PrintWriter(EVENTS_FILE)) {
 
                         fileOut.println("Description###StartDateTStartTime###Duration");
                         for (ScheduledEvent event : events)
@@ -95,8 +99,8 @@ public class ScheduleIO
         public static void saveReminders(List<ScheduledReminder> reminders)
         {
 
-                try (FileOutputStream fileOutName = new FileOutputStream("240GROUPPROJ/../data/Reminders.txt")) {
-                        PrintWriter fileOut = new PrintWriter(fileOutName);
+                try (PrintWriter fileOut = new PrintWriter(REMINDERS_FILE))
+                {
 
                         fileOut.println("Name###Description###Date###Reps");
                         for (ScheduledReminder reminder : reminders)
