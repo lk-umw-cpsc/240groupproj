@@ -38,8 +38,8 @@ public class BackgroundDaemon implements Runnable {
 
     private volatile boolean running;
 
-    private List<ScheduledReminder> reminders;
-    private List<ScheduledEvent> events;
+    private static List<ScheduledReminder> reminders;
+    private static List<ScheduledEvent> events;
 
     private AddReminderFrame addReminderFrame;
     private ReminderManagerFrame reminderManagerFrame;
@@ -56,8 +56,8 @@ public class BackgroundDaemon implements Runnable {
         readySignal = new Semaphore(0);
 
         // Load data structures from file
-        ScheduleIO.loadSchedules();
-        //ScheduleIO.loadSchedule(reminders, events);
+        //ScheduleIO.loadSchedules();
+        ScheduleIO.loadSchedules(events, reminders);
 
         // build UI on Swing event thread
         SwingUtilities.invokeLater(this::buildGUI);
@@ -182,7 +182,7 @@ public class BackgroundDaemon implements Runnable {
             {
                 try 
                 {
-                    ScheduleIO.saveSchedules();
+                    ScheduleIO.saveSchedules(events, reminders);
                 } catch (IOException e) 
                 {
                     
@@ -208,12 +208,23 @@ public class BackgroundDaemon implements Runnable {
 
         try 
         {
-            ScheduleIO.saveSchedules();
+            ScheduleIO.saveSchedules(events, reminders);
         } catch (IOException e) 
         {
             
         }
         System.exit(0);
+    }
+
+    public static void testLoadAndSave() throws IOException
+    {
+        reminders = new ArrayList<>();
+        events = new ArrayList<>();
+        ScheduleIO.loadSchedules(events, reminders);
+        reminders.add(new ScheduledReminder("Reminder Tester", "Description for reminder tester", "2022-03-24", 1));
+        events.add(new ScheduledEvent("Event Tester", "2022-03-24", "17:00", 3));
+        ScheduleIO.saveSchedules(events, reminders);
+
     }
 
 }

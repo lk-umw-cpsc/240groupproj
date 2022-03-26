@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 //import java.time.format.TextStyle;
 
 
-public class Medical 
+public class MedicalIO 
 {
     private static ArrayList<Prescription> prescriptionList = new ArrayList<Prescription>();  
     private static ArrayList<Doctor> doctorList = new ArrayList<Doctor>();  

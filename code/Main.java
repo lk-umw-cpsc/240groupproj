@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import code.medical.Medical;
+import code.medical.MedicalIO;
 import code.schedule.ScheduleIO;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
@@ -22,11 +22,9 @@ import code.schedule.ScheduledReminder;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        //Medical.buildMedical();
-        ScheduleIO.loadSchedules();
-        ScheduleIO.scheduledReminders.add(new ScheduledReminder("Reminder Tester", "Description for reminder tester", "2022-03-24", 1));
-        ScheduleIO.scheduledEvents.add(new ScheduledEvent("Event Tester", "2022-03-24", "17:00", 3));
-        ScheduleIO.saveSchedules();
+        //MedicalIO.buildMedical();
+        BackgroundDaemon.testLoadAndSave();
+
         
         if (!SystemTray.isSupported()) {
             System.out.println("System tray is not supported on this OS. Exiting.");

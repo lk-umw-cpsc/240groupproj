@@ -3,6 +3,9 @@ package code.schedule;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import code.BackgroundDaemon;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,27 +14,22 @@ import java.io.PrintWriter;
 
 public class ScheduleIO 
 {
-        //List<ScheduledReminder> reminders,
-        //List<ScheduledEvent> events
-        public static List<ScheduledEvent> scheduledEvents = new ArrayList<ScheduledEvent>();  
-        public static List<ScheduledReminder> scheduledReminders = new ArrayList<ScheduledReminder>();  
 
-        
-        public static void loadSchedules() throws FileNotFoundException
+        public static void loadSchedules(List<ScheduledEvent> events, List<ScheduledReminder> reminders) throws FileNotFoundException
         {
-                loadScheduledEvents();
-                loadScheduledReminders();
+                loadEvents(events);
+                loadReminders(reminders);
         }
 
-        public static void saveSchedules() throws IOException
+        public static void saveSchedules(List<ScheduledEvent> events, List<ScheduledReminder> reminders) throws IOException
         {
-                saveScheduledEvents();
-                saveScheduledReminders();
+                saveEvents(events);
+                saveReminders(reminders);
 
         }
 
         
-        public static void loadScheduledEvents() throws FileNotFoundException
+        public static void loadEvents(List<ScheduledEvent> events) throws FileNotFoundException
         {
 
                 FileInputStream fileInName = new FileInputStream("240GROUPPROJ/../data/Events.txt");
@@ -45,7 +43,7 @@ public class ScheduleIO
                         String[] parser = newLine.split("###");
                         String[] splitTimeParser = parser[1].split("T");
                         ScheduledEvent temp = new ScheduledEvent(parser[0], splitTimeParser[0], splitTimeParser[1], Integer.parseInt(parser[2]));
-                        scheduledEvents.add(temp);
+                        events.add(temp);
                 }
 
                 fileIn.close();
@@ -53,7 +51,7 @@ public class ScheduleIO
 
         }
 
-        public static void loadScheduledReminders() throws FileNotFoundException
+        public static void loadReminders(List<ScheduledReminder> reminders) throws FileNotFoundException
         {
 
                 FileInputStream fileInName = new FileInputStream("240GROUPPROJ/../data/Reminders.txt");
@@ -67,7 +65,7 @@ public class ScheduleIO
                         String[] parser = newLine.split("###");
                         String[] splitTimeParser = parser[2].split("T");
                         ScheduledReminder temp = new ScheduledReminder(parser[0], parser[1], splitTimeParser[0], splitTimeParser[1], Integer.parseInt(parser[3]));
-                        scheduledReminders.add(temp);
+                        reminders.add(temp);
                 }
 
                 fileIn.close();
@@ -75,16 +73,16 @@ public class ScheduleIO
         }
 
         
-        public static void saveScheduledEvents() throws IOException
+        public static void saveEvents(List<ScheduledEvent> events) throws IOException
         {
                 
                 FileOutputStream fileOutName = new FileOutputStream("240GROUPPROJ/../data/Events.txt");
                 PrintWriter fileOut = new PrintWriter(fileOutName);
 
                 fileOut.println("Description###StartDateTStartTime###Duration");
-                for (ScheduledEvent scheduledEvent : scheduledEvents)
+                for (ScheduledEvent event : events)
                 {
-                        fileOut.println(scheduledEvent.getDescription() + "###" + scheduledEvent.getStartTime() + "###" + scheduledEvent.getDuration());
+                        fileOut.println(event.getDescription() + "###" + event.getStartTime() + "###" + event.getDuration());
                 }
 
                 fileOut.flush();
@@ -93,21 +91,23 @@ public class ScheduleIO
 
         }
 
-        public static void saveScheduledReminders() throws IOException
+        public static void saveReminders(List<ScheduledReminder> reminders) throws IOException
         {
 
                 FileOutputStream fileOutName = new FileOutputStream("240GROUPPROJ/../data/Reminders.txt");
                 PrintWriter fileOut = new PrintWriter(fileOutName);
 
                 fileOut.println("Name###Description###Date###Reps");
-                for (ScheduledReminder ScheduledReminder : scheduledReminders)
+                for (ScheduledReminder reminder : reminders)
                 {
-                        fileOut.println(ScheduledReminder.getName() + "###" + ScheduledReminder.getDescription() + "###" + ScheduledReminder.getWhenDue() + "###" + ScheduledReminder.getDaysBetweenRepetitions());
+                        fileOut.println(reminder.getName() + "###" + reminder.getDescription() + "###" + reminder.getWhenDue() + "###" + reminder.getDaysBetweenRepetitions());
                 }
 
                 fileOut.flush();
                 fileOutName.close();
 
         }
+
+        
     
 }
