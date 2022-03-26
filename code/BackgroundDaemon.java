@@ -19,14 +19,19 @@ import code.ui.systemtray.SystemTrayManager;
 
 /**
  * A single BackgroundDaemon exists for the application. This BackgroundDaemon
- * is responsible for starting the application, creating UI components, and
- * maintaining the user's lists of events and reminders.
+ * is responsible for starting the application, creating UI components, maintaining
+ *  the user's lists of events and reminders, and loading/saving application data.
  * 
  * Every 60 seconds, on the minute, the BackgroundDaemon's run method checks
  * to see if any reminders have expired. If they have, a notification is shown.
  * If the reminder is NOT set to repeat, the reminder is removed from the list
  * and discarded. If it is, the reminder is updated to be due in X days,
  * where X is the reminder's day between repetitions.
+ * 
+ * Upon program start, ScheduleIO.loadSchedule is called to load the user's
+ * list of events/reminders. Whenever the schedule/reminder data is changed
+ * within the program, and when the program exits, the user's lists are
+ * saved using ScheduleIO.saveSchedule.
  */
 public class BackgroundDaemon implements Runnable {
 
