@@ -3,11 +3,11 @@ package code.schedule;
 import java.util.List;
 import java.util.Scanner;
 
-import code.medical.MedicalIO;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import code.medical.MedicalIO;
 
 /**
  * All saving and loading of app data should be performed within this class's methods.
