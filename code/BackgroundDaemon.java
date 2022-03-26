@@ -18,15 +18,15 @@ import code.ui.ReminderManagerFrame;
 import code.ui.systemtray.SystemTrayManager;
 
 /**
- * This class will handle determining whether any of the user's
- * reminders have "gone off"/are due and will display a notification
- * for that reminder.
+ * A single BackgroundDaemon exists for the application. This BackgroundDaemon
+ * is responsible for starting the application, creating UI components, and
+ * maintaining the user's lists of events and reminders.
  * 
- * This class will be the owner of all ui components, including the system
- * tray. To-do: move ui component instantation and creation to this class
- * 
- * This class will also generate a new ScheduledReminder for each of the 
- * user's DailyReminders at 12:00AM.
+ * Every 60 seconds, on the minute, the BackgroundDaemon's run method checks
+ * to see if any reminders have expired. If they have, a notification is shown.
+ * If the reminder is NOT set to repeat, the reminder is removed from the list
+ * and discarded. If it is, the reminder is updated to be due in X days,
+ * where X is the reminder's day between repetitions.
  */
 public class BackgroundDaemon implements Runnable {
 
