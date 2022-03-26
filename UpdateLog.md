@@ -26,6 +26,11 @@ Add below this line!
 Paste over new entry here.
 
 Date: 3/26/2022
+Person: Joon
+Log: Updated System tray add reminders to include
+Add add next hour, this evening, tomorrow
+
+Date: 3/26/2022
 Person: Lauren
 Log: Reminder manager window skin changed (fonts, colors)
 There is a persistent bug where the last reminder in the list

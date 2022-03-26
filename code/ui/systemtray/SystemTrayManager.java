@@ -99,6 +99,22 @@ public class SystemTrayManager {
         option.addActionListener(this::addReminder);
         menuTab.add(option);
 
+        menuTab.addSeparator();
+
+        option = new MenuItem("Add one hour reminder...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+
+        option = new MenuItem("Add evening rmeinder...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+
+        option = new MenuItem("Add tomorrow reminder...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+
+        menuTab.addSeparator();
+
         option = new MenuItem("Add daily reminder...");
         option.addActionListener(this::addDailyReminder);
         menuTab.add(option);
@@ -154,28 +170,10 @@ public class SystemTrayManager {
 
 
         // Information I
-        
-        menuTab = new Menu("Information...");
-        popupMenu.add(menuTab);
 
-        option = new MenuItem("View Prescriptions...");
+        option = new MenuItem("About Cal...");
         //option.addActionListener(this::addReminder);
-        menuTab.add(option);
-
-        option = new MenuItem("View Doctors...");
-        //option.addActionListener(this::addReminder);
-        menuTab.add(option);
-
-        menuTab.addSeparator();
-
-        option = new MenuItem("Add new Prescription...");
-        //option.addActionListener(this::addReminder);
-        menuTab.add(option);
-
-        option = new MenuItem("Add new Doctor...");
-        //option.addActionListener(this::addReminder);
-        menuTab.add(option);
-        
+        popupMenu.add(option);
 
         //-----------
         popupMenu.addSeparator();
