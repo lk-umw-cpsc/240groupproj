@@ -13,8 +13,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import code.schedule.DateTimeFormatter;
@@ -51,12 +53,16 @@ public class ReminderUIEntry implements MouseListener {
 
     private ScheduledReminder reminder;
     private ReminderManagerFrame parent;
-    private Box container;
+    // private Box container;
+    private JPanel container;
 
     public ReminderUIEntry(ReminderManagerFrame parent, ScheduledReminder r) {
         this.parent = parent;
         reminder = r;
-        container = Box.createHorizontalBox();
+        container = new JPanel();
+        container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
+        // container.setPreferredSize(new Dimension(450, 150));
+        // container = Box.createHorizontalBox();
         container.add(Box.createHorizontalStrut(8));
         Box xButtonBox = Box.createVerticalBox();
 
@@ -117,6 +123,7 @@ public class ReminderUIEntry implements MouseListener {
         container.setBorder(LineBorder.createBlackLineBorder());
         container.setOpaque(true);
         container.setBackground(Color.WHITE);
+        System.out.println(container.getPreferredSize());
     }
 
     public ScheduledReminder getReminder() {

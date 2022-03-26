@@ -2,28 +2,34 @@ package code.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.Scrollable;
 
 import code.BackgroundDaemon;
 import code.schedule.ScheduledReminder;
 
-public class ReminderManagerFrame extends JFrame {
+public class ReminderManagerFrame extends JFrame implements Scrollable {
 
     private BackgroundDaemon daemon;
 
-    private Box reminderContainer;
+    private JPanel reminderContainer;
 
     public ReminderManagerFrame(BackgroundDaemon daemon) {
         super("Your Reminders");
         this.daemon = daemon;
 
-        reminderContainer = Box.createVerticalBox();
-        reminderContainer.setPreferredSize(new Dimension(600, 400));
+        // reminderContainer = Box.createVerticalBox();
+        reminderContainer = new JPanel();
+        reminderContainer.setLayout(new BoxLayout(reminderContainer, BoxLayout.Y_AXIS));
+        // reminderContainer.setPreferredSize(new Dimension(600, 400));
 
         reminderContainer.add(Box.createVerticalGlue());
         reminderContainer.setOpaque(true);
@@ -32,7 +38,10 @@ public class ReminderManagerFrame extends JFrame {
         JScrollPane scrollPane = new JScrollPane(reminderContainer,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-                
+        
+        scrollPane.setPreferredSize(new Dimension(600, 400));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        
         scrollPane.setBorder(null);
         add(scrollPane);
         pack();
@@ -59,12 +68,41 @@ public class ReminderManagerFrame extends JFrame {
         reminderContainer.add(Box.createVerticalGlue());
 
         l.unlock();
-        reminderContainer.repaint();
         reminderContainer.revalidate();
+        reminderContainer.repaint();
     }
     
     public void cancelReminder(ScheduledReminder r) {
         daemon.cancel(r);
+    }
+
+    @Override
+    public Dimension getPreferredScrollableViewportSize() {
+        return reminderContainer.getSize();
+    }
+
+    @Override
+    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportWidth() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getScrollableTracksViewportHeight() {
+        // TODO Auto-generated method stub
+        return false;
     }
     
 }
