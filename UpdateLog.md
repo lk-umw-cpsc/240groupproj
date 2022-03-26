@@ -27,6 +27,12 @@ Paste over new entry here.
 
 Date: 3/26/2022
 Person: Lauren
+Log: Reminder manager window skin changed (fonts, colors)
+There is a persistent bug where the last reminder in the list
+is cut off by the scroll panel. I need to figure out how to fix that.
+
+Date: 3/26/2022
+Person: Lauren
 Log: Reverted BackgroundDaemon to old version.
 Tweaked ScheduleIO so that the exceptions are thrown within its methods rather
 than making BackgroundDaemon catch them.
