@@ -9,16 +9,13 @@ import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import code.medical.MedicalIO;
-
 /**
  * Project entry point. Spawns the BackgroundDaemon, which will
  * set up the SystemTrayManager and any child windows.
  */
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        MedicalIO.buildMedical();
+    public static void main(String[] args) {
         //MedicalIO.connectDrPrescriptions();
         //MedicalIO.listDrPrescriptions();
         //BackgroundDaemon.testLoadAndSave();
@@ -49,7 +46,7 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Unable to open calendar.png.");
         } catch (UnsupportedOperationException e) {
-            System.out.println("System does not support changing taskbar icon.");
+            System.out.println("Note: System does not support changing taskbar icon.");
         }
     }
 
