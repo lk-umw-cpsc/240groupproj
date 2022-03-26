@@ -44,10 +44,12 @@ public class ReminderUIEntry implements MouseListener {
     }
 
     private static ImageIcon xIcon;
+    private static ImageIcon editIcon;
     static {
         try {
             BufferedImage x = ImageIO.read(new File("Images/x.png"));
             xIcon = new ImageIcon(x);
+            editIcon = new ImageIcon(ImageIO.read(new File("Images/edit.png")));
         } catch(IOException e) {}
     }
 
@@ -61,8 +63,7 @@ public class ReminderUIEntry implements MouseListener {
         reminder = r;
         container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
-        // container.setPreferredSize(new Dimension(450, 150));
-        // container = Box.createHorizontalBox();
+
         container.add(Box.createHorizontalStrut(8));
         Box xButtonBox = Box.createVerticalBox();
 
@@ -74,9 +75,21 @@ public class ReminderUIEntry implements MouseListener {
         xButtonBox.setMaximumSize(xButtonBox.getPreferredSize());
         container.setMaximumSize(new Dimension(Integer.MAX_VALUE, xButton.getHeight()));
         container.add(xButtonBox);
+
+        container.add(Box.createHorizontalStrut(8));
+
+        Box editButtonBox = Box.createVerticalBox();
+        editButtonBox.add(Box.createVerticalGlue());
+        JLabel editButton = new JLabel(editIcon);
+        editButtonBox.add(editButton);
+        editButtonBox.add(Box.createVerticalGlue());
+
+        container.add(editButtonBox);
+
         container.add(Box.createHorizontalStrut(16));
+
         Box infoBox = Box.createVerticalBox();
-        // infoBox.add(Box.createVerticalGlue());
+
         JLabel nameLabel = new JLabel(r.getName());
         nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
         infoBox.add(nameLabel);
@@ -88,7 +101,7 @@ public class ReminderUIEntry implements MouseListener {
             descLabel.setFont(FONT_LIGHT);
             infoBox.add(descLabel);
         }
-        // infoBox.add(Box.createVerticalGlue());
+
         infoBox.setMaximumSize(infoBox.getPreferredSize());
         container.add(infoBox);
 
