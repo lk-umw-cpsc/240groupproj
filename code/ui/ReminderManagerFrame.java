@@ -1,23 +1,12 @@
 package code.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
-import javax.imageio.ImageIO;
 import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 import code.BackgroundDaemon;
 import code.schedule.ScheduledReminder;
