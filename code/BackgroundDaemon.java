@@ -209,6 +209,9 @@ public class BackgroundDaemon implements Runnable {
 
             if (previousDate.getDayOfMonth() != currentDate.getDayOfMonth()) {
                 trayManager.dayChanged();
+                if (reminderManagerFrame.isVisible()) {
+                    SwingUtilities.invokeLater(reminderManagerFrame::updateList);
+                }
             }
             
             previousDate = currentDate;

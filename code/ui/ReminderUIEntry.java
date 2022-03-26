@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -14,12 +15,31 @@ import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import code.schedule.DateTimeFormatter;
 import code.schedule.ScheduledReminder;
 
 public class ReminderUIEntry implements MouseListener {
+
+    private static Font FONT_LIGHT;
+    private static Font FONT_REGULAR;
+    private static Font FONT_BOLD;
+
+    static {
+        try {
+            /*GraphicsEnvironment ge = 
+                GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Roboto-Light.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Roboto-Light.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Roboto-Light.ttf")));*/
+            FONT_LIGHT = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Regular.ttf")).deriveFont(16.0f);
+            FONT_REGULAR = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Medium.ttf")).deriveFont(16.0f);
+            FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Bold.ttf")).deriveFont(16.0f);
+       } catch (IOException | FontFormatException e) {
+            //Handle exception
+       }
+    }
 
     private static ImageIcon xIcon;
     static {
@@ -37,29 +57,33 @@ public class ReminderUIEntry implements MouseListener {
         this.parent = parent;
         reminder = r;
         container = Box.createHorizontalBox();
+        container.add(Box.createHorizontalStrut(8));
         Box xButtonBox = Box.createVerticalBox();
 
         JLabel xButton = new JLabel(xIcon);
-        xButton.setBorder(new EmptyBorder(24, 8, 24, 8));
         xButton.addMouseListener(this);
-        xButtonBox.add(Box.createVerticalGlue());
+        xButtonBox.add(Box.createVerticalStrut(24));
         xButtonBox.add(xButton);
-        xButtonBox.add(Box.createVerticalGlue());
+        xButtonBox.add(Box.createVerticalStrut(24));
+        xButtonBox.setMaximumSize(xButtonBox.getPreferredSize());
         container.setMaximumSize(new Dimension(Integer.MAX_VALUE, xButton.getHeight()));
         container.add(xButtonBox);
-
+        container.add(Box.createHorizontalStrut(16));
         Box infoBox = Box.createVerticalBox();
         // infoBox.add(Box.createVerticalGlue());
         JLabel nameLabel = new JLabel(r.getName());
         nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
         infoBox.add(nameLabel);
+        nameLabel.setFont(FONT_BOLD);
         String desc = r.getDescription();
         if (!desc.isBlank()) {
             infoBox.add(Box.createVerticalStrut(8));
-            infoBox.add(new JLabel(desc));
+            JLabel descLabel = new JLabel(desc);
+            descLabel.setFont(FONT_LIGHT);
+            infoBox.add(descLabel);
         }
         // infoBox.add(Box.createVerticalGlue());
-
+        infoBox.setMaximumSize(infoBox.getPreferredSize());
         container.add(infoBox);
 
         container.add(Box.createHorizontalGlue());
@@ -67,7 +91,9 @@ public class ReminderUIEntry implements MouseListener {
         Box timeDateBox = Box.createVerticalBox();
         Box layer = Box.createHorizontalBox();
         layer.add(Box.createHorizontalGlue());
-        layer.add(new JLabel(r.getWhenDue().toString()));
+        JLabel dayLabel = new JLabel(DateTimeFormatter.format(r.getWhenDue()));
+        dayLabel.setFont(FONT_REGULAR);
+        layer.add(dayLabel);
         timeDateBox.add(layer);
         if (r.repeats()) {
             String dayOrDays = "day";
@@ -78,7 +104,9 @@ public class ReminderUIEntry implements MouseListener {
             timeDateBox.add(Box.createVerticalStrut(8));
             layer = Box.createHorizontalBox();
             layer.add(Box.createHorizontalGlue());
-            layer.add(new JLabel("Repeats every" + dayOrDays));
+            JLabel repeatLabel = new JLabel("Repeats every" + dayOrDays);
+            repeatLabel.setFont(FONT_LIGHT);
+            layer.add(repeatLabel);
             timeDateBox.add(layer);
         }
 

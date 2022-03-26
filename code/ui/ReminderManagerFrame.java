@@ -1,5 +1,6 @@
 package code.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
@@ -25,10 +26,13 @@ public class ReminderManagerFrame extends JFrame {
         reminderContainer.setPreferredSize(new Dimension(600, 400));
 
         reminderContainer.add(Box.createVerticalGlue());
+        reminderContainer.setOpaque(true);
+        reminderContainer.setBackground(new Color(239, 239, 239));
 
         JScrollPane scrollPane = new JScrollPane(reminderContainer,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                
         scrollPane.setBorder(null);
         add(scrollPane);
         pack();
