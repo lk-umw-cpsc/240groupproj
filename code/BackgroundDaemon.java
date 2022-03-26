@@ -1,10 +1,7 @@
 package code;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import java.util.concurrent.Semaphore;
@@ -39,8 +36,8 @@ public class BackgroundDaemon implements Runnable {
 
     private volatile boolean running;
 
-    private static List<ScheduledReminder> reminders;
-    private static List<ScheduledEvent> events;
+    private List<ScheduledReminder> reminders;
+    private List<ScheduledEvent> events;
 
     private AddReminderFrame addReminderFrame;
     private ReminderManagerFrame reminderManagerFrame;
@@ -50,16 +47,14 @@ public class BackgroundDaemon implements Runnable {
     // Guards critical section: reminders and events
     private Lock lock = new ReentrantLock();
 
-    public BackgroundDaemon() throws FileNotFoundException {
+    public BackgroundDaemon() {
         reminders = new ArrayList<>();
         events = new ArrayList<>();
 
         readySignal = new Semaphore(0);
 
         // Load data structures from file
-        //ScheduleIO.loadSchedules();
-        ScheduleIO.loadSchedules(events, reminders);
-
+        ScheduleIO.loadSchedule(reminders, events);
         // build UI on Swing event thread
         SwingUtilities.invokeLater(this::buildGUI);
     }
@@ -163,15 +158,6 @@ public class BackgroundDaemon implements Runnable {
             LocalDateTime currentDate = LocalDateTime.now();
             boolean changed = false;
 
-            //I moved this up here because date should change before any notifications
-            //
-            if (previousDate.getDayOfMonth() != currentDate.getDayOfMonth()) 
-            {
-                trayManager.dayChanged();
-            }
-            
-            previousDate = currentDate;
-
             for (int i = 0; i < reminders.size(); i++) {
                 ScheduledReminder r = reminders.get(i);
                 if (r.isDue()) {
@@ -188,22 +174,18 @@ public class BackgroundDaemon implements Runnable {
                 }
             }
 
-            if (changed) 
-            {
-                try 
-                {
-                    ScheduleIO.saveSchedules(events, reminders);
-                } catch (IOException e) 
-                {
-                    
-                }
+            if (changed) {
+                ScheduleIO.saveSchedule(reminders, events);
                 if (reminderManagerFrame.isVisible()) {
                     SwingUtilities.invokeLater(reminderManagerFrame::updateList);
                 }
             }
 
-
+            if (previousDate.getDayOfMonth() != currentDate.getDayOfMonth()) {
+                trayManager.dayChanged();
+            }
             
+            previousDate = currentDate;
             
             lock.unlock();
 
@@ -213,25 +195,10 @@ public class BackgroundDaemon implements Runnable {
             } catch (InterruptedException e) {}
         }
 
-        try 
-        {
-            ScheduleIO.saveSchedules(events, reminders);
-        } catch (IOException e) 
-        {
-            
-        }
+        lock.lock();
+        ScheduleIO.saveSchedule(reminders, events);
+        lock.unlock();
         System.exit(0);
-    }
-
-    public static void testLoadAndSave() throws IOException
-    {
-        reminders = new ArrayList<>();
-        events = new ArrayList<>();
-        ScheduleIO.loadSchedules(events, reminders);
-        reminders.add(new ScheduledReminder("Reminder Tester", "Description for reminder tester", "2022-03-24", 1));
-        events.add(new ScheduledEvent("Event Tester", "2022-03-24", "17:00", 3));
-        ScheduleIO.saveSchedules(events, reminders);
-
     }
 
 }
