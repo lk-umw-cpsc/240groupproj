@@ -73,30 +73,123 @@ public class SystemTrayManager {
         
         PopupMenu popupMenu = new PopupMenu();
 
+        
+
+
         //convert menuitem to menu and menuitem is a submenu
         //Note for myself (Joon)
-        MenuItem option = new MenuItem("Add reminder...");
-        option.addActionListener(this::addReminder);
+        
+        // Calendar C
+        MenuItem option = new MenuItem("Calendar...");
+        //option.addActionListener(this::addReminder);
         popupMenu.add(option);
+
+        // Events E
+        Menu menuTab = new Menu("Events...");
+        popupMenu.add(menuTab);
+
+        option = new MenuItem("Add event...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+        
+        //-----------
+        menuTab.addSeparator();
+
+        option = new MenuItem("Manage events...");
+        //option.addActionListener(this::manageReminders);
+        menuTab.add(option);
+
+        // Reminders R
+        menuTab = new Menu("Reminders...");
+        popupMenu.add(menuTab);
+
+        option = new MenuItem("Add reminder...");
+        option.addActionListener(this::addReminder);
+        menuTab.add(option);
 
         option = new MenuItem("Add daily reminder...");
         option.addActionListener(this::addDailyReminder);
-        popupMenu.add(option);
+        menuTab.add(option);
 
         option = new MenuItem("Add weekly reminder...");
         option.addActionListener(this::addWeeklyReminder);
-        popupMenu.add(option);
+        menuTab.add(option);
 
         option = new MenuItem("Add monthly reminder...");
         option.addActionListener(this::addMonthlyReminder);
-        popupMenu.add(option);
+        menuTab.add(option);
+
+        //-----------
+        menuTab.addSeparator();
 
         option = new MenuItem("Manage reminders...");
         option.addActionListener(this::manageReminders);
-        popupMenu.add(option);
+        menuTab.add(option);
 
+        
+        // Medical M
+
+        menuTab = new Menu("Medical...");
+        popupMenu.add(menuTab);
+
+        option = new MenuItem("Add new Prescription...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+
+        option = new MenuItem("Add new Doctor...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+        
+        //-----------
+        menuTab.addSeparator();
+
+        option = new MenuItem("View Prescriptions...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+
+        option = new MenuItem("View Doctors...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+
+
+        //Settings S
+        menuTab = new Menu("Settings...");
+        popupMenu.add(menuTab);
+
+
+        //-----------
         popupMenu.addSeparator();
 
+
+        // Information I
+        
+        menuTab = new Menu("Information...");
+        popupMenu.add(menuTab);
+
+        option = new MenuItem("View Prescriptions...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+
+        option = new MenuItem("View Doctors...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+
+        menuTab.addSeparator();
+
+        option = new MenuItem("Add new Prescription...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+
+        option = new MenuItem("Add new Doctor...");
+        //option.addActionListener(this::addReminder);
+        menuTab.add(option);
+        
+
+        //-----------
+        popupMenu.addSeparator();
+
+
+        // Exit X
         MenuItem exitOption = new MenuItem("Exit");
         exitOption.addActionListener(this::exit);
         popupMenu.add(exitOption);

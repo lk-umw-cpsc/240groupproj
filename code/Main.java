@@ -23,7 +23,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         //MedicalIO.buildMedical();
-        BackgroundDaemon.testLoadAndSave();
+        //BackgroundDaemon.testLoadAndSave();
 
         
         if (!SystemTray.isSupported()) {
