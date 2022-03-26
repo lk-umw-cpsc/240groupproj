@@ -26,6 +26,20 @@ Add below this line!
 Paste over new entry here.
 
 Date: 3/26/2022
+Person: Lauren
+Log: Reverted BackgroundDaemon to old version.
+Tweaked ScheduleIO so that the exceptions are thrown within its methods rather
+than making BackgroundDaemon catch them.
+Added try/catch-with-resources within ScheduleIO's methods.
+Added static File objects for the two files the project works with.
+Added check to see if input files exist before attempting to read from them in
+ScheduleIO.load methods.
+Reverted name of loadSchedule and saveSchedule to line up with method called
+from BackgroundDaemon.
+Saving and loading tested and confirmed working.
+Data folder added to .gitignore so we aren't downloading each other's data files.
+
+Date: 3/26/2022
 Person: Joon
 Log: Update ScheduleIO to update days, added fully functional system that saves 
 and loads from txt files. Prints to list for use. Confirmed working WindowsOS.
