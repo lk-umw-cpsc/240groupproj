@@ -38,6 +38,9 @@ Reverted name of loadSchedule and saveSchedule to line up with method called
 from BackgroundDaemon.
 Saving and loading tested and confirmed working.
 Data folder added to .gitignore so we aren't downloading each other's data files.
+Moved calls to MedicalIO methods to ScheduleIO. I would like all app data loading 
+and saving to be performed from within loadSchedule and saveSchedule. We can rename 
+ScheduleIO and load/saveSchedule to something else if desired.
 
 Date: 3/26/2022
 Person: Joon
