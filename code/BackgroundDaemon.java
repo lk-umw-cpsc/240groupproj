@@ -55,6 +55,7 @@ public class BackgroundDaemon implements Runnable {
 
         // Load data structures from file
         ScheduleIO.loadSchedule(reminders, events);
+
         // build UI on Swing event thread
         SwingUtilities.invokeLater(this::buildGUI);
     }
