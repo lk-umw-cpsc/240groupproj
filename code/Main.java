@@ -3,7 +3,6 @@ package code;
 import java.awt.SystemTray;
 import java.awt.Taskbar;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -11,9 +10,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import code.medical.MedicalIO;
-import code.schedule.ScheduleIO;
-import code.schedule.ScheduledEvent;
-import code.schedule.ScheduledReminder;
 
 /**
  * Project entry point. Spawns the BackgroundDaemon, which will
