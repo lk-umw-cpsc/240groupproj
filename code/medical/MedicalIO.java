@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 //import java.io.IOException;
+import java.io.IOException;
 
 //import java.io.FileOutputStream;
 //import java.io.PrintWriter;
@@ -37,11 +38,15 @@ public class MedicalIO
 
     }
 
-    public static void buildMedical() throws FileNotFoundException
+    public static void buildMedical()
     {
-
-        buildDoctorList();
-        buildPrescriptionList();
+        try {
+            // TO-DO: handle exceptions within each of these method calls
+            buildDoctorList();
+            buildPrescriptionList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         connectDrPrescriptions();
         listPrescriptions();
 
