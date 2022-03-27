@@ -326,16 +326,6 @@ public class AddReminderFrame extends JFrame {
             timeIsInThePastLayer.setVisible(false);
         }
         pack();
-        System.out.println("Valid form submission:");
-        System.out.println(name);
-        System.out.println(description);
-        System.out.println(scheduledDateTime);
-        if (time.isEmpty())
-            System.out.println("No time given");
-        else
-            System.out.println(time);
-        if (days > 0)
-            System.out.println("Repeating every " + days + " days");
 
         ScheduledReminder r = new ScheduledReminder(name, description, scheduledDateTime, days);
 
