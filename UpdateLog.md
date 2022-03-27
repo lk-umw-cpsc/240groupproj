@@ -26,6 +26,13 @@ Add below this line!
 Paste over new entry here.
 
 Date: 3/26/2022
+Person: Lauren
+Log: Finishing the day off with...
+Fixed scrolling bug
+Tweaked borders to make them prettier (softer colors, borders no longer "double up" between entries)
+Implemented "Remind me in one hour" and "Remind me tomorrow"
+
+Date: 3/26/2022
 Person: Joon
 Log: Updated System tray add reminders to include
 Add add next hour, this evening, tomorrow
