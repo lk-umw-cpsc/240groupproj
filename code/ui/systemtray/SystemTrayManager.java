@@ -19,6 +19,10 @@ import code.ui.AddReminderFrame;
 import code.ui.ReminderManagerFrame;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 /**
  * The SystemTrayManager class creates a system tray icon for our app,
@@ -102,15 +106,15 @@ public class SystemTrayManager {
         menuTab.addSeparator();
 
         option = new MenuItem("Add one hour reminder...");
-        //option.addActionListener(this::addReminder);
+        option.addActionListener(this::addOneHourReminder);
         menuTab.add(option);
 
         option = new MenuItem("Add evening rmeinder...");
-        //option.addActionListener(this::addReminder);
+        option.addActionListener(this::addEveningReminder);
         menuTab.add(option);
 
         option = new MenuItem("Add tomorrow reminder...");
-        //option.addActionListener(this::addReminder);
+        option.addActionListener(this::addTomorrowReminder);
         menuTab.add(option);
 
         menuTab.addSeparator();
@@ -219,7 +223,27 @@ public class SystemTrayManager {
     }
 
     private void addReminder(ActionEvent e) {
-        addReminderFrame.appear(0);
+        LocalDateTime inSixHours = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS).plusHours(6);
+        if (inSixHours.getHour() > 21) {
+            inSixHours = inSixHours.plusDays(1).truncatedTo(ChronoUnit.DAYS).plusHours(8);
+        } else if (inSixHours.getHour() < 8) {
+            inSixHours = inSixHours.truncatedTo(ChronoUnit.DAYS).plusHours(8);
+        }
+        addReminderFrame.appear(inSixHours);
+    }
+
+    private void addOneHourReminder(ActionEvent e) {
+        addReminderFrame.appear(LocalDateTime.now().plusHours(1));
+    }
+
+    private void addEveningReminder(ActionEvent e) {
+        // ???
+    }
+
+    private void addTomorrowReminder(ActionEvent e) {
+        LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
+        tomorrow = tomorrow.truncatedTo(ChronoUnit.DAYS).plusHours(8);
+        addReminderFrame.appear(tomorrow);
     }
 
     private void addDailyReminder(ActionEvent e) {
