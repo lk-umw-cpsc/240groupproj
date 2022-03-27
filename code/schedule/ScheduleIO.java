@@ -1,10 +1,7 @@
 package code.schedule;
 
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Scanner;
-
-import code.BackgroundDaemon;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

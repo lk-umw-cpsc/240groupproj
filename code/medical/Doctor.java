@@ -8,7 +8,7 @@ public class Doctor
     private String name;
     private String lastVisit;
     private String phoneNumber;
-    private static ArrayList<Prescription> prescriptionList;  
+    private ArrayList<Prescription> drPrescriptionList;  
     private String officeLocation;
     private String website;
     private String specialization;
@@ -18,7 +18,7 @@ public class Doctor
         this.name = "";
         this.lastVisit = "No Last Visit";
         this.phoneNumber = "No Phone Number";
-        Doctor.prescriptionList = new ArrayList<Prescription>();
+        this.drPrescriptionList = new ArrayList<Prescription>();
         this.officeLocation = "No Location";
         this.website = "No Website";
         this.specialization = "No Specialization";
@@ -29,7 +29,7 @@ public class Doctor
         this.name = name;
         this.lastVisit = lastVisit;
         this.phoneNumber = phoneNumber;
-        Doctor.prescriptionList = new ArrayList<Prescription>();
+        this.drPrescriptionList = new ArrayList<Prescription>();
         this.officeLocation = officeLocation;
         this.website = website;
         this.specialization = specialization;
@@ -98,23 +98,36 @@ public class Doctor
 
     public void addDrPrescription(Prescription prescription)
     {
-        prescriptionList.add(prescription);
+        drPrescriptionList.add(prescription);
     }
 
-    public ArrayList<Prescription> getDrPrescription()
-    {
-        return prescriptionList;
-    }
-
-    public static void viewDoctorPrescriptions()
+    public void viewDoctorsPrescriptions()
     {
         System.out.printf("%-25s" + "%4s" + "%4s\n", "Prescription", "Quantity", "Refills");
 
-        for (int i=0; i<prescriptionList.size(); i++) 
+        for (int i=0; i < drPrescriptionList.size(); i++) 
         {
-            System.out.printf("%-25s" + "%4s" + "%4s\n", prescriptionList.get(i).getPrescriptionName(), prescriptionList.get(i).getPrescriptionQuantity(), prescriptionList.get(i).getPrescriptionRefills());
+            System.out.printf("%-25s" + "%4s" + "%4s\n", drPrescriptionList.get(i).getPrescriptionName(), drPrescriptionList.get(i).getPrescriptionQuantity(), drPrescriptionList.get(i).getPrescriptionRefills());
         }
         
     }
+
+    public void listDrPrescriptions()
+    {
+        if (drPrescriptionList.size() > 0)
+        {
+            for (int i=0; i < drPrescriptionList.size(); i++) 
+            {
+                System.out.println(drPrescriptionList.get(i).getPrescriptionName());
+            }
+        }
+        else
+        {
+            System.out.println("There are no prescriptions.");
+        }
+        
+    }
+
+
     
 }

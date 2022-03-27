@@ -58,18 +58,8 @@ public class Prescription
         return this.doctorName;
     }
 
-    /*
     
-    public void viewPrescriptions()
-    {
-        System.out.printf("%-30s" + "%4s" + "%4s" + "%30s\n", "" ,"Prescription", "Quantity", "Refills", "Prescriber");
 
-        for (int i=0; i<prescriptionList.size(); i++) 
-        {
-            System.out.printf("%-30s" + "%4s" + "%4s" + "%30s\n", prescriptionList.get(i).getPrescriptionName(), prescriptionList.get(i).getPrescriptionQuantity(), prescriptionList.get(i).getPrescriptionRefills(), prescriptionList.get(i).getDoctorName());
-        }
-        
-    }
+    
 
-    */
 }

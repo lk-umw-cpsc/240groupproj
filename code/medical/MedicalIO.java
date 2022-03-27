@@ -2,6 +2,7 @@ package code.medical;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 //import java.io.IOException;
@@ -42,7 +43,7 @@ public class MedicalIO
         buildDoctorList();
         buildPrescriptionList();
         connectDrPrescriptions();
-        //listDrPrescriptions();
+        listPrescriptions();
 
     }
 
@@ -99,13 +100,13 @@ public class MedicalIO
 
     public static void listPrescriptions()
     {
-        for (Prescription prescription : prescriptionList)
+        System.out.printf("%-30s" + "%-14s" + "%-20s" + "%25s\n" ,"Prescription", "Quantity", "Refills", "Prescriber");
+
+        for (int i=0; i < prescriptionList.size(); i++) 
         {
-            System.out.println(prescription.getPrescriptionName());
-            System.out.println(prescription.getPrescriptionQuantity());
-            System.out.println(prescription.getPrescriptionRefills());
-            System.out.println(prescription.getDoctorName());
+            System.out.printf("%-30s" + "%-14s" + "%-20s" + "%25s\n", prescriptionList.get(i).getPrescriptionName(), prescriptionList.get(i).getPrescriptionQuantity(), prescriptionList.get(i).getPrescriptionRefills(), prescriptionList.get(i).getDoctorName());
         }
+        
     }
 
     public static void connectDrPrescriptions()
@@ -117,24 +118,18 @@ public class MedicalIO
                 if (doctor.getDoctorName().equals(prescriptionList.get(i).getDoctorName()))
                 {
                     doctor.addDrPrescription(prescriptionList.get(i));
+                    //System.out.println(doctor.getDoctorName() + " prescribed " + prescriptionList.get(i).getPrescriptionName());
                 }
 
             }
-        }
-    }
 
-    public static void listDrPrescriptions()
-    {
-        for (Doctor doctor : doctorList)
-        {
-            if (!doctor.getDrPrescription().equals(""))
-            {
-                Doctor.viewDoctorPrescriptions();
-            }
+            //System.out.println("Printing out doctors and prescriptions");
+            //doctor.listDrPrescriptions();
 
         }
-        
 
     }
+
+    
 
 }

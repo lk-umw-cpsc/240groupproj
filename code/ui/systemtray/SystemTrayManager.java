@@ -30,7 +30,6 @@ import java.io.IOException;
 public class SystemTrayManager {
 
     private BufferedImage calendarSprite;
-    private BufferedImage notification;
 
     private AddReminderFrame addReminderFrame;
     private ReminderManagerFrame reminderManagerFrame;

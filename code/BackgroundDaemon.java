@@ -47,9 +47,6 @@ public class BackgroundDaemon implements Runnable {
 
     private SystemTrayManager trayManager;
 
-    private Calendar cal = Calendar.getInstance();
-    private int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
-
     // Guards critical section: reminders and events
     private Lock lock = new ReentrantLock();
 

@@ -22,7 +22,9 @@ import code.schedule.ScheduledReminder;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        //MedicalIO.buildMedical();
+        MedicalIO.buildMedical();
+        //MedicalIO.connectDrPrescriptions();
+        //MedicalIO.listDrPrescriptions();
         //BackgroundDaemon.testLoadAndSave();
 
         
