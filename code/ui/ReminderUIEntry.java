@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
 import code.schedule.DateTimeFormatter;
 import code.schedule.ScheduledReminder;
@@ -133,7 +134,7 @@ public class ReminderUIEntry implements MouseListener {
 
         container.add(Box.createHorizontalStrut(8));
 
-        container.setBorder(LineBorder.createBlackLineBorder());
+        container.setBorder(new MatteBorder(0, 1, 1, 1, new Color(175, 175, 175)));
         container.setOpaque(true);
         container.setBackground(Color.WHITE);
     }
@@ -167,13 +168,11 @@ public class ReminderUIEntry implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
         
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
         
     }
     
