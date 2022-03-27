@@ -136,7 +136,6 @@ public class ReminderUIEntry implements MouseListener {
         container.setBorder(LineBorder.createBlackLineBorder());
         container.setOpaque(true);
         container.setBackground(Color.WHITE);
-        System.out.println(container.getPreferredSize());
     }
 
     public ScheduledReminder getReminder() {
