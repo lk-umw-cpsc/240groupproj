@@ -2,27 +2,23 @@ package code.ui.systemtray;
 
 import java.awt.AWTException;
 import java.awt.Graphics;
-import java.awt.PopupMenu;
+import java.awt.Image;
 import java.awt.Menu;
 import java.awt.MenuItem;
+import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.awt.Image;
-
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
 import code.BackgroundDaemon;
 import code.ui.AddReminderFrame;
 import code.ui.ReminderManagerFrame;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 
 /**
  * The SystemTrayManager class creates a system tray icon for our app,

@@ -134,7 +134,7 @@ public class ReminderUIEntry implements MouseListener {
 
         container.add(Box.createHorizontalStrut(8));
 
-        container.setBorder(new MatteBorder(0, 1, 1, 1, new Color(175, 175, 175)));
+        container.setBorder(new MatteBorder(0, 0, 1, 0, new Color(175, 175, 175)));
         container.setOpaque(true);
         container.setBackground(Color.WHITE);
     }
