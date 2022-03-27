@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import java.util.concurrent.Semaphore;
@@ -45,6 +46,9 @@ public class BackgroundDaemon implements Runnable {
     private ReminderManagerFrame reminderManagerFrame;
 
     private SystemTrayManager trayManager;
+
+    private Calendar cal = Calendar.getInstance();
+    private int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
 
     // Guards critical section: reminders and events
     private Lock lock = new ReentrantLock();
@@ -162,6 +166,15 @@ public class BackgroundDaemon implements Runnable {
             LocalDateTime currentDate = LocalDateTime.now();
             boolean changed = false;
 
+            //I moved this up here because date should change before any notifications
+            //
+            if (previousDate.getDayOfMonth() != currentDate.getDayOfMonth()) 
+            {
+                trayManager.dayChanged();
+            }
+            
+            previousDate = currentDate;
+
             for (int i = 0; i < reminders.size(); i++) {
                 ScheduledReminder r = reminders.get(i);
                 if (r.isDue()) {
@@ -192,11 +205,8 @@ public class BackgroundDaemon implements Runnable {
                 }
             }
 
-            if (previousDate.getDayOfMonth() != currentDate.getDayOfMonth()) {
-                trayManager.dayChanged();
-            }
+
             
-            previousDate = currentDate;
             
             lock.unlock();
 

@@ -1,6 +1,7 @@
 package code.ui.systemtray;
 
 import java.awt.AWTException;
+import java.awt.Graphics;
 import java.awt.PopupMenu;
 import java.awt.Menu;
 import java.awt.MenuItem;
@@ -29,6 +30,7 @@ import java.io.IOException;
 public class SystemTrayManager {
 
     private BufferedImage calendarSprite;
+    private BufferedImage notification;
 
     private AddReminderFrame addReminderFrame;
     private ReminderManagerFrame reminderManagerFrame;
@@ -37,34 +39,30 @@ public class SystemTrayManager {
 
     private TrayIcon trayIcon;
 
+    private Image daySprite = null;
+    private SpriteSheet calendarDay;
+    private Calendar cal = Calendar.getInstance();
+    private int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
+
     public SystemTrayManager(BackgroundDaemon d, 
             AddReminderFrame arf, ReminderManagerFrame rmf) {
         daemon = d;
         this.addReminderFrame = arf;
         this.reminderManagerFrame = rmf;
         SystemTray systemTray = SystemTray.getSystemTray();
-        //TrayIcon icon2 = null;
         BufferedImageLoader loader = new BufferedImageLoader();
 
-        Calendar cal = Calendar.getInstance();
-        int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
-        Image daySprite = null;
-        try {
+        try 
+        {
             calendarSprite = loader.loadImage("Sprites/CalendarSprites.png");
-            SpriteSheet calendarDay = new SpriteSheet(calendarSprite);
+            calendarDay = new SpriteSheet(calendarSprite);
             daySprite = calendarDay.grabImage(dayNumber);
-
-            //Image alertNotify = calendarDay.grabImage(32);
-            //icon2 = new TrayIcon(alertNotify);
-
-            /*
-            notification = true;
-            if (notification)
-            {
-                Image alertNotify = calendarDay.grabImage(32);
-            }
-            */
-        } catch (IOException e) {
+            
+           
+           
+        } 
+        catch (IOException e) 
+        {
             System.out.println("Error loading tray icon");
             return;
         }
@@ -73,12 +71,7 @@ public class SystemTrayManager {
         
         PopupMenu popupMenu = new PopupMenu();
 
-        
 
-
-        //convert menuitem to menu and menuitem is a submenu
-        //Note for myself (Joon)
-        
         // Calendar C
         MenuItem option = new MenuItem("Calendar...");
         //option.addActionListener(this::addReminder);
@@ -195,21 +188,37 @@ public class SystemTrayManager {
         popupMenu.add(exitOption);
 
         trayIcon.setPopupMenu(popupMenu);
-        try {
-            //systemTray.add(icon2);
+        try 
+        {
             systemTray.add(trayIcon);
         } catch (AWTException e) {
             System.out.println("Unable to create tray icon!");
         }
     }
 
-    public void showNotification(String title, String message) {
-        // to-do: figure out how to change the icon associated with this notification
+    public void showNotification(String title, String message) 
+    {
+
+        BufferedImage notification = calendarDay.grabImage(32);
+
+        notification = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+        Graphics combined = notification.getGraphics();
+        combined.drawImage(daySprite, 0, 0, null);
+        combined.drawImage(notification, 0, 0, null);
+
+        daySprite = notification;
+        trayIcon.setImage(daySprite);
+
         trayIcon.displayMessage(title, message, MessageType.INFO);
+        
     }
 
-    public void dayChanged() {
-        // to-do: update icon to show new date
+    public void dayChanged() 
+    {
+        cal = Calendar.getInstance();
+        dayNumber = cal.get(Calendar.DAY_OF_MONTH);
+        daySprite = calendarDay.grabImage(dayNumber);
+        trayIcon.setImage(daySprite);
     }
 
     private void addReminder(ActionEvent e) {
@@ -232,7 +241,8 @@ public class SystemTrayManager {
         reminderManagerFrame.appear();;
     }
 
-    private void exit(ActionEvent e) {
+    private void exit(ActionEvent e) 
+    {
         // Check to see if any windows are open first?
         daemon.exit();
     }
