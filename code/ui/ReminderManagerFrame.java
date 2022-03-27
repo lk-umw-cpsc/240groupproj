@@ -2,7 +2,6 @@ package code.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 
@@ -11,12 +10,11 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.Scrollable;
 
 import code.BackgroundDaemon;
 import code.schedule.ScheduledReminder;
 
-public class ReminderManagerFrame extends JFrame implements Scrollable {
+public class ReminderManagerFrame extends JFrame {
 
     private BackgroundDaemon daemon;
 
@@ -76,33 +74,4 @@ public class ReminderManagerFrame extends JFrame implements Scrollable {
         daemon.cancel(r);
     }
 
-    @Override
-    public Dimension getPreferredScrollableViewportSize() {
-        return reminderContainer.getSize();
-    }
-
-    @Override
-    public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public boolean getScrollableTracksViewportWidth() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean getScrollableTracksViewportHeight() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    
 }

@@ -169,6 +169,34 @@ public class AddReminderFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    public void appear(LocalDateTime dt) {
+        badDateLayer.setVisible(false);
+        badNameLayer.setVisible(false);
+        badTimeLayer.setVisible(false);
+        badRepeatLayer.setVisible(false);
+        timeIsInThePastLayer.setVisible(false);
+
+        nameField.setText("");
+        descriptionField.setText("");
+        dateField.setText(dt.getMonthValue() + "/" + dt.getDayOfMonth() + "/" + dt.getYear());
+        int hour = dt.getHour();
+        if (hour < 12) {
+            if (hour == 0) {
+                hour = 12;
+            }
+            timeField.setText(String.format("%d:%02dAM", hour, dt.getMinute()));
+        } else {
+            if (hour > 12) {
+                hour = hour % 12;
+            }
+            timeField.setText(String.format("%d:%02dPM", hour, dt.getMinute()));
+        }
+        
+        nameField.requestFocus();
+        pack();
+        setVisible(true);
+    }
+
     public void appear(int daysBetweenRepeats) {
         LocalDateTime now = LocalDateTime.now().plusMinutes(1);
 
