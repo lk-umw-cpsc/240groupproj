@@ -46,6 +46,10 @@ public class ReminderManagerFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    public void editReminder(ScheduledReminder r) {
+        daemon.getReminderFrame().appear(r);
+    }
+
     public void appear() {
         updateList();
         setVisible(true);
@@ -57,7 +61,7 @@ public class ReminderManagerFrame extends JFrame {
         l.lock();
         List<ScheduledReminder> reminders = daemon.getReminders();
         if (reminders.isEmpty()) {
-
+            
         } else {
             for (ScheduledReminder r : reminders) {
                 reminderContainer.add(new ReminderUIEntry(this, r).getContainer());

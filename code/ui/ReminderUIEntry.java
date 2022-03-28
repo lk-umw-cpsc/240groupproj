@@ -55,8 +55,10 @@ public class ReminderUIEntry implements MouseListener {
 
     private ScheduledReminder reminder;
     private ReminderManagerFrame parent;
-    // private Box container;
     private JPanel container;
+
+    private JLabel xButton;
+    private JLabel editButton;
 
     public ReminderUIEntry(ReminderManagerFrame parent, ScheduledReminder r) {
         this.parent = parent;
@@ -67,7 +69,7 @@ public class ReminderUIEntry implements MouseListener {
         container.add(Box.createHorizontalStrut(8));
         Box xButtonBox = Box.createVerticalBox();
 
-        JLabel xButton = new JLabel(xIcon);
+        xButton = new JLabel(xIcon);
         xButton.addMouseListener(this);
         xButtonBox.add(Box.createVerticalStrut(24));
         xButtonBox.add(xButton);
@@ -80,7 +82,8 @@ public class ReminderUIEntry implements MouseListener {
 
         Box editButtonBox = Box.createVerticalBox();
         editButtonBox.add(Box.createVerticalGlue());
-        JLabel editButton = new JLabel(editIcon);
+        editButton = new JLabel(editIcon);
+        editButton.addMouseListener(this);
         editButtonBox.add(editButton);
         editButtonBox.add(Box.createVerticalGlue());
 
@@ -150,6 +153,10 @@ public class ReminderUIEntry implements MouseListener {
         parent.cancelReminder(reminder);
     }
 
+    private void edit() {
+        parent.editReminder(reminder);
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         
@@ -157,7 +164,11 @@ public class ReminderUIEntry implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        cancel();
+        if (e.getSource() == xButton) {
+            cancel();
+        } else if (e.getSource() == editButton) {
+            edit();
+        }
     }
 
     @Override

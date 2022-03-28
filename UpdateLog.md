@@ -25,6 +25,10 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 3/27/2022
+Person: Lauren
+Log: Started MonthViewFrame
+
 Date: 3/26/2022
 Person: Lauren
 Log: Finishing the day off with...

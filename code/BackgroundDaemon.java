@@ -86,6 +86,14 @@ public class BackgroundDaemon implements Runnable {
         readySignal.release();
     }
 
+    public AddReminderFrame getReminderFrame() {
+        return addReminderFrame;
+    }
+
+    public ReminderManagerFrame getReminderManagerFrame() {
+        return reminderManagerFrame;
+    }
+
     /**
      * Obtains this BackgroundDaemon's Lock
      * 

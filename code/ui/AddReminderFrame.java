@@ -3,7 +3,10 @@ package code.ui;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.time.LocalDateTime;
+import java.util.concurrent.locks.Lock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,7 +20,7 @@ import javax.swing.JTextField;
 import code.BackgroundDaemon;
 import code.schedule.ScheduledReminder;
 
-public class AddReminderFrame extends JFrame {
+public class AddReminderFrame extends JFrame implements WindowListener {
 
     private static final Pattern datePattern = Pattern.compile("^([1-9]|1[0-2])/([1-9]|[12]\\d|3[01])/(\\d\\d\\d\\d)$");
     private static final Pattern timePattern = Pattern.compile("^(1[012]|[1-9]):([0-5]\\d)(AM|am|PM|pm)$");
@@ -32,6 +35,7 @@ public class AddReminderFrame extends JFrame {
     private JCheckBox repeatCheckbox;
     private JTextField repeatField;
     private Box repeatLayer;
+    private JButton addSaveButton;
 
     private Box badNameLayer;
     private Box badDateLayer;
@@ -40,6 +44,9 @@ public class AddReminderFrame extends JFrame {
     private Box badRepeatLayer;
 
     private BackgroundDaemon daemon;
+
+    private boolean editMode;
+    private ScheduledReminder editTarget;
         
     public AddReminderFrame(BackgroundDaemon daemon) {
         super("Create new reminder");
@@ -48,6 +55,7 @@ public class AddReminderFrame extends JFrame {
     }
     
     public void build() {
+        addWindowListener(this);
         Box horizontallyPaddedPanel = Box.createHorizontalBox();
         Box layerPanel = Box.createVerticalBox();
 
@@ -154,11 +162,11 @@ public class AddReminderFrame extends JFrame {
         layerPanel.add(badRepeatLayer);
 
         layer = Box.createHorizontalBox();
-            JButton addButton = new JButton("Add Reminder");
-            addButton.addActionListener(this::addReminderPressed);
-            Dimension d = addButton.getPreferredSize();
-            addButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, d.height));
-        layer.add(addButton);
+            addSaveButton = new JButton("Add Reminder");
+            addSaveButton.addActionListener(this::addReminderPressed);
+            Dimension d = addSaveButton.getPreferredSize();
+            addSaveButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, d.height));
+        layer.add(addSaveButton);
         layerPanel.add(layer);
 
         layerPanel.add(Box.createVerticalStrut(PADDING));
@@ -169,7 +177,53 @@ public class AddReminderFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    public void appear(ScheduledReminder r) {
+        editTarget = r;
+        Lock lock = daemon.getLock();
+        lock.lock();
+        daemon.getReminders().remove(r);
+        lock.unlock();
+        editMode = true;
+        badDateLayer.setVisible(false);
+        badNameLayer.setVisible(false);
+        badTimeLayer.setVisible(false);
+        badRepeatLayer.setVisible(false);
+        timeIsInThePastLayer.setVisible(false);
+
+        nameField.setText(r.getName());
+        descriptionField.setText(r.getDescription());
+        LocalDateTime dt = r.getWhenDue();
+        dateField.setText(dt.getMonthValue() + "/" + dt.getDayOfMonth() + "/" + dt.getYear());
+        int hour = dt.getHour();
+        if (hour < 12) {
+            if (hour == 0) {
+                hour = 12;
+            }
+            timeField.setText(String.format("%d:%02dAM", hour, dt.getMinute()));
+        } else {
+            if (hour > 12) {
+                hour = hour % 12;
+            }
+            timeField.setText(String.format("%d:%02dPM", hour, dt.getMinute()));
+        }
+        if (r.repeats()) {
+            repeatField.setText(Integer.toString(r.getDaysBetweenRepetitions()));
+            repeatCheckbox.setSelected(true);
+            repeatLayer.setVisible(true);
+        } else {
+            repeatField.setText("");
+            repeatCheckbox.setSelected(false);
+            repeatLayer.setVisible(false);
+        }
+        daemon.getReminderManagerFrame().setEnabled(false);
+        addSaveButton.setText("Add Reminder");
+        nameField.requestFocus();
+        pack();
+        setVisible(true);
+    }
+
     public void appear(LocalDateTime dt) {
+        editMode = false;
         badDateLayer.setVisible(false);
         badNameLayer.setVisible(false);
         badTimeLayer.setVisible(false);
@@ -192,12 +246,14 @@ public class AddReminderFrame extends JFrame {
             timeField.setText(String.format("%d:%02dPM", hour, dt.getMinute()));
         }
         
+        addSaveButton.setText("Add Reminder");
         nameField.requestFocus();
         pack();
         setVisible(true);
     }
 
     public void appear(int daysBetweenRepeats) {
+        editMode = false;
         LocalDateTime now = LocalDateTime.now().plusMinutes(1);
 
         if (daysBetweenRepeats > 0) {
@@ -220,6 +276,7 @@ public class AddReminderFrame extends JFrame {
         dateField.setText(now.getMonthValue() + "/" + now.getDayOfMonth() + "/" + now.getYear());
         timeField.setText("");
 
+        addSaveButton.setText("Add Reminder");
         nameField.requestFocus();
         pack();
         setVisible(true);
@@ -330,7 +387,58 @@ public class AddReminderFrame extends JFrame {
         ScheduledReminder r = new ScheduledReminder(name, description, scheduledDateTime, days);
 
         daemon.add(r);
+        if (editMode) {
+            daemon.getReminderManagerFrame().setEnabled(true);
+            editMode = false;
+            editTarget = null;
+        }
         setVisible(false);
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        if (editMode) {
+            daemon.getReminderManagerFrame().setEnabled(true);
+            daemon.add(editTarget);
+            editMode = false;
+            editTarget = null;
+        }
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
     }
 
 }
