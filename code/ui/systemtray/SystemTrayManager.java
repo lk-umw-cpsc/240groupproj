@@ -233,7 +233,17 @@ public class SystemTrayManager {
     }
 
     private void addEveningReminder(ActionEvent e) {
-        // ???
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime target;
+        // if after 7PM...
+        if (now.getHour() >= 19) {
+            // add an hour to the current time to get the target time
+            target = now.plusHours(1);
+        } else {
+            // target time gets 8PM
+            target = now.truncatedTo(ChronoUnit.DAYS).plusHours(20);
+        }
+        addReminderFrame.appear(target);
     }
 
     private void addTomorrowReminder(ActionEvent e) {
