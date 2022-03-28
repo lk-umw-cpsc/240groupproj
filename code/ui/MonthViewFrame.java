@@ -27,6 +27,8 @@ public class MonthViewFrame extends JFrame {
     public MonthViewFrame(BackgroundDaemon d) {
         super("Month View"); // get a better name for this
         daemon = d;
+
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         JPanel weekdayGridPanel = new JPanel();
@@ -56,6 +58,7 @@ public class MonthViewFrame extends JFrame {
 
         add(calendarGridPanel);
         pack();
+        setLocationRelativeTo(null);
     }
 
     public void appear(LocalDateTime dt) {
@@ -64,6 +67,7 @@ public class MonthViewFrame extends JFrame {
 
             }
         }
+        setVisible(true);
     }
 
     public void appear() {

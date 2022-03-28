@@ -18,6 +18,7 @@ import java.util.Calendar;
 
 import code.BackgroundDaemon;
 import code.ui.AddReminderFrame;
+import code.ui.MonthViewFrame;
 import code.ui.ReminderManagerFrame;
 
 /**
@@ -33,6 +34,7 @@ public class SystemTrayManager {
 
     private AddReminderFrame addReminderFrame;
     private ReminderManagerFrame reminderManagerFrame;
+    private MonthViewFrame monthViewFrame;
 
     private BackgroundDaemon daemon;
 
@@ -44,10 +46,11 @@ public class SystemTrayManager {
     private int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
 
     public SystemTrayManager(BackgroundDaemon d, 
-            AddReminderFrame arf, ReminderManagerFrame rmf) {
+            AddReminderFrame arf, ReminderManagerFrame rmf, MonthViewFrame mvf) {
         daemon = d;
         this.addReminderFrame = arf;
         this.reminderManagerFrame = rmf;
+        this.monthViewFrame = mvf;
         SystemTray systemTray = SystemTray.getSystemTray();
         BufferedImageLoader loader = new BufferedImageLoader();
 
@@ -72,8 +75,8 @@ public class SystemTrayManager {
 
 
         // Calendar C
-        MenuItem option = new MenuItem("Calendar...");
-        //option.addActionListener(this::addReminder);
+        MenuItem option = new MenuItem("Show Calendar...");
+        option.addActionListener(this::showCalendar);
         popupMenu.add(option);
 
         // Events E
@@ -193,8 +196,7 @@ public class SystemTrayManager {
         }
     }
 
-    public void showNotification(String title, String message) 
-    {
+    public void showNotification(String title, String message) {
 
         BufferedImage notification = calendarDay.grabImage(32);
 
@@ -210,12 +212,15 @@ public class SystemTrayManager {
         
     }
 
-    public void dayChanged() 
-    {
+    public void dayChanged() {
         cal = Calendar.getInstance();
         dayNumber = cal.get(Calendar.DAY_OF_MONTH);
         daySprite = calendarDay.grabImage(dayNumber);
         trayIcon.setImage(daySprite);
+    }
+
+    private void showCalendar(ActionEvent e) {
+        monthViewFrame.appear();
     }
 
     private void addReminder(ActionEvent e) {

@@ -80,7 +80,7 @@ public class BackgroundDaemon implements Runnable {
 
         reminderManagerFrame = new ReminderManagerFrame(this);
         // addEventFrame = new AddEventFrame(this);
-        trayManager = new SystemTrayManager(this, addReminderFrame, reminderManagerFrame);
+        trayManager = new SystemTrayManager(this, addReminderFrame, reminderManagerFrame, monthViewFrame);
         
         // Signal to run() that it can start
         readySignal.release();
@@ -174,8 +174,6 @@ public class BackgroundDaemon implements Runnable {
         try {
             readySignal.acquire();
         } catch (InterruptedException e1) {}
-
-        monthViewFrame.setVisible(true);
 
         thread = Thread.currentThread();
         running = true;
