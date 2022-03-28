@@ -28,6 +28,7 @@ Paste over new entry here.
 Date: 3/27/2022
 Person: Lauren
 Log: Started MonthViewFrame
+Edit button in reminder manager frame completed
 
 Date: 3/26/2022
 Person: Lauren
