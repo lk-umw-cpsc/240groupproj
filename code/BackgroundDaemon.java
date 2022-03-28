@@ -14,6 +14,7 @@ import code.schedule.ScheduleIO;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
 import code.ui.AddReminderFrame;
+import code.ui.MonthViewFrame;
 import code.ui.ReminderManagerFrame;
 import code.ui.systemtray.SystemTrayManager;
 
@@ -46,6 +47,7 @@ public class BackgroundDaemon implements Runnable {
 
     private AddReminderFrame addReminderFrame;
     private ReminderManagerFrame reminderManagerFrame;
+    private MonthViewFrame monthViewFrame;
 
     private SystemTrayManager trayManager;
 
@@ -70,11 +72,12 @@ public class BackgroundDaemon implements Runnable {
     private void buildGUI () {
         // dayViewFrame = new DayViewFrame(this);
         // weekViewFrame = new WeekViewFrame(this);
-        // monthViewFrame = new MonthViewFrame(this);
+        monthViewFrame = new MonthViewFrame(this);
         
         addReminderFrame = new AddReminderFrame(this);
 
         addReminderFrame.build();
+
         reminderManagerFrame = new ReminderManagerFrame(this);
         // addEventFrame = new AddEventFrame(this);
         trayManager = new SystemTrayManager(this, addReminderFrame, reminderManagerFrame);
@@ -171,6 +174,8 @@ public class BackgroundDaemon implements Runnable {
         try {
             readySignal.acquire();
         } catch (InterruptedException e1) {}
+
+        monthViewFrame.setVisible(true);
 
         thread = Thread.currentThread();
         running = true;
