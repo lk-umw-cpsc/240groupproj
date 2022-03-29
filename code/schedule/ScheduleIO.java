@@ -31,7 +31,7 @@ public class ScheduleIO
 
                 // Moved this here to match program design. Saving of Medical info should be done in
                 // saveSchedule once implemented.
-                MedicalIO.buildMedical();
+                //MedicalIO.buildMedical();
         }
 
         public static void saveSchedule(List<ScheduledReminder> reminders, List<ScheduledEvent> events)

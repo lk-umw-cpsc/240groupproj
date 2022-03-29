@@ -38,7 +38,7 @@ public class MedicalIO
 
     }
 
-    public static void buildMedical()
+    public void buildMedical()
     {
         try {
             // TO-DO: handle exceptions within each of these method calls
