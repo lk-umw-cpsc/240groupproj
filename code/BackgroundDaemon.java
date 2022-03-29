@@ -201,7 +201,9 @@ public class BackgroundDaemon implements Runnable {
                     trayManager.showNotification(r.getName(), r.getDescription());
                     System.out.println(r.getName() + " expired!");
                     if (r.repeats()) {
-                        r.repeat();
+                        do {
+                            r.repeat();
+                        } while (r.isDue());
                         System.out.println("Reminder will repeat at " + r.getWhenDue());
                     } else {
                         reminders.remove(i);
