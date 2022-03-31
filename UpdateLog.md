@@ -25,6 +25,10 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 3/30/2022
+Person: Lauren
+Log: Further progress on calender view
+
 Date: 3/28/2022
 Person: Joon
 Log: Added DIADesigns folder
