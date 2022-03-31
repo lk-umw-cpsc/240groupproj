@@ -45,7 +45,7 @@ public class MonthViewFrame extends JFrame {
 
         Box monthLabelContainer = Box.createHorizontalBox();
         monthLabel = new JLabel("placeholder");
-        monthLabel.setFont(FontManager.getInstance().getBoldFont().deriveFont(24.0f));
+        monthLabel.setFont(FontManager.getInstance().getBoldFont().deriveFont(32.0f));
         monthLabel.setBorder(new EmptyBorder(8, 0, 8, 0));
         monthLabelContainer.add(Box.createHorizontalGlue());
         monthLabelContainer.add(monthLabel);
@@ -85,7 +85,7 @@ public class MonthViewFrame extends JFrame {
         LocalDateTime today = LocalDateTime.now();
 
         int currentMonth = today.getMonthValue();
-        monthLabel.setText(MONTHS[currentMonth]);
+        monthLabel.setText(MONTHS[currentMonth] + " " + today.getYear());
 
         LocalDateTime firstOfTheMonth;
         // back up to the first day of the month
