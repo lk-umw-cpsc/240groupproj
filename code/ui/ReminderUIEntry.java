@@ -21,27 +21,9 @@ import javax.swing.border.MatteBorder;
 
 import code.schedule.DateTimeFormatter;
 import code.schedule.ScheduledReminder;
+import code.ui.fonts.FontManager;
 
 public class ReminderUIEntry implements MouseListener {
-
-    private static Font FONT_LIGHT;
-    private static Font FONT_REGULAR;
-    private static Font FONT_BOLD;
-
-    static {
-        try {
-            /*GraphicsEnvironment ge = 
-                GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Roboto-Light.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Roboto-Light.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Roboto-Light.ttf")));*/
-            FONT_LIGHT = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Regular.ttf")).deriveFont(16.0f);
-            FONT_REGULAR = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Medium.ttf")).deriveFont(16.0f);
-            FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Bold.ttf")).deriveFont(16.0f);
-       } catch (IOException | FontFormatException e) {
-            //Handle exception
-       }
-    }
 
     private static ImageIcon xIcon;
     private static ImageIcon editIcon;
@@ -96,12 +78,18 @@ public class ReminderUIEntry implements MouseListener {
         JLabel nameLabel = new JLabel(r.getName());
         nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD));
         infoBox.add(nameLabel);
-        nameLabel.setFont(FONT_BOLD);
+
+        FontManager fonts = FontManager.getInstance();
+        Font regular = fonts.getRegularFont();
+        Font light = fonts.getLightFont();
+        Font bold = fonts.getBoldFont();
+
+        nameLabel.setFont(bold);
         String desc = r.getDescription();
         if (!desc.isBlank()) {
             infoBox.add(Box.createVerticalStrut(8));
             JLabel descLabel = new JLabel(desc);
-            descLabel.setFont(FONT_LIGHT);
+            descLabel.setFont(light);
             infoBox.add(descLabel);
         }
 
@@ -114,7 +102,7 @@ public class ReminderUIEntry implements MouseListener {
         Box layer = Box.createHorizontalBox();
         layer.add(Box.createHorizontalGlue());
         JLabel dayLabel = new JLabel(DateTimeFormatter.format(r.getWhenDue()));
-        dayLabel.setFont(FONT_REGULAR);
+        dayLabel.setFont(regular);
         layer.add(dayLabel);
         timeDateBox.add(layer);
         if (r.repeats()) {
@@ -127,7 +115,7 @@ public class ReminderUIEntry implements MouseListener {
             layer = Box.createHorizontalBox();
             layer.add(Box.createHorizontalGlue());
             JLabel repeatLabel = new JLabel("Repeats every" + dayOrDays);
-            repeatLabel.setFont(FONT_LIGHT);
+            repeatLabel.setFont(light);
             layer.add(repeatLabel);
             timeDateBox.add(layer);
         }
