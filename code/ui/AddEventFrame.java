@@ -16,8 +16,6 @@ public class AddEventFrame extends JFrame {
 
     private BackgroundDaemon daemon;
 
-    private static final int PADDING = 8;
-
     private JTextField nameField;
     
     public AddEventFrame(BackgroundDaemon daemon) {
@@ -27,7 +25,7 @@ public class AddEventFrame extends JFrame {
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
         Box rowContainer = Box.createVerticalBox();
-        rowContainer.setBorder(new EmptyBorder(PADDING, PADDING, PADDING, PADDING));
+        rowContainer.setBorder(new EmptyBorder(UIConstants.PADDING, UIConstants.PADDING, UIConstants.PADDING, UIConstants.PADDING));
         add(rowContainer);
         Box row;
 

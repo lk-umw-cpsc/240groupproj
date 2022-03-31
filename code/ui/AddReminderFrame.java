@@ -27,8 +27,6 @@ public class AddReminderFrame extends JFrame implements WindowListener {
     private static final Pattern datePattern = Pattern.compile("^([1-9]|1[0-2])/([1-9]|[12]\\d|3[01])/(\\d\\d\\d\\d)$");
     private static final Pattern timePattern = Pattern.compile("^(1[012]|[1-9]):([0-5]\\d)(AM|am|PM|pm)$");
 
-    private static final int PADDING = 16;
-
     private JTextField nameField;
     private JTextField descriptionField;
     private JTextField dateField;
@@ -68,11 +66,11 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         Box horizontallyPaddedPanel = Box.createHorizontalBox();
         Box layerPanel = Box.createVerticalBox();
 
-        horizontallyPaddedPanel.add(Box.createHorizontalStrut(PADDING));
+        horizontallyPaddedPanel.add(Box.createHorizontalStrut(UIConstants.PADDING));
         horizontallyPaddedPanel.add(layerPanel);
-        horizontallyPaddedPanel.add(Box.createHorizontalStrut(PADDING));
+        horizontallyPaddedPanel.add(Box.createHorizontalStrut(UIConstants.PADDING));
         
-        layerPanel.add(Box.createVerticalStrut(PADDING));
+        layerPanel.add(Box.createVerticalStrut(UIConstants.PADDING));
         // Create another box whose children are displayed left to right
         Box layer = Box.createHorizontalBox();
             label = new JLabel("Name:");
@@ -201,7 +199,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         layer.add(addSaveButton);
         layerPanel.add(layer);
 
-        layerPanel.add(Box.createVerticalStrut(PADDING));
+        layerPanel.add(Box.createVerticalStrut(UIConstants.PADDING));
 
         add(horizontallyPaddedPanel);
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -283,6 +281,9 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             }
             timeField.setText(String.format("%d:%02dPM", hour, dt.getMinute()));
         }
+        repeatField.setText("");
+        repeatCheckbox.setSelected(false);
+        repeatLayer.setVisible(false);
         
         addSaveButton.setText("Add Reminder");
         nameField.requestFocus();
