@@ -25,6 +25,13 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 3/31/2022
+Person: Lauren
+Log: Placed finishing touches on CalendarViewFrame
+Started AddEventFrame & connected it to system tray
+Reskinned AddReminderFrame to use app fonts (it's pretty now!)
+Fixed a bug with AddReminderFrame
+
 Date: 3/30/2022
 Person: Lauren
 Log: Further progress on calender view
