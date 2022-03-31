@@ -1,6 +1,7 @@
 package code.ui;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
@@ -19,6 +20,7 @@ import javax.swing.JTextField;
 
 import code.BackgroundDaemon;
 import code.schedule.ScheduledReminder;
+import code.ui.fonts.FontManager;
 
 public class AddReminderFrame extends JFrame implements WindowListener {
 
@@ -56,6 +58,13 @@ public class AddReminderFrame extends JFrame implements WindowListener {
     
     public void build() {
         addWindowListener(this);
+
+        FontManager fm = FontManager.getInstance();
+        Font regularFont = fm.getRegularFont();
+        Font lightFont = fm.getLightFont();
+
+        JLabel label;
+
         Box horizontallyPaddedPanel = Box.createHorizontalBox();
         Box layerPanel = Box.createVerticalBox();
 
@@ -66,16 +75,19 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         layerPanel.add(Box.createVerticalStrut(PADDING));
         // Create another box whose children are displayed left to right
         Box layer = Box.createHorizontalBox();
-
-            layer.add(new JLabel("Name:"));
+            label = new JLabel("Name:");
+            label.setFont(regularFont);
+            layer.add(label);
             // Add horizontal glue after the label, left-aligning the label
             layer.add(Box.createHorizontalGlue());
         layerPanel.add(layer);
             nameField = new JTextField(24);
+            nameField.setFont(lightFont);
         layerPanel.add(nameField);
 
         badNameLayer = Box.createHorizontalBox();
             JLabel errorLabel = new JLabel("Please enter a name");
+            errorLabel.setFont(regularFont);
             errorLabel.setForeground(Color.RED);
             badNameLayer.add(errorLabel);
             badNameLayer.add(Box.createHorizontalGlue());
@@ -83,20 +95,26 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         layerPanel.add(badNameLayer);
 
         layer = Box.createHorizontalBox();
-            layer.add(new JLabel("Description (optional):"));
+            label = new JLabel("Description (optional):");
+            label.setFont(regularFont);
+            layer.add(label);
             layer.add(Box.createHorizontalGlue());
         layerPanel.add(layer);
 
             descriptionField = new JTextField(24);
+            descriptionField.setFont(lightFont);
         layerPanel.add(descriptionField);
 
         layer = Box.createHorizontalBox();
-            layer.add(new JLabel("Date:"));
+            label = new JLabel("Date:");
+            label.setFont(regularFont);
+            layer.add(label);
             layer.add(Box.createHorizontalGlue());
         layerPanel.add(layer);
 
         layer = Box.createHorizontalBox();
             dateField = new JTextField(24);
+            dateField.setFont(lightFont);
             layer.add(dateField);
 
             JButton calendarButton = new JButton("...");
@@ -106,6 +124,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
 
         badDateLayer = Box.createHorizontalBox();
             errorLabel = new JLabel("Please enter a valid date");
+            errorLabel.setFont(regularFont);
             errorLabel.setForeground(Color.RED);
             badDateLayer.add(errorLabel);
             badDateLayer.add(Box.createHorizontalGlue());
@@ -113,15 +132,19 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         layerPanel.add(badDateLayer);
 
         layer = Box.createHorizontalBox();
-            layer.add(new JLabel("Time (optional):"));
+            label = new JLabel("Time (optional):");
+            label.setFont(regularFont);
+            layer.add(label);
             layer.add(Box.createHorizontalGlue());
         layerPanel.add(layer);
 
             timeField = new JTextField(24);
+            timeField.setFont(lightFont);
         layerPanel.add(timeField);
 
         badTimeLayer = Box.createHorizontalBox();
             errorLabel = new JLabel("Please enter a valid time (e.g. 6:00AM)");
+            errorLabel.setFont(regularFont);
             errorLabel.setForeground(Color.RED);
             badTimeLayer.add(errorLabel);
             badTimeLayer.add(Box.createHorizontalGlue());
@@ -130,6 +153,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
 
         timeIsInThePastLayer = Box.createHorizontalBox();
             errorLabel = new JLabel("Please enter a future date & time");
+            errorLabel.setFont(regularFont);
             errorLabel.setForeground(Color.RED);
             timeIsInThePastLayer.add(errorLabel);
             timeIsInThePastLayer.add(Box.createHorizontalGlue());
@@ -138,23 +162,30 @@ public class AddReminderFrame extends JFrame implements WindowListener {
 
         layer = Box.createHorizontalBox();
             repeatCheckbox = new JCheckBox("Repeat");
+            repeatCheckbox.setFont(regularFont);
             repeatCheckbox.addActionListener(this::repeatCheckboxChanged);
             layer.add(repeatCheckbox);
             layer.add(Box.createHorizontalGlue());
         layerPanel.add(layer);
 
         repeatLayer = Box.createHorizontalBox();
-            repeatLayer.add(new JLabel("Every "));
+            label = new JLabel("Every ");
+            label.setFont(regularFont);
+            repeatLayer.add(label);
             repeatField = new JTextField(2);
+            repeatField.setFont(lightFont);
             repeatField.setMaximumSize(repeatField.getPreferredSize());
             repeatLayer.add(repeatField);
-            repeatLayer.add(new JLabel(" days"));
+            label = new JLabel(" days");
+            label.setFont(regularFont);
+            repeatLayer.add(label);
             repeatLayer.add(Box.createHorizontalGlue());
         repeatLayer.setVisible(false);
         layerPanel.add(repeatLayer);
 
         badRepeatLayer = Box.createHorizontalBox();
             errorLabel = new JLabel("Please enter a positive number");
+            errorLabel.setFont(regularFont);
             errorLabel.setForeground(Color.RED);
             badRepeatLayer.add(errorLabel);
             badRepeatLayer.add(Box.createHorizontalGlue());
@@ -163,6 +194,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
 
         layer = Box.createHorizontalBox();
             addSaveButton = new JButton("Add Reminder");
+            addSaveButton.setFont(regularFont);
             addSaveButton.addActionListener(this::addReminderPressed);
             Dimension d = addSaveButton.getPreferredSize();
             addSaveButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, d.height));
@@ -178,6 +210,9 @@ public class AddReminderFrame extends JFrame implements WindowListener {
     }
 
     public void appear(ScheduledReminder r) {
+        if (editMode) {
+            cancelEditMode();
+        }
         editTarget = r;
         Lock lock = daemon.getLock();
         lock.lock();
@@ -216,14 +251,17 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             repeatLayer.setVisible(false);
         }
         daemon.getReminderManagerFrame().setEnabled(false);
-        addSaveButton.setText("Add Reminder");
+        addSaveButton.setText("Update Reminder");
         nameField.requestFocus();
         pack();
         setVisible(true);
     }
 
     public void appear(LocalDateTime dt) {
-        editMode = false;
+        if (editMode) {
+            cancelEditMode();
+        }
+
         badDateLayer.setVisible(false);
         badNameLayer.setVisible(false);
         badTimeLayer.setVisible(false);
@@ -253,7 +291,9 @@ public class AddReminderFrame extends JFrame implements WindowListener {
     }
 
     public void appear(int daysBetweenRepeats) {
-        editMode = false;
+        if (editMode) {
+            cancelEditMode();
+        }
         LocalDateTime now = LocalDateTime.now().plusMinutes(1);
 
         if (daysBetweenRepeats > 0) {
@@ -395,6 +435,13 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         setVisible(false);
     }
 
+    private void cancelEditMode() {
+        daemon.getReminderManagerFrame().setEnabled(true);
+        daemon.add(editTarget);
+        editMode = false;
+        editTarget = null;
+    }
+
     @Override
     public void windowOpened(WindowEvent e) {
         // TODO Auto-generated method stub
@@ -404,10 +451,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
         if (editMode) {
-            daemon.getReminderManagerFrame().setEnabled(true);
-            daemon.add(editTarget);
-            editMode = false;
-            editTarget = null;
+            cancelEditMode();
         }
     }
 
