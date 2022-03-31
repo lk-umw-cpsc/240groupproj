@@ -66,7 +66,7 @@ public class DayWidget extends JComponent {
         g.setFont(DAY_FONT);
         g.drawString(dayAsString, 6, 18);
 
-        if (today) {
+        if (today || day == 1) {
             g.setFont(EVENT_FONT);
             drawEvent(g, "8a Pretend this is an event", 0);
             drawEvent(g, "12p Another event", 1);
@@ -81,8 +81,12 @@ public class DayWidget extends JComponent {
         }
     }
 
-    private static final Color BG_COLOR_EVENT = new Color(173, 217, 22);
-    private static final Color FG_COLOR_EVENT = Color.BLACK;
+    private static final Color BG_COLOR_EVENT_TODAY = new Color(173, 217, 22);
+    private static final Color FG_COLOR_EVENT_TODAY = Color.BLACK;
+    private static final Color BG_COLOR_EVENT = new Color(209, 71, 82);
+    private static final Color FG_COLOR_EVENT = Color.WHITE;
+    private static final Color BG_COLOR_EVENT_OTHER_MONTH = new Color(237, 140, 148);
+    private static final Color FG_COLOR_EVENT_OTHER_MONTH = Color.WHITE;
     private static final Font EVENT_FONT = FontManager.getInstance().getRegularFont().deriveFont(12.0f);
     private FontMetrics eventFontMetrics;
 
@@ -101,7 +105,13 @@ public class DayWidget extends JComponent {
         
         // g.setColor(FG_COLOR_EVENT);
         // g.drawString(brief, 7, 37 + eventNumber * 18);
-        eventY += eventGap + drawStringInRectangle(g, EVENT_FONT, BG_COLOR_EVENT, FG_COLOR_EVENT, brief, 3, eventY, 3, 3);
+        if (today) {
+            eventY += eventGap + drawStringInRectangle(g, EVENT_FONT, BG_COLOR_EVENT_TODAY, FG_COLOR_EVENT_TODAY, brief, 3, eventY, 3, 3);
+        } else if (thisMonth) {
+            eventY += eventGap + drawStringInRectangle(g, EVENT_FONT, BG_COLOR_EVENT, FG_COLOR_EVENT, brief, 3, eventY, 3, 3);
+        } else {
+            eventY += eventGap + drawStringInRectangle(g, EVENT_FONT, BG_COLOR_EVENT_OTHER_MONTH, FG_COLOR_EVENT_OTHER_MONTH, brief, 3, eventY, 3, 3);
+        }
     }
 
     public void updateInfo(int day, boolean isThisMonth, boolean isToday) {

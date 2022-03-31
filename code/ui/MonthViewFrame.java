@@ -1,5 +1,6 @@
 package code.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -34,6 +35,9 @@ public class MonthViewFrame extends JFrame {
     private DayWidget[] calendarWidgets = new DayWidget[35];
     private JLabel monthLabel;
 
+    private final Color CALENDAR_HEADING_BACKGROUND_COLOR = new Color(209, 71, 82);
+    private final Color CALENDAR_HEADING_FOREGROUND_COLOR = Color.WHITE;
+
     // private ?[][] calendarWidgets;
 
     public MonthViewFrame(BackgroundDaemon d) {
@@ -44,7 +48,10 @@ public class MonthViewFrame extends JFrame {
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         Box monthLabelContainer = Box.createHorizontalBox();
+        monthLabelContainer.setOpaque(true);
+        monthLabelContainer.setBackground(CALENDAR_HEADING_BACKGROUND_COLOR);
         monthLabel = new JLabel("placeholder");
+        monthLabel.setForeground(CALENDAR_HEADING_FOREGROUND_COLOR);
         monthLabel.setFont(FontManager.getInstance().getBoldFont().deriveFont(32.0f));
         monthLabel.setBorder(new EmptyBorder(8, 0, 8, 0));
         monthLabelContainer.add(Box.createHorizontalGlue());
@@ -53,13 +60,17 @@ public class MonthViewFrame extends JFrame {
         add(monthLabelContainer);
 
         JPanel weekdayGridPanel = new JPanel();
+        weekdayGridPanel.setOpaque(true);
+        weekdayGridPanel.setBackground(CALENDAR_HEADING_BACKGROUND_COLOR);
         weekdayGridPanel.setLayout(new GridLayout(1, 7));
 
         Font fontDaysOfWeek = FontManager.getInstance().getRegularFont();
 
         for (int c = 0; c < 7; c++) {
             JPanel p = new JPanel();
+            p.setBackground(CALENDAR_HEADING_BACKGROUND_COLOR);
             JLabel l = new JLabel(DAYS_OF_THE_WEEK[c]);
+            l.setForeground(CALENDAR_HEADING_FOREGROUND_COLOR);
             l.setFont(fontDaysOfWeek);
             p.add(l);
             weekdayGridPanel.add(p);
