@@ -6,7 +6,9 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import javax.swing.JComponent;
@@ -35,11 +37,11 @@ public class DayWidget extends JComponent {
         setOpaque(true);
     }
 
-    public void updateInfo(int day, boolean isThisMonth, boolean isToday) {
+    public void updateInfo(int day, boolean isThisMonth, boolean isToday, List<ScheduledEvent> events) {
     // public void updateInfo(int day, boolean isThisMonth, boolean isToday, List<ScheduledEvent> events) {
         this.day = day;
         today = isToday;
-        // this.events = events;
+        this.events = events;
         dayAsString = Integer.toString(day);
         thisMonth = isThisMonth;
     }
@@ -68,7 +70,7 @@ public class DayWidget extends JComponent {
         }
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        initEvents(g);
+        initEventDrawing(g);
         if (today) {
             g.setColor(FG_COLOR_TODAY);
         } else if (thisMonth) {
@@ -79,10 +81,13 @@ public class DayWidget extends JComponent {
         g.setFont(DAY_FONT);
         g.drawString(dayAsString, 6, 18);
 
-        if (today || day == 1) {
-            g.setFont(EVENT_FONT);
-            drawEvent(g, "8a Pretend this is an event", 0);
-            drawEvent(g, "12p Another event", 1);
+        g.setFont(EVENT_FONT);
+        if (!events.isEmpty()) {
+            for (int i = 0, size = events.size(); i < size; i++) {
+                drawEvent(g, events.get(i).toBriefString(), i);
+            }
+            // drawEvent(g, "8a Pretend this is an event", 0);
+            // drawEvent(g, "12p Another event", 1);
         }
 
         g.setColor(COLOR_CELL_BORDER);
@@ -100,16 +105,17 @@ public class DayWidget extends JComponent {
     private static final Color FG_COLOR_EVENT = Color.WHITE;
     private static final Color BG_COLOR_EVENT_OTHER_MONTH = new Color(237, 140, 148);
     private static final Color FG_COLOR_EVENT_OTHER_MONTH = Color.WHITE;
-    private static final Font EVENT_FONT = FontManager.getInstance().getRegularFont().deriveFont(12.0f);
+    private static final Font EVENT_FONT = FontManager.getInstance().getRegularFont().deriveFont(14.0f);
     private FontMetrics eventFontMetrics;
 
     private int eventY;
     private final int eventYStart = 25;
     private final int eventGap = 4;
-    private void initEvents(Graphics g) {
+    private void initEventDrawing(Graphics g) {
         eventFontMetrics = g.getFontMetrics(EVENT_FONT);
         eventY = eventYStart;
     }
+
     private void drawEvent(Graphics g, String brief, int eventNumber) {
         // int width = eventFontMetrics.stringWidth(brief) + 8;
 
@@ -119,20 +125,20 @@ public class DayWidget extends JComponent {
         // g.setColor(FG_COLOR_EVENT);
         // g.drawString(brief, 7, 37 + eventNumber * 18);
         if (today) {
-            eventY += eventGap + drawStringInRectangle(g, EVENT_FONT, BG_COLOR_EVENT_TODAY, FG_COLOR_EVENT_TODAY, brief, 3, eventY, 3, 3);
+            eventY += eventGap + drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_TODAY, FG_COLOR_EVENT_TODAY, brief, 3, eventY, 3, 3);
         } else if (thisMonth) {
-            eventY += eventGap + drawStringInRectangle(g, EVENT_FONT, BG_COLOR_EVENT, FG_COLOR_EVENT, brief, 3, eventY, 3, 3);
+            eventY += eventGap + drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT, FG_COLOR_EVENT, brief, 3, eventY, 3, 3);
         } else {
-            eventY += eventGap + drawStringInRectangle(g, EVENT_FONT, BG_COLOR_EVENT_OTHER_MONTH, FG_COLOR_EVENT_OTHER_MONTH, brief, 3, eventY, 3, 3);
+            eventY += eventGap + drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_OTHER_MONTH, FG_COLOR_EVENT_OTHER_MONTH, brief, 3, eventY, 3, 3);
         }
     }
 
-    private static int drawStringInRectangle(Graphics g, Font f, Color bg, Color fg, String text, int x, int y, int padding, int borderRadius) {
-        FontMetrics fm = g.getFontMetrics(f);
-        int h = fm.getHeight() + (padding << 1);
-        int w = fm.stringWidth(text);
+    private static int drawStringInRectangle(Graphics g, FontMetrics fm, Color bg, Color fg, String text, int x, int y, int padding, int borderRadius) {
+        Rectangle2D r = fm.getStringBounds(text, g);
+        int h = (int)r.getHeight() + (padding << 1);
+        int w = (int)r.getWidth() + (padding << 1);
         g.setColor(bg);
-        g.fillRoundRect(x, y, w + (padding << 1), h, borderRadius, borderRadius);
+        g.fillRoundRect(x, y, w, h, borderRadius, borderRadius);
         g.setColor(fg);
         g.drawString(text, x + padding, y + padding + fm.getAscent());
         return h;

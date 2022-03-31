@@ -72,4 +72,21 @@ public class ScheduledEvent {
    public void setDuration(int i) {
        this.duration = i;
    }
+
+   public String toBriefString() {
+       int hour = startTime.getHour();
+       String brief;
+       if (hour >= 12) {
+           if (hour > 12) {
+               hour %= 12;
+           }
+           brief = hour + "p";
+       } else {
+           if (hour == 0) {
+               hour = 12;
+           }
+           brief = hour + "a";
+       }
+       return brief + " " + description;
+   }
 }
