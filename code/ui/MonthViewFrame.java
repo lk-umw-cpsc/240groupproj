@@ -98,33 +98,28 @@ public class MonthViewFrame extends JFrame {
     }
 
     public void appear(LocalDateTime dt) {
-        LocalDateTime today = LocalDateTime.now();
-        LocalDate todayDate = today.toLocalDate();
+        LocalDate today = LocalDate.now();
 
         int currentMonth = today.getMonthValue();
         monthLabel.setText(MONTHS[currentMonth] + " " + today.getYear());
-
-        LocalDateTime firstOfTheMonth;
+        LocalDate firstOfTheMonth = LocalDate.of(dt.getYear(), dt.getMonthValue(), 1);
         Lock lock = daemon.getLock();
         lock.lock();
         List<ScheduledEvent> events = daemon.getEvents();
         // back up to the first day of the month
-        for (firstOfTheMonth = dt; firstOfTheMonth.getDayOfMonth() > 1; firstOfTheMonth = firstOfTheMonth.minusDays(1));
+        // for (firstOfTheMonth = dt; firstOfTheMonth.getDayOfMonth() > 1; firstOfTheMonth = firstOfTheMonth.minusDays(1));
         // back up to the Sunday before the first day of the month (if it didn't fall on a Sunday)
-        LocalDateTime currentDay = firstOfTheMonth.minusDays(firstOfTheMonth.getDayOfWeek().getValue() % 7);
+        LocalDate currentDay = firstOfTheMonth.minusDays(firstOfTheMonth.getDayOfWeek().getValue() % 7);
         for (int day = 0; day < 35; day++, currentDay = currentDay.plusDays(1)) {
-            LocalDate currentDayDate = currentDay.toLocalDate();
             List<ScheduledEvent> happeningThisDay = new ArrayList<>();
             for (ScheduledEvent e : events) {
-                if (e.getStartTime().toLocalDate().equals(currentDayDate)) {
+                if (e.getStartTime().toLocalDate().equals(currentDay)) {
                     happeningThisDay.add(e);
                 }
             }
-            boolean isToday = currentDay.getDayOfMonth() == today.getDayOfMonth()
-                    && currentDay.getMonthValue() == today.getMonthValue()
-                    && currentDay.getYear() == today.getYear();
+            boolean isToday = currentDay.equals(today);
             boolean isThisMonth = currentDay.getMonthValue() == currentMonth;
-            calendarWidgets[day].updateInfo(currentDay.getDayOfMonth(), isThisMonth, isToday, happeningThisDay);
+            calendarWidgets[day].updateInfo(currentDay, isThisMonth, isToday, happeningThisDay);
         }
         lock.unlock();
         setVisible(true);

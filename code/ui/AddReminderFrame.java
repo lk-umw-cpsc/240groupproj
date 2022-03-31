@@ -79,7 +79,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             // Add horizontal glue after the label, left-aligning the label
             layer.add(Box.createHorizontalGlue());
         layerPanel.add(layer);
-            nameField = new JTextField(24);
+            nameField = new JTextField(UIConstants.JTEXTFIELD_DEFAULT_COLUMNS);
             nameField.setFont(lightFont);
         layerPanel.add(nameField);
 
@@ -99,7 +99,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             layer.add(Box.createHorizontalGlue());
         layerPanel.add(layer);
 
-            descriptionField = new JTextField(24);
+            descriptionField = new JTextField(UIConstants.JTEXTFIELD_DEFAULT_COLUMNS);
             descriptionField.setFont(lightFont);
         layerPanel.add(descriptionField);
 
@@ -111,7 +111,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         layerPanel.add(layer);
 
         layer = Box.createHorizontalBox();
-            dateField = new JTextField(24);
+            dateField = new JTextField(UIConstants.JTEXTFIELD_DEFAULT_COLUMNS);
             dateField.setFont(lightFont);
             layer.add(dateField);
 
@@ -136,7 +136,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             layer.add(Box.createHorizontalGlue());
         layerPanel.add(layer);
 
-            timeField = new JTextField(24);
+            timeField = new JTextField(UIConstants.JTEXTFIELD_DEFAULT_COLUMNS);
             timeField.setFont(lightFont);
         layerPanel.add(timeField);
 

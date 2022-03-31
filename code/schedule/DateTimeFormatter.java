@@ -1,5 +1,6 @@
 package code.schedule;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class DateTimeFormatter {
@@ -40,6 +41,11 @@ public class DateTimeFormatter {
             day += ", " + sMonth + "/" + sDay + "/" + sYear;
         }
 
+        
+        return day + " at " + toAmPm(dt);
+    }
+
+    public static String toAmPm(LocalDateTime dt) {
         String time = String.format(":%02d", dt.getMinute());
         int hour = dt.getHour();
         if (hour >= 12) {
@@ -53,6 +59,14 @@ public class DateTimeFormatter {
             }
             time = hour + time + "AM";
         }
-        return day + " at " + time;
+        return time;
     }
+
+    public static String toSlashString(LocalDateTime dt) {
+        return dt.getMonthValue() + "/" + dt.getDayOfMonth() + "/" + dt.getYear();
+    }
+
+    public static String toSlashString(LocalDate d) {
+        return d.getMonthValue() + "/" + d.getDayOfMonth() + "/" + d.getYear();
+    } 
 }

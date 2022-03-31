@@ -29,7 +29,7 @@ public class Main {
         setLookAndFeel();
 
         // Spawn the background daemon
-        new Thread(new BackgroundDaemon()).start();
+        new Thread(BackgroundDaemon.getInstance()).start();
     }
 
     private static void setLookAndFeel() {

@@ -8,23 +8,33 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
+import code.BackgroundDaemon;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
 public class DayWidget extends JComponent implements MouseListener {
+
+    private JPopupMenu rightClickMenu;
+    private final BackgroundDaemon daemon;
 
     private int day;
     private String dayAsString;
     private boolean thisMonth;
     private boolean today;
     private boolean hovered;
+
+    private LocalDate associatedDate;
 
     private final boolean drawsRightBorder;
     private final boolean drawsBottomBorder;
@@ -35,6 +45,16 @@ public class DayWidget extends JComponent implements MouseListener {
         drawsRightBorder = drawRightBorder;
         drawsBottomBorder = drawBottomBorder;
 
+        daemon = BackgroundDaemon.getInstance();
+
+        rightClickMenu = new JPopupMenu();
+        JMenuItem menuOption = new JMenuItem("View schedule");
+        rightClickMenu.add(menuOption);
+
+        menuOption = new JMenuItem("Add event");
+        menuOption.addActionListener(this::addEventChosen);
+        rightClickMenu.add(menuOption);
+
         setPreferredSize(new Dimension(200, 150));
         // setBorder(new MatteBorder(0, 0, 1, 1, Color.BLACK));
         setOpaque(true);
@@ -42,9 +62,10 @@ public class DayWidget extends JComponent implements MouseListener {
         setToolTipText("Double-click to manage this day's events");
     }
 
-    public void updateInfo(int day, boolean isThisMonth, boolean isToday, List<ScheduledEvent> events) {
+    public void updateInfo(LocalDate date, boolean isThisMonth, boolean isToday, List<ScheduledEvent> events) {
     // public void updateInfo(int day, boolean isThisMonth, boolean isToday, List<ScheduledEvent> events) {
-        this.day = day;
+        this.associatedDate = date;
+        day = date.getDayOfMonth();
         today = isToday;
         this.events = events;
         dayAsString = Integer.toString(day);
@@ -163,6 +184,10 @@ public class DayWidget extends JComponent implements MouseListener {
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
     }
 
+    private void addEventChosen(ActionEvent e) {
+        daemon.getAddEventFrame().appear(this, associatedDate);
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
@@ -178,8 +203,8 @@ public class DayWidget extends JComponent implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON2) {
-            // open popup menu that shows "New Event", "View Events"
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            rightClickMenu.show(this, e.getX(), e.getY());
         }
     }
 

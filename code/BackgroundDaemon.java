@@ -71,6 +71,8 @@ public class BackgroundDaemon implements Runnable {
 
         readySignal = new Semaphore(0);
 
+        // events.add(new ScheduledEvent("This is an event", LocalDate.now().toString(), LocalTime.now().toString(), 1));
+
         // Load data structures from file
         ScheduleIO.loadSchedule(reminders, events);
         Collections.sort(reminders);
