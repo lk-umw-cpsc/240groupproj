@@ -56,7 +56,16 @@ public class BackgroundDaemon implements Runnable {
     // Guards critical section: reminders and events
     private Lock lock = new ReentrantLock();
 
-    public BackgroundDaemon() {
+    private static BackgroundDaemon instance;
+
+    public static synchronized BackgroundDaemon getInstance() {
+        if (instance == null) {
+            instance = new BackgroundDaemon();
+        }
+        return instance;
+    }
+
+    private BackgroundDaemon() {
         reminders = new ArrayList<>();
         events = new ArrayList<>();
 
