@@ -1,6 +1,10 @@
 package code.schedule;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.Duration;
 
 /**
  * This represents a blocked out portion of the user's schedule.
@@ -18,27 +22,25 @@ import java.time.LocalDateTime;
  * 
  * Implementation assigned to Jayden
  */
+
 public class ScheduledEvent {
    private String description;
-   private LocalDateTime startTime;
-   private LocalDateTime endTime;
-   private int duration;
+   private LocalDateTime start;
+   private LocalTime end;
+   private String location;
     
-
-   /*
-   public ScheduledEvent(String desc, String sDate, String sTime, String eDate, String eTime) {
-       this.description = desc;
-       startTime = LocalDateTime.parse(sDate + "T" + sTime);
-       endTime = LocalDateTime.parse(eDate + "T" + eTime);
-   }
-   */
-
-
-   public ScheduledEvent(String desc, String sDate, String sTime, int duration) {
-       Long lDur = Long.valueOf(duration);   
+   public ScheduledEvent(String desc, String sDate, String sTime, String eDate, String eTime, String location) {   
        this.description = desc; 
-       startTime = LocalDateTime.parse(sDate + "T" + sTime);
-       endTime = startTime.plusMinutes(lDur);
+       start = LocalDateTime.parse(sDate + "T" + sTime);
+       end = start.plusMinutes(lDur);
+       this.location = location;
+    }
+
+    public ScheduledEvent(String desc, LocalDateTime start, LocalTime end, String location) {
+        this.start = start;
+        this.end = end;
+        this.description = desc;
+        this.location = location;
     }
 
    public String getDescription() {
@@ -49,32 +51,40 @@ public class ScheduledEvent {
        this.description = desc;
    }
 
-   public LocalDateTime getStartTime() {
-       return startTime;
+
+   public void setStart(LocalDateTime dt) {
+       start = dt;
    }
 
-   public void setStartTime(String date, String time) {
-       startTime = LocalDateTime.parse(date + "T" + time);
+   public void setEnd(LocalTime dt) {
+       end = dt;
    }
 
-   public LocalDateTime getEndTime() {
-       return endTime;
+   public LocalTime getStartTime() {
+       return start.toLocalTime();
    }
 
-   public void setEndTime(String date, String time) {
-       endTime = LocalDateTime.parse(date + "T" + time);
+   public LocalDate getStartDate() {
+       return start.toLocalDate();
    }
 
-   public int getDuration() {
-       return duration;
+   public LocalDateTime getStartDateTime() {
+       return start;
    }
 
-   public void setDuration(int i) {
-       this.duration = i;
+   public LocalTime getEnd() {
+       return end;
+   }
+   public String getLocation() {
+       return this.location;
+   }
+
+   public void setLocation(String s) {
+       this.location = s;
    }
 
    public String toBriefString() {
-       int hour = startTime.getHour();
+       int hour = start.getHour();
        String brief;
        if (hour >= 12) {
            if (hour > 12) {
