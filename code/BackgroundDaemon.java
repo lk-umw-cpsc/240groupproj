@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 import code.schedule.ScheduleIO;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
+import code.ui.AddEventFrame;
 import code.ui.AddReminderFrame;
 import code.ui.MonthViewFrame;
 import code.ui.ReminderManagerFrame;
@@ -46,6 +47,7 @@ public class BackgroundDaemon implements Runnable {
     private List<ScheduledEvent> events;
 
     private AddReminderFrame addReminderFrame;
+    private AddEventFrame addEventFrame;
     private ReminderManagerFrame reminderManagerFrame;
     private MonthViewFrame monthViewFrame;
 
@@ -78,9 +80,11 @@ public class BackgroundDaemon implements Runnable {
 
         addReminderFrame.build();
 
+        addEventFrame = new AddEventFrame(this);
+
         reminderManagerFrame = new ReminderManagerFrame(this);
         // addEventFrame = new AddEventFrame(this);
-        trayManager = new SystemTrayManager(this, addReminderFrame, reminderManagerFrame, monthViewFrame);
+        trayManager = new SystemTrayManager(this, addReminderFrame, addEventFrame, reminderManagerFrame, monthViewFrame);
         
         // Signal to run() that it can start
         readySignal.release();
@@ -88,6 +92,10 @@ public class BackgroundDaemon implements Runnable {
 
     public AddReminderFrame getReminderFrame() {
         return addReminderFrame;
+    }
+
+    public AddEventFrame getAddEventFrame() {
+        return addEventFrame;
     }
 
     public ReminderManagerFrame getReminderManagerFrame() {
