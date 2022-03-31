@@ -7,9 +7,11 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.List;
 
 import javax.swing.JComponent;
 
+import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
 public class DayWidget extends JComponent {
@@ -22,6 +24,8 @@ public class DayWidget extends JComponent {
     private final boolean drawsRightBorder;
     private final boolean drawsBottomBorder;
 
+    private List<ScheduledEvent> events;
+
     public DayWidget(boolean drawRightBorder, boolean drawBottomBorder) {
         drawsRightBorder = drawRightBorder;
         drawsBottomBorder = drawBottomBorder;
@@ -29,6 +33,15 @@ public class DayWidget extends JComponent {
         setPreferredSize(new Dimension(200, 150));
         // setBorder(new MatteBorder(0, 0, 1, 1, Color.BLACK));
         setOpaque(true);
+    }
+
+    public void updateInfo(int day, boolean isThisMonth, boolean isToday) {
+    // public void updateInfo(int day, boolean isThisMonth, boolean isToday, List<ScheduledEvent> events) {
+        this.day = day;
+        today = isToday;
+        // this.events = events;
+        dayAsString = Integer.toString(day);
+        thisMonth = isThisMonth;
     }
 
     private static final Color BG_COLOR_THIS_MONTH = new Color(255, 255, 255);
@@ -112,13 +125,6 @@ public class DayWidget extends JComponent {
         } else {
             eventY += eventGap + drawStringInRectangle(g, EVENT_FONT, BG_COLOR_EVENT_OTHER_MONTH, FG_COLOR_EVENT_OTHER_MONTH, brief, 3, eventY, 3, 3);
         }
-    }
-
-    public void updateInfo(int day, boolean isThisMonth, boolean isToday) {
-        this.day = day;
-        today = isToday;
-        dayAsString = Integer.toString(day);
-        thisMonth = isThisMonth;
     }
 
     private static int drawStringInRectangle(Graphics g, Font f, Color bg, Color fg, String text, int x, int y, int padding, int borderRadius) {
