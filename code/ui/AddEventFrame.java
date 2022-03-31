@@ -1,11 +1,9 @@
 package code.ui;
 
-import java.awt.Container;
 import java.awt.Font;
 import java.time.LocalDateTime;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
