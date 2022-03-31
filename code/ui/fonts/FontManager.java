@@ -14,17 +14,16 @@ public class FontManager {
     private Font lightFont;
     private Font regularFont;
     private Font boldFont;
+    private Font smallFont;
 
     private FontManager() {
         try {
             lightFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Regular.ttf")).deriveFont(16.0f);
             regularFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Medium.ttf")).deriveFont(16.0f);
             boldFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Bold.ttf")).deriveFont(16.0f);
+            smallFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/MerriweatherSans-Bold.ttf")).deriveFont(11.0f);
         } catch (IOException | FontFormatException e) {
-            //Handle exception
-            lightFont = null;
-            regularFont = null;
-            boldFont = null;
+
        }
     }
 
@@ -45,5 +44,9 @@ public class FontManager {
 
     public Font getBoldFont() {
         return boldFont;
+    }
+
+    public Font getSmallFont() {
+        return smallFont;
     }
 }
