@@ -141,7 +141,7 @@ public class AddEventFrame extends JFrame {
         if (!validateForm())
             return;
         if (editTarget != null) {
-            editTarget.setDescription(nameField.getText());
+            editTarget.setName(nameField.getText());
             // editTarget.setLocation(locationField.getText())
             // ... editTarget.setStartTime();
         } else {

@@ -49,10 +49,6 @@ public class ScheduledEvent {
        return this.name;
    }
 
-   public void setDescription(String desc) {
-       this.name = desc;
-   }
-
    public void setDate(LocalDate d) {
        date = d;
    }
@@ -76,6 +72,11 @@ public class ScheduledEvent {
    public LocalTime getEndTime() {
        return endTime;
    }
+
+   public void setName(String name) {
+       this.name = name;
+   }
+   
    public String getLocation() {
        return this.location;
    }
