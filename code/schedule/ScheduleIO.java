@@ -57,8 +57,6 @@ public class ScheduleIO
                         {
                                 newLine = fileIn.nextLine();
                                 String[] parser = newLine.split("###");
-                                // String[] splitTimeParser = parser[1].split("T");
-                                // ScheduledEvent temp = new ScheduledEvent(parser[0], splitTimeParser[0], splitTimeParser[1], Integer.parseInt(parser[2]));
                                 ScheduledEvent temp = new ScheduledEvent(parser[0], parser[1], parser[2], parser[3], parser[4]);
                                 events.add(temp);
                         }
@@ -101,7 +99,7 @@ public class ScheduleIO
                 
                 try (PrintWriter fileOut = new PrintWriter(EVENTS_FILE)) {
 
-                        fileOut.println("Description###StartDateTStartTime###Duration");
+                        fileOut.println("Name###Date###StartTime###EndTime###location");
                         for (ScheduledEvent event : events)
                         {
                                 fileOut.println(event.getName() + "###" + event.getDate()
