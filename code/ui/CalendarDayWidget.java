@@ -23,7 +23,7 @@ import code.BackgroundDaemon;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
-public class DayWidget extends JComponent implements MouseListener {
+public class CalendarDayWidget extends JComponent implements MouseListener {
 
     private JPopupMenu rightClickMenu;
     private final BackgroundDaemon daemon;
@@ -41,7 +41,7 @@ public class DayWidget extends JComponent implements MouseListener {
 
     private List<ScheduledEvent> events;
 
-    public DayWidget(boolean drawRightBorder, boolean drawBottomBorder) {
+    public CalendarDayWidget(boolean drawRightBorder, boolean drawBottomBorder) {
         drawsRightBorder = drawRightBorder;
         drawsBottomBorder = drawBottomBorder;
 
@@ -190,8 +190,8 @@ public class DayWidget extends JComponent implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 2) {
-            // do something here
+        if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+            daemon.getdDayViewFrame().appear(associatedDate, events);
         }
     }
 

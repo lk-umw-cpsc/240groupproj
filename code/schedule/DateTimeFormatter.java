@@ -2,6 +2,7 @@ package code.schedule;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class DateTimeFormatter {
 
@@ -45,9 +46,47 @@ public class DateTimeFormatter {
         return day + " at " + toAmPm(dt);
     }
 
+    public static String format(LocalDate d) {
+        return String.format("%s, %d/%d/%d", DAYS_OF_THE_WEEK[d.getDayOfWeek().getValue() - 1],
+            d.getMonthValue(), d.getDayOfMonth(), d.getYear());
+    }
+
     public static String toAmPm(LocalDateTime dt) {
         String time = String.format(":%02d", dt.getMinute());
         int hour = dt.getHour();
+        if (hour >= 12) {
+            if (hour > 12) {
+                hour = hour % 12;
+            }
+            time = hour + time + "PM";
+        } else {
+            if (hour == 0) {
+                hour = 12;
+            }
+            time = hour + time + "AM";
+        }
+        return time;
+    }
+
+    public static String toAmPm(LocalTime t) {
+        String time = String.format(":%02d", t.getMinute());
+        int hour = t.getHour();
+        if (hour >= 12) {
+            if (hour > 12) {
+                hour = hour % 12;
+            }
+            time = hour + time + "PM";
+        } else {
+            if (hour == 0) {
+                hour = 12;
+            }
+            time = hour + time + "AM";
+        }
+        return time;
+    }
+
+    public static String toAmPm(int hour, int minute) {
+        String time = String.format(":%02d", minute);
         if (hour >= 12) {
             if (hour > 12) {
                 hour = hour % 12;

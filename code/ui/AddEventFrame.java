@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -165,6 +166,21 @@ public class AddEventFrame extends JFrame {
         dateField.setText(DateTimeFormatter.toSlashString(d));
         startTimeField.setText("8:00AM");
         endTimeField.setText("9:00AM");
+
+        nameField.requestFocus();
+        setLocationRelativeTo(owner);
+        setVisible(true);
+    }
+
+    public void appear(Component owner, LocalDate d, LocalTime start, LocalTime end) {
+        if (editTarget != null) {
+            // ???
+        }
+        nameField.setText("");
+        locationField.setText("");
+        dateField.setText(DateTimeFormatter.toSlashString(d));
+        startTimeField.setText(DateTimeFormatter.toAmPm(start));
+        endTimeField.setText(DateTimeFormatter.toAmPm(end));
 
         nameField.requestFocus();
         setLocationRelativeTo(owner);

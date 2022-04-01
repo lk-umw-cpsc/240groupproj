@@ -15,6 +15,7 @@ public class FontManager {
     private Font regularFont;
     private Font boldFont;
     private Font smallFont;
+    private Font monospaceFont;
 
     private FontManager() {
         try {
@@ -22,6 +23,7 @@ public class FontManager {
             regularFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Medium.ttf")).deriveFont(16.0f);
             boldFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Quicksand-Bold.ttf")).deriveFont(16.0f);
             smallFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/MerriweatherSans-Bold.ttf")).deriveFont(11.0f);
+            monospaceFont = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts/Cousine-Regular.ttf")).deriveFont(16.0f);
         } catch (IOException | FontFormatException e) {
 
        }
@@ -48,5 +50,9 @@ public class FontManager {
 
     public Font getSmallFont() {
         return smallFont;
+    }
+
+    public Font getMonospaceFont() {
+        return monospaceFont;
     }
 }

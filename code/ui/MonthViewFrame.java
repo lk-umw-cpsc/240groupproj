@@ -37,7 +37,7 @@ public class MonthViewFrame extends JFrame {
     
     private BackgroundDaemon daemon;
 
-    private DayWidget[] calendarWidgets = new DayWidget[35];
+    private CalendarDayWidget[] calendarWidgets = new CalendarDayWidget[35];
     private JLabel monthLabel;
 
     private final Color CALENDAR_HEADING_BACKGROUND_COLOR = new Color(209, 71, 82);
@@ -87,7 +87,7 @@ public class MonthViewFrame extends JFrame {
         calendarGridPanel.setLayout(new GridLayout(5, 7));        
         // calendarWidgets = new ?[5][7];
         for (int widget = 0; widget < calendarWidgets.length; widget++) {
-            DayWidget w = new DayWidget(widget % 7 != 6, widget < 28);
+            CalendarDayWidget w = new CalendarDayWidget(widget % 7 != 6, widget < 28);
             calendarWidgets[widget] = w;
             calendarGridPanel.add(w);
         }

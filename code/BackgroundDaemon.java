@@ -15,6 +15,7 @@ import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
 import code.ui.AddEventFrame;
 import code.ui.AddReminderFrame;
+import code.ui.DayViewFrame;
 import code.ui.MonthViewFrame;
 import code.ui.ReminderManagerFrame;
 import code.ui.systemtray.SystemTrayManager;
@@ -50,6 +51,7 @@ public class BackgroundDaemon implements Runnable {
     private AddEventFrame addEventFrame;
     private ReminderManagerFrame reminderManagerFrame;
     private MonthViewFrame monthViewFrame;
+    private DayViewFrame dayViewFrame;
 
     private SystemTrayManager trayManager;
 
@@ -95,6 +97,8 @@ public class BackgroundDaemon implements Runnable {
         addEventFrame = new AddEventFrame(this);
 
         reminderManagerFrame = new ReminderManagerFrame(this);
+
+        dayViewFrame = new DayViewFrame(this);
         // addEventFrame = new AddEventFrame(this);
         trayManager = new SystemTrayManager(this, addReminderFrame, addEventFrame, reminderManagerFrame, monthViewFrame);
         
@@ -112,6 +116,10 @@ public class BackgroundDaemon implements Runnable {
 
     public ReminderManagerFrame getReminderManagerFrame() {
         return reminderManagerFrame;
+    }
+
+    public DayViewFrame getdDayViewFrame() {
+        return dayViewFrame;
     }
 
     /**
