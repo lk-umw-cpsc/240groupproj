@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 import code.schedule.ScheduleIO;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
+import code.ui.AddEventFrame;
 import code.ui.AddReminderFrame;
 import code.ui.MonthViewFrame;
 import code.ui.ReminderManagerFrame;
@@ -46,6 +47,7 @@ public class BackgroundDaemon implements Runnable {
     private List<ScheduledEvent> events;
 
     private AddReminderFrame addReminderFrame;
+    private AddEventFrame addEventFrame;
     private ReminderManagerFrame reminderManagerFrame;
     private MonthViewFrame monthViewFrame;
 
@@ -54,11 +56,23 @@ public class BackgroundDaemon implements Runnable {
     // Guards critical section: reminders and events
     private Lock lock = new ReentrantLock();
 
-    public BackgroundDaemon() {
+    private static BackgroundDaemon instance;
+
+    public static synchronized BackgroundDaemon getInstance() {
+        if (instance == null) {
+            instance = new BackgroundDaemon();
+        }
+        return instance;
+    }
+
+    private BackgroundDaemon() {
         reminders = new ArrayList<>();
         events = new ArrayList<>();
 
         readySignal = new Semaphore(0);
+
+        // events.add(new ScheduledEvent("I'm an event", LocalDate.now(), 
+        //     LocalTime.of(8, 0), LocalTime.of(9, 0), "Somewhere"));
 
         // Load data structures from file
         ScheduleIO.loadSchedule(reminders, events);
@@ -78,9 +92,11 @@ public class BackgroundDaemon implements Runnable {
 
         addReminderFrame.build();
 
+        addEventFrame = new AddEventFrame(this);
+
         reminderManagerFrame = new ReminderManagerFrame(this);
         // addEventFrame = new AddEventFrame(this);
-        trayManager = new SystemTrayManager(this, addReminderFrame, reminderManagerFrame, monthViewFrame);
+        trayManager = new SystemTrayManager(this, addReminderFrame, addEventFrame, reminderManagerFrame, monthViewFrame);
         
         // Signal to run() that it can start
         readySignal.release();
@@ -88,6 +104,10 @@ public class BackgroundDaemon implements Runnable {
 
     public AddReminderFrame getReminderFrame() {
         return addReminderFrame;
+    }
+
+    public AddEventFrame getAddEventFrame() {
+        return addEventFrame;
     }
 
     public ReminderManagerFrame getReminderManagerFrame() {
@@ -201,7 +221,9 @@ public class BackgroundDaemon implements Runnable {
                     trayManager.showNotification(r.getName(), r.getDescription());
                     System.out.println(r.getName() + " expired!");
                     if (r.repeats()) {
-                        r.repeat();
+                        do {
+                            r.repeat();
+                        } while (r.isDue());
                         System.out.println("Reminder will repeat at " + r.getWhenDue());
                     } else {
                         reminders.remove(i);

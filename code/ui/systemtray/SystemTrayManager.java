@@ -16,10 +16,14 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
+import javax.swing.JLabel;
+
 import code.BackgroundDaemon;
+import code.ui.AddEventFrame;
 import code.ui.AddReminderFrame;
 import code.ui.MonthViewFrame;
 import code.ui.ReminderManagerFrame;
+import code.ui.fonts.FontManager;
 
 /**
  * The SystemTrayManager class creates a system tray icon for our app,
@@ -33,6 +37,7 @@ public class SystemTrayManager {
     private BufferedImage calendarSprite;
 
     private AddReminderFrame addReminderFrame;
+    private AddEventFrame addEventFrame;
     private ReminderManagerFrame reminderManagerFrame;
     private MonthViewFrame monthViewFrame;
 
@@ -46,9 +51,10 @@ public class SystemTrayManager {
     private int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
 
     public SystemTrayManager(BackgroundDaemon d, 
-            AddReminderFrame arf, ReminderManagerFrame rmf, MonthViewFrame mvf) {
+            AddReminderFrame arf, AddEventFrame aef, ReminderManagerFrame rmf, MonthViewFrame mvf) {
         daemon = d;
         this.addReminderFrame = arf;
+        this.addEventFrame = aef;
         this.reminderManagerFrame = rmf;
         this.monthViewFrame = mvf;
         SystemTray systemTray = SystemTray.getSystemTray();
@@ -84,7 +90,7 @@ public class SystemTrayManager {
         popupMenu.add(menuTab);
 
         option = new MenuItem("Add event...");
-        //option.addActionListener(this::addReminder);
+        option.addActionListener(this::addEvent);
         menuTab.add(option);
         
         //-----------
@@ -267,6 +273,10 @@ public class SystemTrayManager {
 
     private void addMonthlyReminder(ActionEvent e) {
         addReminderFrame.appear(30);
+    }
+
+    private void addEvent(ActionEvent e) {
+        addEventFrame.appear(LocalDateTime.now());
     }
 
     private void manageReminders(ActionEvent e) {
