@@ -94,7 +94,7 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
         int width = getWidth();
         int height = getHeight();
 
-        enableFontAntiAliasing(g);
+        FontManager.enableFontAntiAliasing(g);
 
         if (today) {
             g.setColor(BG_COLOR_TODAY);
@@ -183,11 +183,6 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
         g.setColor(fg);
         g.drawString(text, x + padding, y + padding + fm.getAscent());
         return h;
-    }
-
-    private static void enableFontAntiAliasing(Graphics graphics) {
-        Graphics2D g = (Graphics2D)graphics;
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
     }
 
     private void addEventChosen(ActionEvent e) {

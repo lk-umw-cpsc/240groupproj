@@ -2,6 +2,9 @@ package code.ui.fonts;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.io.File;
 import java.io.IOException;
 
@@ -54,5 +57,10 @@ public class FontManager {
 
     public Font getMonospaceFont() {
         return monospaceFont;
+    }
+
+    public static void enableFontAntiAliasing(Graphics graphics) {
+        Graphics2D g = (Graphics2D)graphics;
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
     }
 }

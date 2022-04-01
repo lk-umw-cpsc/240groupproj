@@ -52,6 +52,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private static final Color FG_COLOR_EVENT = Color.BLACK;
     @Override
     public void paint(Graphics g) {
+        FontManager.enableFontAntiAliasing(g);
         int width = getWidth();
         int height = getHeight();
         g.setColor(BACKGROUND_COLOR);
@@ -126,13 +127,16 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (!dragging || e.getButton() != MouseEvent.BUTTON1) {
+        if (!dragging/* || e.getButton() != MouseEvent.BUTTON1*/) {
             return;
         }
         int draggedCell = e.getY() / PIXELS_PER_15;
         if (draggedCell >= cellHovered) {
+            boolean needToPaint = draggedCell != cellDragged;
             cellDragged = draggedCell;
-            repaint(); 
+            if (needToPaint) {
+                repaint();
+            }
         }
     }
 
