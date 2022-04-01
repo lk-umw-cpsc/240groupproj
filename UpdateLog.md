@@ -25,6 +25,19 @@ Add below this line!
 
 Paste over new entry here.
 
+Date 4/1/2022
+Person: Lauren
+Log: Made significant progress on add event frame
+Created DayViewFrame
+DayViewFrame is partially functional. Need to make
+drawing of events look more proper.
+Events now appear in the day view frame and the calendar.
+Adding an event updates the calendar and day view frame
+if that day is visible within those windows.
+We're nearly finished :)
+BUG: Adding an event with an empty description breaks the program when
+you attempt to run the program again!
+
 Date: 3/31/2022
 Person: Lauren
 Log: Placed finishing touches on CalendarViewFrame
