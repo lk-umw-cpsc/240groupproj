@@ -1,6 +1,8 @@
 package code;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -71,7 +73,8 @@ public class BackgroundDaemon implements Runnable {
 
         readySignal = new Semaphore(0);
 
-        // events.add(new ScheduledEvent("This is an event", LocalDate.now().toString(), LocalTime.now().toString(), 1));
+        // events.add(new ScheduledEvent("I'm an event", LocalDate.now(), 
+        //     LocalTime.of(8, 0), LocalTime.of(9, 0), "Somewhere"));
 
         // Load data structures from file
         ScheduleIO.loadSchedule(reminders, events);

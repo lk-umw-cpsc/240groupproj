@@ -113,7 +113,7 @@ public class MonthViewFrame extends JFrame {
         for (int day = 0; day < 35; day++, currentDay = currentDay.plusDays(1)) {
             List<ScheduledEvent> happeningThisDay = new ArrayList<>();
             for (ScheduledEvent e : events) {
-                if (e.getStartTime().toLocalDate().equals(currentDay)) {
+                if (e.getDate().equals(currentDay)) {
                     happeningThisDay.add(e);
                 }
             }

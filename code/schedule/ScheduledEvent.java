@@ -1,10 +1,7 @@
 package code.schedule;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.Duration;
+import java.time.LocalTime;
 
 /**
  * This represents a blocked out portion of the user's schedule.
@@ -24,56 +21,60 @@ import java.time.Duration;
  */
 
 public class ScheduledEvent {
-   private String description;
-   private LocalDateTime start;
-   private LocalTime end;
+   private String name;
+   private LocalDate date;
+   private LocalTime startTime;
+   private LocalTime endTime;
    private String location;
     
-   public ScheduledEvent(String desc, String sDate, String sTime, String eDate, String eTime, String location) {   
-       this.description = desc; 
-       start = LocalDateTime.parse(sDate + "T" + sTime);
-       end = start.plusMinutes(lDur);
+   public ScheduledEvent(String name, String date, String startTime, String endTime, String location) {   
+       this.name = name;
+       this.location = location;
+       this.date = LocalDate.parse(date);
+       this.startTime = LocalTime.parse(startTime);
+       this.endTime = LocalTime.parse(endTime);
+    //    end = start.plusMinutes(lDur);
        this.location = location;
     }
 
-    public ScheduledEvent(String desc, LocalDateTime start, LocalTime end, String location) {
-        this.start = start;
-        this.end = end;
-        this.description = desc;
+    public ScheduledEvent(String desc, LocalDate date, LocalTime startTime, LocalTime endTime, String location) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.name = desc;
         this.location = location;
     }
 
-   public String getDescription() {
-       return this.description;
+   public String getName() {
+       return this.name;
    }
 
    public void setDescription(String desc) {
-       this.description = desc;
+       this.name = desc;
    }
 
-
-   public void setStart(LocalDateTime dt) {
-       start = dt;
+   public void setDate(LocalDate d) {
+       date = d;
    }
 
-   public void setEnd(LocalTime dt) {
-       end = dt;
+   public void setStartTime(LocalTime t) {
+       startTime = t;
+   }
+
+   public void setEndTime(LocalTime t) {
+       endTime = t;
+   }
+
+   public LocalDate getDate() {
+       return date;
    }
 
    public LocalTime getStartTime() {
-       return start.toLocalTime();
+       return startTime;
    }
 
-   public LocalDate getStartDate() {
-       return start.toLocalDate();
-   }
-
-   public LocalDateTime getStartDateTime() {
-       return start;
-   }
-
-   public LocalTime getEnd() {
-       return end;
+   public LocalTime getEndTime() {
+       return endTime;
    }
    public String getLocation() {
        return this.location;
@@ -84,7 +85,7 @@ public class ScheduledEvent {
    }
 
    public String toBriefString() {
-       int hour = start.getHour();
+       int hour = startTime.getHour();
        String brief;
        if (hour >= 12) {
            if (hour > 12) {
@@ -97,6 +98,6 @@ public class ScheduledEvent {
            }
            brief = hour + "a";
        }
-       return brief + " " + description;
+       return brief + " " + name;
    }
 }
