@@ -49,6 +49,7 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
 
         rightClickMenu = new JPopupMenu();
         JMenuItem menuOption = new JMenuItem("View schedule");
+        menuOption.addActionListener(this::viewScheduleChosen);
         rightClickMenu.add(menuOption);
 
         menuOption = new JMenuItem("Add event");
@@ -72,6 +73,11 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
         thisMonth = isThisMonth;
         hovered = false;
         // setFocusable(true);
+    }
+
+    public void updateEvents(List<ScheduledEvent> events) {
+        this.events = events;
+        repaint();
     }
 
     private static final Color BG_COLOR_THIS_MONTH = new Color(255, 255, 255);
@@ -117,7 +123,7 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
         g.drawString(dayAsString, 6, 18);
 
         g.setFont(EVENT_FONT);
-        if (!events.isEmpty()) {
+        if (events != null) {
             for (int i = 0, size = events.size(); i < size; i++) {
                 drawEvent(g, events.get(i).toBriefString(), i);
             }
@@ -186,6 +192,10 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
 
     private void addEventChosen(ActionEvent e) {
         daemon.getAddEventFrame().appear(this, associatedDate);
+    }
+
+    private void viewScheduleChosen(ActionEvent e) {
+        daemon.getdDayViewFrame().appear(associatedDate, events);
     }
 
     @Override

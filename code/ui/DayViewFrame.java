@@ -19,6 +19,7 @@ public class DayViewFrame extends JFrame {
 
     private JLabel dayLabel;
     private DayViewWidget widget;
+    private LocalDate viewedDate;
 
     private final BackgroundDaemon daemon;
     
@@ -43,11 +44,17 @@ public class DayViewFrame extends JFrame {
     }
 
     public void appear(LocalDate d, List<ScheduledEvent> events) {
-        // load events into widget?
+        viewedDate = d;
         widget.updateDay(d, events);
         dayLabel.setText(DateTimeFormatter.format(d));
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public void update(LocalDate d, List<ScheduledEvent> events) {
+        if (d.equals(viewedDate)) {
+            widget.updateDay(d, events);
+        }
     }
 
 }

@@ -7,7 +7,7 @@ import java.time.LocalTime;
 public class DateTimeFormatter {
 
     private static final String[] DAYS_OF_THE_WEEK = {
-        "Monday", "Tuesday", "Wednesday", "Thursday",
+        null, "Monday", "Tuesday", "Wednesday", "Thursday",
         "Friday", "Saturday", "Sunday"
     };
 
@@ -36,7 +36,7 @@ public class DateTimeFormatter {
         } else if (tomDay == sDay && tomMonth == sMonth && tomYear == sYear) {
             day = "Tomorrow";
         } else if (dt.isBefore(weekFromNow)) {
-            day = "This " + DAYS_OF_THE_WEEK[dt.getDayOfWeek().getValue() - 1];
+            day = "This " + DAYS_OF_THE_WEEK[dt.getDayOfWeek().getValue()];
         } else {
             day = DAYS_OF_THE_WEEK[dt.getDayOfWeek().getValue() - 1];
             day += ", " + sMonth + "/" + sDay + "/" + sYear;
@@ -47,7 +47,7 @@ public class DateTimeFormatter {
     }
 
     public static String format(LocalDate d) {
-        return String.format("%s, %d/%d/%d", DAYS_OF_THE_WEEK[d.getDayOfWeek().getValue() - 1],
+        return String.format("%s, %d/%d/%d", DAYS_OF_THE_WEEK[d.getDayOfWeek().getValue()],
             d.getMonthValue(), d.getDayOfMonth(), d.getYear());
     }
 

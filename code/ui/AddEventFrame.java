@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -21,6 +23,9 @@ import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
 public class AddEventFrame extends JFrame {
+
+    private static final Pattern datePattern = Pattern.compile("^([1-9]|1[0-2])/([1-9]|[12]\\d|3[01])/(\\d\\d\\d\\d)$");
+    private static final Pattern timePattern = Pattern.compile("^(1[012]|[1-9]):([0-5]\\d)(AM|am|PM|pm)$");
 
     private final BackgroundDaemon daemon;
 
@@ -134,19 +139,91 @@ public class AddEventFrame extends JFrame {
         pack(); 
     }
 
-    private boolean validateForm() {
-        return false;
+    private ScheduledEvent validateForm() {
+        String name = nameField.getText();
+        String location = locationField.getText();
+        String dateString = dateField.getText();
+        String startTimeString = startTimeField.getText();
+        String endTimeString = endTimeField.getText();
+
+        LocalDate d = null;
+        LocalTime startTime = null;
+        LocalTime endTime = null;
+
+        Matcher m = datePattern.matcher(dateString);
+        if (m.matches()) {
+            int month = Integer.parseInt(m.group(1));
+            int day = Integer.parseInt(m.group(2));
+            int year = Integer.parseInt(m.group(3));
+            d = LocalDate.of(year, month, day);
+        }
+
+        m = timePattern.matcher(startTimeString);
+        if (m.matches()) {
+            int hour = Integer.parseInt(m.group(1));
+            int minute = Integer.parseInt(m.group(2));
+            boolean pm = m.group(3).equalsIgnoreCase("pm");
+            if (pm) {
+                hour += 12;
+            } else if (hour == 12) {
+                hour = 0;
+            }
+            startTime = LocalTime.of(hour, minute, 0);
+        }
+
+        m = timePattern.matcher(endTimeString);
+        if (m.matches()) {
+            int hour = Integer.parseInt(m.group(1));
+            int minute = Integer.parseInt(m.group(2));
+            boolean pm = m.group(3).equalsIgnoreCase("pm");
+            if (pm) {
+                hour += 12;
+            } else if (hour == 12) {
+                hour = 0;
+            }
+            endTime = LocalTime.of(hour, minute, 0);
+        }
+
+        boolean errors = false;
+        if (name.isEmpty()) {
+            errors = true;
+            // ...
+        }
+        
+        if (d == null) {
+            errors = true;
+            // ...
+        }
+
+        if (startTime == null) {
+            errors = true;
+            // ...
+        }
+
+        if (endTime == null) {
+            errors = true;
+            // ...
+        }
+
+        if (errors) {
+            return null;
+        }
+
+        return new ScheduledEvent(name, d, startTime, endTime, location);
     }
 
     private void formSubmitted(ActionEvent e) {
-        if (!validateForm())
+        ScheduledEvent event = validateForm();
+        if (validateForm() == null)
             return;
         if (editTarget != null) {
             editTarget.setName(nameField.getText());
             // editTarget.setLocation(locationField.getText())
             // ... editTarget.setStartTime();
         } else {
-
+            setVisible(false);
+            clearForm();
+            daemon.add(event.getDate(), event);
         }
     }
 

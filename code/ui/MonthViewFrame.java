@@ -6,8 +6,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.Lock;
 
 import javax.swing.Box;
@@ -34,6 +35,8 @@ public class MonthViewFrame extends JFrame {
         "June", "July", "August", "September", "October",
         "November", "December"
     };
+
+    private Map<LocalDate, CalendarDayWidget> widgetsMap;
     
     private BackgroundDaemon daemon;
 
@@ -48,6 +51,8 @@ public class MonthViewFrame extends JFrame {
     public MonthViewFrame(BackgroundDaemon d) {
         super("Month View"); // get a better name for this
         daemon = d;
+
+        widgetsMap = new HashMap<>();
 
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -105,24 +110,28 @@ public class MonthViewFrame extends JFrame {
         LocalDate firstOfTheMonth = LocalDate.of(dt.getYear(), dt.getMonthValue(), 1);
         Lock lock = daemon.getLock();
         lock.lock();
-        List<ScheduledEvent> events = daemon.getEvents();
+        widgetsMap.clear();
+        Map<LocalDate, List<ScheduledEvent>> events = daemon.getEvents();
         // back up to the first day of the month
         // for (firstOfTheMonth = dt; firstOfTheMonth.getDayOfMonth() > 1; firstOfTheMonth = firstOfTheMonth.minusDays(1));
         // back up to the Sunday before the first day of the month (if it didn't fall on a Sunday)
         LocalDate currentDay = firstOfTheMonth.minusDays(firstOfTheMonth.getDayOfWeek().getValue() % 7);
         for (int day = 0; day < 35; day++, currentDay = currentDay.plusDays(1)) {
-            List<ScheduledEvent> happeningThisDay = new ArrayList<>();
-            for (ScheduledEvent e : events) {
-                if (e.getDate().equals(currentDay)) {
-                    happeningThisDay.add(e);
-                }
-            }
+            List<ScheduledEvent> happeningThisDay = events.get(currentDay);
             boolean isToday = currentDay.equals(today);
             boolean isThisMonth = currentDay.getMonthValue() == currentMonth;
+            widgetsMap.put(currentDay, calendarWidgets[day]);
             calendarWidgets[day].updateInfo(currentDay, isThisMonth, isToday, happeningThisDay);
         }
         lock.unlock();
         setVisible(true);
+    }
+
+    public void updateDay(LocalDate d, List<ScheduledEvent> events) {
+        CalendarDayWidget widget = widgetsMap.get(d);
+        if (widget != null) {
+            widget.updateEvents(events);
+        }
     }
 
     public void appear() {

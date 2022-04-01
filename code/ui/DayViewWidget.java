@@ -30,6 +30,8 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
 
     private LocalDate date;
 
+    private List<ScheduledEvent> events;
+
     public DayViewWidget() {
         setPreferredSize(new Dimension(400, PIXELS_PER_HOUR * 24));
         cellHovered = -1;
@@ -45,6 +47,9 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private static final Color TIME_FIFTEEN_MIN_COLOR = new Color(64, 64, 64);
     private static final Color HOVERED_CELL_BACKGROUND_COLOR = new Color(209, 71, 82);
     private static final Color HOVERED_CELL_FOREGROUND_COLOR = Color.WHITE;
+    
+    private static final Color BG_COLOR_EVENT = new Color(248, 255, 224);
+    private static final Color FG_COLOR_EVENT = Color.BLACK;
     @Override
     public void paint(Graphics g) {
         int width = getWidth();
@@ -58,6 +63,25 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                 g.fillRect(0, cellHovered * PIXELS_PER_15, width, PIXELS_PER_15);
             } else {
                 g.fillRect(0, cellHovered * PIXELS_PER_15, width, PIXELS_PER_15 * (cellDragged - cellHovered + 1));
+            }
+        }
+
+        if (events != null) {
+            for (ScheduledEvent e : events) {
+                g.setColor(BG_COLOR_EVENT);
+
+                LocalTime start = e.getStartTime();
+                LocalTime end = e.getEndTime();
+                int topY = start.getHour() * PIXELS_PER_HOUR;
+                topY += (int)(start.getMinute() / 60.0 * PIXELS_PER_HOUR);
+
+                int bottomY = end.getHour() * PIXELS_PER_HOUR;
+                topY += (int)(end.getMinute() / 60.0 * PIXELS_PER_HOUR);
+
+                g.fillRect(0, topY, width, bottomY - topY);
+                g.setColor(FG_COLOR_EVENT);
+                g.drawString(e.getName(), 32, topY);
+                g.drawString(e.getLocation(), 32, topY + 16);
             }
         }
     
@@ -96,7 +120,8 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
 
     public void updateDay(LocalDate d, List<ScheduledEvent> events) {
         date = d;
-        /// ???
+        this.events = events;
+        repaint();
     }
 
     @Override
