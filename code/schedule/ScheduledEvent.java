@@ -20,7 +20,7 @@ import java.time.LocalTime;
  * Implementation assigned to Jayden
  */
 
-public class ScheduledEvent implements Comparable {
+public class ScheduledEvent implements Comparable<ScheduledEvent> {
     private String name;
     private LocalDate date;
     private LocalTime startTime;
@@ -112,15 +112,11 @@ public class ScheduledEvent implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        if (!(o instanceof ScheduledEvent)) {
-            return -1;
-        }
-        ScheduledEvent s = (ScheduledEvent) o;
-        int dateComparison = date.compareTo(s.date);
+    public int compareTo(ScheduledEvent e) {
+        int dateComparison = date.compareTo(e.date);
         if (dateComparison != 0) {
             return dateComparison;
         }
-        return startTime.compareTo(s.startTime);
+        return startTime.compareTo(e.startTime);
     }
 }

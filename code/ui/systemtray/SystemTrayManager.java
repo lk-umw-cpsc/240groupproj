@@ -16,14 +16,11 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 
-import javax.swing.JLabel;
-
 import code.BackgroundDaemon;
 import code.ui.AddEventFrame;
 import code.ui.AddReminderFrame;
 import code.ui.MonthViewFrame;
 import code.ui.ReminderManagerFrame;
-import code.ui.fonts.FontManager;
 
 /**
  * The SystemTrayManager class creates a system tray icon for our app,

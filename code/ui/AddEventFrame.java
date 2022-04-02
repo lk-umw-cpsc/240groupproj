@@ -10,12 +10,12 @@ import java.awt.event.WindowListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.concurrent.locks.Lock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -38,6 +38,11 @@ public class AddEventFrame extends JFrame implements WindowListener {
     private JTextField dateField;
     private JTextField startTimeField;
     private JTextField endTimeField;
+
+    private JCheckBox remindHourBeforeCheckBox;
+    private JCheckBox remindDayBeforeCheckBox;
+    private JCheckBox remindWeekBeforeCheckBox;
+    private JCheckBox remindMonthBeforeCheckBox;
 
     private Box badNameRow;
     private Box badDateRow;
@@ -172,6 +177,41 @@ public class AddEventFrame extends JFrame implements WindowListener {
             badEndTimeRow.add(Box.createHorizontalGlue());
             badEndTimeRow.setVisible(false);
         rowContainer.add(badEndTimeRow);
+
+        row = Box.createHorizontalBox();
+            label = new JLabel("Remind me...");
+            label.setFont(regularFont);
+            row.add(label);
+            row.add(Box.createHorizontalGlue());
+        rowContainer.add(row);
+
+        row = Box.createHorizontalBox();
+            remindHourBeforeCheckBox = new JCheckBox("One hour before");
+            remindHourBeforeCheckBox.setFont(regularFont);
+            row.add(remindHourBeforeCheckBox);
+            row.add(Box.createHorizontalGlue());
+        rowContainer.add(row);
+
+        row = Box.createHorizontalBox();
+            remindDayBeforeCheckBox = new JCheckBox("One day before");
+            remindDayBeforeCheckBox.setFont(regularFont);
+            row.add(remindDayBeforeCheckBox);
+            row.add(Box.createHorizontalGlue());
+        rowContainer.add(row);
+
+        row = Box.createHorizontalBox();
+            remindWeekBeforeCheckBox = new JCheckBox("One week before");
+            remindWeekBeforeCheckBox.setFont(regularFont);
+            row.add(remindWeekBeforeCheckBox);
+            row.add(Box.createHorizontalGlue());
+        rowContainer.add(row);
+
+        row = Box.createHorizontalBox();
+            remindMonthBeforeCheckBox= new JCheckBox("One month before");
+            remindMonthBeforeCheckBox.setFont(regularFont);
+            row.add(remindMonthBeforeCheckBox);
+            row.add(Box.createHorizontalGlue());
+        rowContainer.add(row);
 
         row = Box.createHorizontalBox();
             addSaveButton = new JButton("Add Event");

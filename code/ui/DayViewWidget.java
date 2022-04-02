@@ -31,7 +31,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
 
     private int cellDragged;
 
-    private int hoverX, hoverY;
+    private int hoverY;
 
     private boolean dragging;
     private boolean pressing;
@@ -213,7 +213,6 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
             cellHovered = e.getY() / PIXELS_PER_15;
             repaint();
         }
-        hoverX = e.getX();
         hoverY = e.getY();
     }
 
@@ -308,7 +307,6 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
         cellHovered = -1;
         cellDragged = -1;
         dragging = false;
-        hoverX = -1;
         hoverY = -1;
         repaint();
     }
