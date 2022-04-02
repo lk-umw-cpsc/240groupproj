@@ -159,10 +159,13 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        cellHovered = e.getY() / PIXELS_PER_15;
+        int newHover = e.getY() / PIXELS_PER_15;
+        if (newHover != cellHovered) {
+            cellHovered = e.getY() / PIXELS_PER_15;
+            repaint();
+        }
         hoverX = e.getX();
         hoverY = e.getY();
-        repaint();
     }
 
     @Override
