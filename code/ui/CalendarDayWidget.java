@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -107,8 +106,9 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
 
         if (hovered) {
             g.setColor(COLOR_CELL_BORDER_HOVER);
-            ((Graphics2D)g).setStroke(new BasicStroke(3.0f));
-            g.drawRect(1, 1, width - 5, height - 5);
+            g.drawRect(0, 0, width - 2, height - 2);
+            g.drawRect(1, 1, width - 4, height - 4);
+            g.drawRect(2, 2, width - 6, height - 6);
         }
 
         initEventDrawing(g);

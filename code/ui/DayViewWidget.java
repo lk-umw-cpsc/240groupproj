@@ -26,7 +26,10 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
 
     private int cellDragged;
 
+    private int hoverX, hoverY;
+
     private boolean dragging;
+    private boolean pressing;
 
     private LocalDate date;
 
@@ -49,6 +52,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private static final Color HOVERED_CELL_FOREGROUND_COLOR = Color.WHITE;
     
     private static final Color BG_COLOR_EVENT = new Color(248, 255, 224);
+    private static final Color BG_COLOR_EVENT_HOVER = new Color(169, 201, 56);
     private static final Color FG_COLOR_EVENT = Color.BLACK;
     @Override
     public void paint(Graphics g) {
@@ -69,7 +73,6 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
 
         if (events != null) {
             for (ScheduledEvent e : events) {
-                g.setColor(BG_COLOR_EVENT);
 
                 LocalTime start = e.getStartTime();
                 LocalTime end = e.getEndTime();
@@ -79,6 +82,11 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                 int bottomY = end.getHour() * PIXELS_PER_HOUR;
                 topY += (int)(end.getMinute() / 60.0 * PIXELS_PER_HOUR);
 
+                if (hoverY >= topY && hoverY <= bottomY) {
+                    g.setColor(BG_COLOR_EVENT_HOVER);
+                } else {
+                    g.setColor(BG_COLOR_EVENT);
+                }
                 g.fillRect(0, topY, width, bottomY - topY);
                 g.setColor(FG_COLOR_EVENT);
                 g.drawString(e.getName(), 32, topY);
@@ -127,6 +135,10 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        if (pressing) {
+            pressing = false;
+            dragging = true;
+        }
         if (!dragging/* || e.getButton() != MouseEvent.BUTTON1*/) {
             return;
         }
@@ -143,26 +155,38 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     @Override
     public void mouseMoved(MouseEvent e) {
         cellHovered = e.getY() / PIXELS_PER_15;
+        hoverX = e.getX();
+        hoverY = e.getY();
         repaint();
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // double left-click?
-        if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-            int slot = e.getY() / PIXELS_PER_15;
-            int hour = slot / 4;
-            int minute = slot % 4 * 15;
-            System.out.printf("User chose %s\n", DateTimeFormatter.toAmPm(hour, minute));
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            pressing = false;
+            if (e.getClickCount() == 2) {
+                int slot = e.getY() / PIXELS_PER_15;
+                int hour = slot / 4;
+                int minute = slot % 4 * 15;
+                int hourEnd = hour + 1;
+                int minuteEnd = minute;
+                if (hourEnd == 24) {
+                    hourEnd = 23;
+                    minuteEnd = 59;
+                }
+                BackgroundDaemon.getInstance().getAddEventFrame().appear(null,
+                        date, LocalTime.of(hour, minute), LocalTime.of(hourEnd, minuteEnd));
+                repaint();
+            }
+
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            dragging = true;
+            pressing = true;
             cellHovered = e.getY() / PIXELS_PER_15;
-            cellDragged = cellHovered;
             repaint();
         }
     }
@@ -202,7 +226,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        dragging = false;
+        
     }
 
     @Override
@@ -210,6 +234,8 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
         cellHovered = -1;
         cellDragged = -1;
         dragging = false;
+        hoverX = -1;
+        hoverY = -1;
         repaint();
     }
     
