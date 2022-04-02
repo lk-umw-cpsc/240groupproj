@@ -39,7 +39,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private LocalDate date;
 
     private List<ScheduledEvent> events;
-    private ScheduledEvent rightClickTarget;
+    private ScheduledEvent editCancelTarget;
 
     private List<YRange> hitboxes;
 
@@ -63,11 +63,11 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     }
 
     private void editOptionChosen(ActionEvent e) {
-        BackgroundDaemon.getInstance().getAddEventFrame().appearForEdit(this, rightClickTarget);
+        BackgroundDaemon.getInstance().getAddEventFrame().appearForEdit(this, editCancelTarget);
     }
 
     private void cancelOptionChosen(ActionEvent e) {
-        BackgroundDaemon.getInstance().cancel(date, rightClickTarget);
+        BackgroundDaemon.getInstance().cancel(date, editCancelTarget);
     }
 
     private static final Color BACKGROUND_COLOR = Color.WHITE;
@@ -222,7 +222,15 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
         if (e.getButton() == MouseEvent.BUTTON1) {
             pressing = false;
             if (e.getClickCount() == 2) {
-                int slot = e.getY() / PIXELS_PER_15;
+                int y = e.getY();
+                for (YRange r : hitboxes) {
+                    if (r.contains(y)) {
+                        editCancelTarget = r.event;
+                        editOptionChosen(null);
+                        return;
+                    }
+                }
+                int slot = y / PIXELS_PER_15;
                 int hour = slot / 4;
                 int minute = slot % 4 * 15;
                 int hourEnd = hour + 1;
@@ -283,7 +291,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
             int y = e.getY();
             for (YRange r : hitboxes) {
                 if (r.contains(y)) {
-                    rightClickTarget = r.event;
+                    editCancelTarget = r.event;
                     rightClickMenu.show(this, e.getX(), y);
                 }
             }
