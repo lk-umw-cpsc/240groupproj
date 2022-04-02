@@ -25,7 +25,7 @@ Add below this line!
 
 Paste over new entry here.
 
-Date: 4/1/2022
+Date: 4/2/2022
 Person: Lauren
 Log: Finished the basic functionality
 I want to tweak the drawing of events within DayViewWidget,
