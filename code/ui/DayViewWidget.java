@@ -2,6 +2,7 @@ package code.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -38,7 +39,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private LocalDate date;
 
     private List<ScheduledEvent> events;
-    private ScheduledEvent cancelTarget;
+    private ScheduledEvent rightClickTarget;
 
     private List<YRange> hitboxes;
 
@@ -52,6 +53,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
         rightClickMenu = new JPopupMenu();
         JMenuItem item;
         item = new JMenuItem("Edit");
+        item.addActionListener(this::editOptionChosen);
         rightClickMenu.add(item);
         item = new JMenuItem("Cancel");
         item.addActionListener(this::cancelOptionChosen);
@@ -60,8 +62,12 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
         addMouseMotionListener(this);
     }
 
+    private void editOptionChosen(ActionEvent e) {
+        BackgroundDaemon.getInstance().getAddEventFrame().appearForEdit(this, rightClickTarget);
+    }
+
     private void cancelOptionChosen(ActionEvent e) {
-        BackgroundDaemon.getInstance().cancel(date, cancelTarget);
+        BackgroundDaemon.getInstance().cancel(date, rightClickTarget);
     }
 
     private static final Color BACKGROUND_COLOR = Color.WHITE;
@@ -75,6 +81,9 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private static final Color BG_COLOR_EVENT = new Color(248, 255, 224);
     private static final Color BG_COLOR_EVENT_HOVER = new Color(173, 217, 22);
     private static final Color FG_COLOR_EVENT = Color.BLACK;
+
+    private static final Font EVENT_FONT = FontManager.getInstance().getBoldFont();
+    private static final Font EVENT_LOCATION_FONT = FontManager.getInstance().getLightFont();
     @Override
     public void paint(Graphics g) {
         FontManager.enableFontAntiAliasing(g);
@@ -110,10 +119,15 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                 }
                 g.fillRect(0, topY, width, bottomY - topY);
                 g.setColor(FG_COLOR_EVENT);
-                g.setFont(FontManager.getInstance().getRegularFont());
-                g.drawString(e.getName(), 120, topY + 21);
-                g.setFont(FontManager.getInstance().getLightFont());
-                g.drawString(e.getLocation(), 180, topY + 37);
+                g.setFont(EVENT_FONT);
+                String name = e.getName();
+                int stringWidth = (int)g.getFontMetrics().getStringBounds(name + " ", g).getWidth();
+                g.drawString(e.getName(), 80, topY + 21);
+                String location = e.getLocation();
+                if (!location.isBlank()) {
+                    g.setFont(EVENT_LOCATION_FONT);
+                    g.drawString("@ " + e.getLocation(), 80 + stringWidth, topY + 21);
+                }
             }
         }
     
@@ -269,7 +283,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
             int y = e.getY();
             for (YRange r : hitboxes) {
                 if (r.contains(y)) {
-                    cancelTarget = r.event;
+                    rightClickTarget = r.event;
                     rightClickMenu.show(this, e.getX(), y);
                 }
             }

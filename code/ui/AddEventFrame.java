@@ -5,9 +5,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.concurrent.locks.Lock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +26,7 @@ import code.schedule.DateTimeFormatter;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
-public class AddEventFrame extends JFrame {
+public class AddEventFrame extends JFrame implements WindowListener {
 
     private static final Pattern datePattern = Pattern.compile("^([1-9]|1[0-2])/([1-9]|[12]\\d|3[01])/(\\d\\d\\d\\d)$");
     private static final Pattern timePattern = Pattern.compile("^(1[012]|[1-9]):([0-5]\\d)(AM|am|PM|pm)$");
@@ -51,6 +54,7 @@ public class AddEventFrame extends JFrame {
 
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(this);
 
         Box rowContainer = Box.createVerticalBox();
         rowContainer.setBorder(new EmptyBorder(UIConstants.PADDING, UIConstants.PADDING, UIConstants.PADDING, UIConstants.PADDING));
@@ -268,32 +272,47 @@ public class AddEventFrame extends JFrame {
         if (validateForm() == null)
             return;
         if (editTarget != null) {
-            editTarget.setName(nameField.getText());
-            // editTarget.setLocation(locationField.getText())
-            // ... editTarget.setStartTime();
-        } else {
-            setVisible(false);
-            clearForm();
-            daemon.add(event.getDate(), event);
+            daemon.cancel(editTarget.getDate(), editTarget);
+            daemon.getDayViewFrame().setEnabled(true);
+            editTarget = null;
         }
+        setVisible(false);
+        clearForm();
+        daemon.add(event.getDate(), event);
     }
 
     public void appearForEdit(Component owner, ScheduledEvent editTarget) {
-        if (editTarget != null) {
-
+        if (this.editTarget != null) {
+            cancelEdit();
         }
+        daemon.getDayViewFrame().setEnabled(false);
+
         this.editTarget = editTarget;
+
+        nameField.setText(editTarget.getName());
+        locationField.setText(editTarget.getLocation());
+        dateField.setText(DateTimeFormatter.toSlashString(editTarget.getDate()));
+        startTimeField.setText(DateTimeFormatter.toAmPm(editTarget.getStartTime()));
+        endTimeField.setText(DateTimeFormatter.toAmPm(editTarget.getEndTime()));
+
+        setTitle("Edit Event");
+        addSaveButton.setText("Update Event");
+        setLocationRelativeTo(owner);
+        setVisible(true);
     }
 
     public void appear(Component owner, LocalDate d) {
         if (editTarget != null) {
-            // ???
+            cancelEdit();
         }
         nameField.setText("");
         locationField.setText("");
         dateField.setText(DateTimeFormatter.toSlashString(d));
         startTimeField.setText("8:00AM");
         endTimeField.setText("9:00AM");
+
+        setTitle("Add Event");
+        addSaveButton.setText("Add Event");
 
         nameField.requestFocus();
         setLocationRelativeTo(owner);
@@ -302,13 +321,16 @@ public class AddEventFrame extends JFrame {
 
     public void appear(Component owner, LocalDate d, LocalTime start, LocalTime end) {
         if (editTarget != null) {
-            // ???
+            cancelEdit();
         }
         nameField.setText("");
         locationField.setText("");
         dateField.setText(DateTimeFormatter.toSlashString(d));
         startTimeField.setText(DateTimeFormatter.toAmPm(start));
         endTimeField.setText(DateTimeFormatter.toAmPm(end));
+
+        setTitle("Add Event");
+        addSaveButton.setText("Add Event");
 
         nameField.requestFocus();
         setLocationRelativeTo(owner);
@@ -328,7 +350,8 @@ public class AddEventFrame extends JFrame {
     }
 
     private void cancelEdit() {
-        // implement me
+        editTarget = null;
+        daemon.getDayViewFrame().setEnabled(true);
     }
 
     private void clearForm() {
@@ -342,6 +365,43 @@ public class AddEventFrame extends JFrame {
         badDateRow.setVisible(false);
         badStartTimeRow.setVisible(false);
         badEndTimeRow.setVisible(false);
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        if (editTarget != null) {
+            cancelEdit();
+        }       
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        
     }
 
 }

@@ -249,6 +249,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             repeatLayer.setVisible(false);
         }
         daemon.getReminderManagerFrame().setEnabled(false);
+        setTitle("Edit reminder");
         addSaveButton.setText("Update Reminder");
         nameField.requestFocus();
         pack();
@@ -437,6 +438,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
     }
 
     private void cancelEditMode() {
+        setTitle("Create new reminder");
         daemon.getReminderManagerFrame().setEnabled(true);
         daemon.add(editTarget);
         editMode = false;

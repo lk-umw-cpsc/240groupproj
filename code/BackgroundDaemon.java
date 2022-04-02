@@ -138,7 +138,7 @@ public class BackgroundDaemon implements Runnable {
         return reminderManagerFrame;
     }
 
-    public DayViewFrame getdDayViewFrame() {
+    public DayViewFrame getDayViewFrame() {
         return dayViewFrame;
     }
 

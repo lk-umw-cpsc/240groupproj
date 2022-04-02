@@ -179,13 +179,13 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
     }
 
     private void viewScheduleChosen(ActionEvent e) {
-        daemon.getdDayViewFrame().appear(associatedDate, events);
+        daemon.getDayViewFrame().appear(associatedDate, events);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
-            daemon.getdDayViewFrame().appear(associatedDate, events);
+            daemon.getDayViewFrame().appear(associatedDate, events);
         }
     }
 
