@@ -31,11 +31,11 @@ public class AddReminderFrame extends JFrame implements WindowListener {
     private JTextField descriptionField;
     private JTextField dateField;
     private JTextField timeField;
-
-    private JCheckBox repeatCheckbox;
     private JTextField repeatField;
-    private Box repeatLayer;
+    private JCheckBox repeatCheckbox;
     private JButton addSaveButton;
+
+    private Box repeatLayer;
 
     private Box badNameLayer;
     private Box badDateLayer;
