@@ -166,23 +166,12 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
         // g.setColor(FG_COLOR_EVENT);
         // g.drawString(brief, 7, 37 + eventNumber * 18);
         if (today) {
-            eventY += eventGap + drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_TODAY, FG_COLOR_EVENT_TODAY, brief, 3, eventY, 3, 3);
+            eventY += eventGap + FontManager.drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_TODAY, FG_COLOR_EVENT_TODAY, brief, 3, eventY, 3, 3);
         } else if (thisMonth) {
-            eventY += eventGap + drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT, FG_COLOR_EVENT, brief, 3, eventY, 3, 3);
+            eventY += eventGap + FontManager.drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT, FG_COLOR_EVENT, brief, 3, eventY, 3, 3);
         } else {
-            eventY += eventGap + drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_OTHER_MONTH, FG_COLOR_EVENT_OTHER_MONTH, brief, 3, eventY, 3, 3);
+            eventY += eventGap + FontManager.drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_OTHER_MONTH, FG_COLOR_EVENT_OTHER_MONTH, brief, 3, eventY, 3, 3);
         }
-    }
-
-    private static int drawStringInRectangle(Graphics g, FontMetrics fm, Color bg, Color fg, String text, int x, int y, int padding, int borderRadius) {
-        Rectangle2D r = fm.getStringBounds(text, g);
-        int h = (int)r.getHeight() + (padding << 1);
-        int w = (int)r.getWidth() + (padding << 1);
-        g.setColor(bg);
-        g.fillRoundRect(x, y, w, h, borderRadius, borderRadius);
-        g.setColor(fg);
-        g.drawString(text, x + padding, y + padding + fm.getAscent());
-        return h;
     }
 
     private void addEventChosen(ActionEvent e) {

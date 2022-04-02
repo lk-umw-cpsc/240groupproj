@@ -35,6 +35,8 @@ public class AddEventFrame extends JFrame {
     private JTextField startTimeField;
     private JTextField endTimeField;
 
+    private Box badNameRow;
+
     private JButton addSaveButton;
 
     private ScheduledEvent editTarget;

@@ -6,7 +6,7 @@ import java.time.LocalTime;
 /**
  * This represents a blocked out portion of the user's schedule.
  * 
- * Doctor's appointments, scheduled meetings, etc. should all 
+ * Doctor's appointments, scheduled meetings, etc. should all
  * BE A ScheduledEvent (subclass)
  * 
  * Includes a List of optional ScheduledReminders to remind
@@ -21,20 +21,20 @@ import java.time.LocalTime;
  */
 
 public class ScheduledEvent implements Comparable {
-   private String name;
-   private LocalDate date;
-   private LocalTime startTime;
-   private LocalTime endTime;
-   private String location;
-    
-   public ScheduledEvent(String name, String date, String startTime, String endTime, String location) {   
-       this.name = name;
-       this.location = location;
-       this.date = LocalDate.parse(date);
-       this.startTime = LocalTime.parse(startTime);
-       this.endTime = LocalTime.parse(endTime);
-    //    end = start.plusMinutes(lDur);
-       this.location = location;
+    private String name;
+    private LocalDate date;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private String location;
+
+    public ScheduledEvent(String name, String date, String startTime, String endTime, String location) {
+        this.name = name;
+        this.location = location;
+        this.date = LocalDate.parse(date);
+        this.startTime = LocalTime.parse(startTime);
+        this.endTime = LocalTime.parse(endTime);
+        // end = start.plusMinutes(lDur);
+        this.location = location;
     }
 
     public ScheduledEvent(String desc, LocalDate date, LocalTime startTime, LocalTime endTime, String location) {
@@ -45,69 +45,78 @@ public class ScheduledEvent implements Comparable {
         this.location = location;
     }
 
-   public String getName() {
-       return this.name;
-   }
+    public String getName() {
+        return this.name;
+    }
 
-   public void setDate(LocalDate d) {
-       date = d;
-   }
+    public void setDate(LocalDate d) {
+        date = d;
+    }
 
-   public void setStartTime(LocalTime t) {
-       startTime = t;
-   }
+    public void setStartTime(LocalTime t) {
+        startTime = t;
+    }
 
-   public void setEndTime(LocalTime t) {
-       endTime = t;
-   }
+    public void setEndTime(LocalTime t) {
+        endTime = t;
+    }
 
-   public LocalDate getDate() {
-       return date;
-   }
+    public LocalDate getDate() {
+        return date;
+    }
 
-   public LocalTime getStartTime() {
-       return startTime;
-   }
+    public LocalTime getStartTime() {
+        return startTime;
+    }
 
-   public LocalTime getEndTime() {
-       return endTime;
-   }
+    public LocalTime getEndTime() {
+        return endTime;
+    }
 
-   public void setName(String name) {
-       this.name = name;
-   }
-   
-   public String getLocation() {
-       return this.location;
-   }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-   public void setLocation(String s) {
-       this.location = s;
-   }
+    public String getLocation() {
+        return this.location;
+    }
 
-   public String toBriefString() {
-       int hour = startTime.getHour();
-       String brief;
-       if (hour >= 12) {
-           if (hour > 12) {
-               hour %= 12;
-           }
-           brief = hour + "p";
-       } else {
-           if (hour == 0) {
-               hour = 12;
-           }
-           brief = hour + "a";
-       }
-       return brief + " " + name;
-   }
+    public void setLocation(String s) {
+        this.location = s;
+    }
+
+    public String toBriefString() {
+        int hour = startTime.getHour();
+        int minute = startTime.getMinute();
+        String brief;
+        if (hour >= 12) {
+            if (hour > 12) {
+                hour %= 12;
+            }
+            brief = Integer.toString(hour);
+            if (minute > 0) {
+                brief += String.format(":%02d", minute);
+            }
+            brief += "p";
+        } else {
+            if (hour == 0) {
+                hour = 12;
+            }
+            brief = Integer.toString(hour);
+            if (minute > 0) {
+                brief += String.format(":%02d", minute);
+            }
+            brief += "a";
+        }
+        return brief + " " + name;
+    }
 
     @Override
     public int compareTo(Object o) {
         if (!(o instanceof ScheduledEvent)) {
             return -1;
         }
-        ScheduledEvent s = (ScheduledEvent)o;
+        ScheduledEvent s = (ScheduledEvent) o;
         int dateComparison = date.compareTo(s.date);
         if (dateComparison != 0) {
             return dateComparison;

@@ -1,10 +1,13 @@
 package code.ui.fonts;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -62,5 +65,16 @@ public class FontManager {
     public static void enableFontAntiAliasing(Graphics graphics) {
         Graphics2D g = (Graphics2D)graphics;
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+    }
+
+    public static int drawStringInRectangle(Graphics g, FontMetrics fm, Color bg, Color fg, String text, int x, int y, int padding, int borderRadius) {
+        Rectangle2D r = fm.getStringBounds(text, g);
+        int h = (int)r.getHeight() + (padding << 1);
+        int w = (int)r.getWidth() + (padding << 1);
+        g.setColor(bg);
+        g.fillRoundRect(x, y, w, h, borderRadius, borderRadius);
+        g.setColor(fg);
+        g.drawString(text, x + padding, y + padding + fm.getAscent());
+        return h;
     }
 }

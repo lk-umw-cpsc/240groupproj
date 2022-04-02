@@ -3,6 +3,7 @@ package code.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -34,6 +35,8 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private LocalDate date;
 
     private List<ScheduledEvent> events;
+
+    private List<Rectangle> hitBoxes;
 
     public DayViewWidget() {
         setPreferredSize(new Dimension(400, PIXELS_PER_HOUR * 24));
@@ -80,7 +83,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                 topY += (int)(start.getMinute() / 60.0 * PIXELS_PER_HOUR);
 
                 int bottomY = end.getHour() * PIXELS_PER_HOUR;
-                topY += (int)(end.getMinute() / 60.0 * PIXELS_PER_HOUR);
+                bottomY += (int)(end.getMinute() / 60.0 * PIXELS_PER_HOUR);
 
                 if (hoverY >= topY && hoverY <= bottomY) {
                     g.setColor(BG_COLOR_EVENT_HOVER);
@@ -89,8 +92,10 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                 }
                 g.fillRect(0, topY, width, bottomY - topY);
                 g.setColor(FG_COLOR_EVENT);
-                g.drawString(e.getName(), 32, topY);
-                g.drawString(e.getLocation(), 32, topY + 16);
+                g.setFont(FontManager.getInstance().getRegularFont());
+                g.drawString(e.getName(), 120, topY + 21);
+                g.setFont(FontManager.getInstance().getLightFont());
+                g.drawString(e.getLocation(), 180, topY + 37);
             }
         }
     
