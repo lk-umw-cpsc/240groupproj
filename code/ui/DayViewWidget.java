@@ -55,7 +55,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private static final Color HOVERED_CELL_FOREGROUND_COLOR = Color.WHITE;
     
     private static final Color BG_COLOR_EVENT = new Color(248, 255, 224);
-    private static final Color BG_COLOR_EVENT_HOVER = new Color(169, 201, 56);
+    private static final Color BG_COLOR_EVENT_HOVER = new Color(173, 217, 22);
     private static final Color FG_COLOR_EVENT = Color.BLACK;
     @Override
     public void paint(Graphics g) {

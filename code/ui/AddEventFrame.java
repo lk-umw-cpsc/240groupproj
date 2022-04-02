@@ -1,5 +1,6 @@
 package code.ui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -36,6 +37,9 @@ public class AddEventFrame extends JFrame {
     private JTextField endTimeField;
 
     private Box badNameRow;
+    private Box badDateRow;
+    private Box badStartTimeRow;
+    private Box badEndTimeRow;
 
     private JButton addSaveButton;
 
@@ -73,6 +77,15 @@ public class AddEventFrame extends JFrame {
             row.add(nameField);
         rowContainer.add(row);
 
+        badNameRow = Box.createHorizontalBox();
+            label = new JLabel("Please enter a name");
+            label.setFont(regularFont);
+            label.setForeground(Color.RED);
+            badNameRow.add(label);
+            badNameRow.add(Box.createHorizontalGlue());
+            badNameRow.setVisible(false);
+        rowContainer.add(badNameRow);
+
         row = Box.createHorizontalBox();
             label = new JLabel("Location (Optional):");
             label.setFont(regularFont);
@@ -101,6 +114,15 @@ public class AddEventFrame extends JFrame {
             row.add(dateField);
         rowContainer.add(row);
 
+        badDateRow = Box.createHorizontalBox();
+            label = new JLabel("Please enter a valid date");
+            label.setFont(regularFont);
+            label.setForeground(Color.RED);
+            badDateRow.add(label);
+            badDateRow.add(Box.createHorizontalGlue());
+            badDateRow.setVisible(false);
+        rowContainer.add(badDateRow);
+
         row = Box.createHorizontalBox();
             label = new JLabel("Start time:");
             label.setFont(regularFont);
@@ -115,6 +137,15 @@ public class AddEventFrame extends JFrame {
             row.add(startTimeField);
         rowContainer.add(row);
 
+        badStartTimeRow = Box.createHorizontalBox();
+            label = new JLabel("Please enter a valid time (e.g. 8:00AM)");
+            label.setFont(regularFont);
+            label.setForeground(Color.RED);
+            badStartTimeRow.add(label);
+            badStartTimeRow.add(Box.createHorizontalGlue());
+            badStartTimeRow.setVisible(false);
+        rowContainer.add(badStartTimeRow);
+
         row = Box.createHorizontalBox();
             label = new JLabel("End time:");
             label.setFont(regularFont);
@@ -128,6 +159,15 @@ public class AddEventFrame extends JFrame {
             endTimeField.addActionListener(this::formSubmitted);
             row.add(endTimeField);
         rowContainer.add(row);
+
+        badEndTimeRow = Box.createHorizontalBox();
+            label = new JLabel("Please enter a valid time (e.g. 8:00AM)");
+            label.setFont(regularFont);
+            label.setForeground(Color.RED);
+            badEndTimeRow.add(label);
+            badEndTimeRow.add(Box.createHorizontalGlue());
+            badEndTimeRow.setVisible(false);
+        rowContainer.add(badEndTimeRow);
 
         row = Box.createHorizontalBox();
             addSaveButton = new JButton("Add Event");
@@ -189,25 +229,34 @@ public class AddEventFrame extends JFrame {
         boolean errors = false;
         if (name.isEmpty()) {
             errors = true;
-            // ...
+            badNameRow.setVisible(true);
+        } else {
+            badNameRow.setVisible(false);
         }
         
         if (d == null) {
             errors = true;
-            // ...
+            badDateRow.setVisible(true);
+        } else {
+            badDateRow.setVisible(false);
         }
 
         if (startTime == null) {
             errors = true;
-            // ...
+            badStartTimeRow.setVisible(true);
+        } else {
+            badStartTimeRow.setVisible(false);
         }
 
         if (endTime == null) {
             errors = true;
-            // ...
+            badEndTimeRow.setVisible(true);
+        } else {
+            badEndTimeRow.setVisible(false);
         }
 
         if (errors) {
+            pack();
             return null;
         }
 
@@ -288,6 +337,11 @@ public class AddEventFrame extends JFrame {
         dateField.setText("");
         startTimeField.setText("");
         endTimeField.setText("");
+
+        badNameRow.setVisible(false);
+        badDateRow.setVisible(false);
+        badStartTimeRow.setVisible(false);
+        badEndTimeRow.setVisible(false);
     }
 
 }
