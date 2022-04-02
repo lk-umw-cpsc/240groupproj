@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 import code.BackgroundDaemon;
 import code.schedule.DateTimeFormatter;
 import code.schedule.ScheduledEvent;
+import code.schedule.ScheduledReminder;
 import code.ui.fonts.FontManager;
 
 public class AddEventFrame extends JFrame implements WindowListener {
@@ -319,6 +320,40 @@ public class AddEventFrame extends JFrame implements WindowListener {
         setVisible(false);
         clearForm();
         daemon.add(event.getDate(), event);
+        String reminderName;
+        String reminderDescription;
+        if (remindHourBeforeCheckBox.isSelected()) {
+            LocalTime startTime = event.getStartTime();
+            LocalDateTime dt = LocalDateTime.of(event.getDate(), startTime).minusHours(1);
+            reminderName = "In one hour: " + event.getName();
+            reminderDescription = DateTimeFormatter.toAmPm(startTime) + " at " + event.getLocation();
+            daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
+                    dt, 0));
+        }
+        if (remindDayBeforeCheckBox.isSelected()) {
+            LocalTime startTime = event.getStartTime();
+            LocalDateTime dt = LocalDateTime.of(event.getDate(), startTime).minusDays(1);
+            reminderName = "Tomorrow @ " + DateTimeFormatter.toAmPm(startTime) + ": " + event.getName();
+            reminderDescription = "At " + event.getLocation();
+            daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
+                    dt, 0));
+        }
+        if (remindWeekBeforeCheckBox.isSelected()) {
+            LocalTime startTime = event.getStartTime();
+            LocalDateTime dt = LocalDateTime.of(event.getDate(), startTime).minusWeeks(1);
+            reminderName = "In one week: " + event.getName();
+            reminderDescription = DateTimeFormatter.toAmPm(startTime) + " at " + event.getLocation();
+            daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
+                    dt, 0));
+        }
+        if (remindMonthBeforeCheckBox.isSelected()) {
+            LocalTime startTime = event.getStartTime();
+            LocalDateTime dt = LocalDateTime.of(event.getDate(), startTime).minusMonths(1);
+            reminderName = "In one month: " + event.getName();
+            reminderDescription = DateTimeFormatter.toAmPm(startTime) + " at " + event.getLocation();
+            daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
+                    dt, 0));
+        }
     }
 
     public void appearForEdit(Component owner, ScheduledEvent editTarget) {
