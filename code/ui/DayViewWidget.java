@@ -63,7 +63,8 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     }
 
     private void editOptionChosen(ActionEvent e) {
-        BackgroundDaemon.getInstance().getAddEventFrame().appearForEdit(this, editCancelTarget);
+        BackgroundDaemon d = BackgroundDaemon.getInstance();
+        BackgroundDaemon.getInstance().getAddEventFrame().appearForEdit(d.getDayViewFrame(), editCancelTarget);
     }
 
     private void cancelOptionChosen(ActionEvent e) {
@@ -238,7 +239,8 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                     hourEnd = 23;
                     minuteEnd = 59;
                 }
-                BackgroundDaemon.getInstance().getAddEventFrame().appear(null,
+                BackgroundDaemon d = BackgroundDaemon.getInstance();
+                d.getAddEventFrame().appear(d.getDayViewFrame(),
                         date, LocalTime.of(hour, minute), LocalTime.of(hourEnd, minuteEnd));
                 repaint();
             }
@@ -280,7 +282,8 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                     minuteEnd = 59;
                 }
             }
-            BackgroundDaemon.getInstance().getAddEventFrame().appear(null,
+            BackgroundDaemon d = BackgroundDaemon.getInstance();
+            d.getAddEventFrame().appear(d.getDayViewFrame(),
                 date, LocalTime.of(hourStart, minuteStart), LocalTime.of(hourEnd, minuteEnd));
             cellDragged = -1;
             cellHovered = -1;
