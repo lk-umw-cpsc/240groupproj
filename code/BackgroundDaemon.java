@@ -188,11 +188,11 @@ public class BackgroundDaemon implements Runnable {
             List<ScheduledEvent> events = eventsMap.get(d);
             if (events.contains(e)) {
                 events.remove(e);
-                if (dayViewFrame.isVisible()) {
-                    SwingUtilities.invokeLater(reminderManagerFrame::updateList);
-                }
                 if (monthViewFrame.isVisible()) {
-                    // TO-DO: ...
+                    monthViewFrame.updateDay(d, events);
+                }
+                if (dayViewFrame.isVisible()) {
+                    dayViewFrame.update(d, events);
                 }
             }
         }

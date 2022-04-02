@@ -3,15 +3,18 @@ package code.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import code.BackgroundDaemon;
 import code.schedule.DateTimeFormatter;
@@ -35,15 +38,30 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private LocalDate date;
 
     private List<ScheduledEvent> events;
+    private ScheduledEvent cancelTarget;
 
-    private List<Rectangle> hitBoxes;
+    private List<YRange> hitboxes;
+
+    private JPopupMenu rightClickMenu;
 
     public DayViewWidget() {
-        setPreferredSize(new Dimension(400, PIXELS_PER_HOUR * 24));
+        setPreferredSize(new Dimension(450, PIXELS_PER_HOUR * 24));
         cellHovered = -1;
         cellDragged = -1;
+        hitboxes = new ArrayList<>();
+        rightClickMenu = new JPopupMenu();
+        JMenuItem item;
+        item = new JMenuItem("Edit");
+        rightClickMenu.add(item);
+        item = new JMenuItem("Cancel");
+        item.addActionListener(this::cancelOptionChosen);
+        rightClickMenu.add(item);
         addMouseListener(this);
         addMouseMotionListener(this);
+    }
+
+    private void cancelOptionChosen(ActionEvent e) {
+        BackgroundDaemon.getInstance().cancel(date, cancelTarget);
     }
 
     private static final Color BACKGROUND_COLOR = Color.WHITE;
@@ -135,6 +153,23 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     public void updateDay(LocalDate d, List<ScheduledEvent> events) {
         date = d;
         this.events = events;
+        hitboxes.clear();
+        if (events != null) {
+            for (ScheduledEvent e : events) {
+                LocalTime start = e.getStartTime();
+                LocalTime end = e.getEndTime();
+                int topY = start.getHour() * PIXELS_PER_HOUR;
+                topY += (int)(start.getMinute() / 60.0 * PIXELS_PER_HOUR);
+
+                int bottomY = end.getHour() * PIXELS_PER_HOUR;
+                bottomY += (int)(end.getMinute() / 60.0 * PIXELS_PER_HOUR);
+                YRange range = new YRange();
+                range.top = topY;
+                range.bottom = bottomY;
+                range.event = e;
+                hitboxes.add(range);
+            }
+        }
         repaint();
     }
 
@@ -229,6 +264,15 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
             cellDragged = -1;
             cellHovered = -1;
             repaint();
+        }
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            int y = e.getY();
+            for (YRange r : hitboxes) {
+                if (r.contains(y)) {
+                    cancelTarget = r.event;
+                    rightClickMenu.show(this, e.getX(), y);
+                }
+            }
         }
     }
 
