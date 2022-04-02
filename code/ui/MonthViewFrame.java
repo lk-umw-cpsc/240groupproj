@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -11,8 +15,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,7 +28,7 @@ import code.BackgroundDaemon;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
-public class MonthViewFrame extends JFrame {
+public class MonthViewFrame extends JFrame implements MouseListener {
 
     private static final String[] DAYS_OF_THE_WEEK = {
         "Sunday", "Monday", "Tuesday", "Wednesday",
@@ -37,11 +43,15 @@ public class MonthViewFrame extends JFrame {
     };
 
     private Map<LocalDate, CalendarDayWidget> widgetsMap;
+
+    private LocalDateTime viewedDate;
     
     private BackgroundDaemon daemon;
 
     private CalendarDayWidget[] calendarWidgets = new CalendarDayWidget[35];
     private JLabel monthLabel;
+    private JLabel nextButton;
+    private JLabel previousButton;
 
     private final Color CALENDAR_HEADING_BACKGROUND_COLOR = new Color(209, 71, 82);
     private final Color CALENDAR_HEADING_FOREGROUND_COLOR = Color.WHITE;
@@ -64,9 +74,27 @@ public class MonthViewFrame extends JFrame {
         monthLabel.setForeground(CALENDAR_HEADING_FOREGROUND_COLOR);
         monthLabel.setFont(FontManager.getInstance().getBoldFont().deriveFont(32.0f));
         monthLabel.setBorder(new EmptyBorder(8, 0, 8, 0));
+        try {
+            previousButton = new JLabel(new ImageIcon(ImageIO.read(new File("Images/previous.png"))));
+            previousButton.addMouseListener(this);
+            previousButton.setBorder(new EmptyBorder(24, 16, 8, 0));
+            monthLabelContainer.add(previousButton);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         monthLabelContainer.add(Box.createHorizontalGlue());
         monthLabelContainer.add(monthLabel);
         monthLabelContainer.add(Box.createHorizontalGlue());
+        try {
+            nextButton = new JLabel(new ImageIcon(ImageIO.read(new File("Images/next.png"))));
+            nextButton.addMouseListener(this);
+            nextButton.setBorder(new EmptyBorder(24, 0, 8, 16));
+            monthLabelContainer.add(nextButton);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         add(monthLabelContainer);
 
         JPanel weekdayGridPanel = new JPanel();
@@ -103,10 +131,16 @@ public class MonthViewFrame extends JFrame {
     }
 
     public void appear(LocalDateTime dt) {
+        updateGrid(dt);
+        setVisible(true);
+    }
+
+    private void updateGrid(LocalDateTime dt) {
+        this.viewedDate = dt;
         LocalDate today = LocalDate.now();
 
-        int currentMonth = today.getMonthValue();
-        monthLabel.setText(MONTHS[currentMonth] + " " + today.getYear());
+        int currentMonth = dt.getMonthValue();
+        monthLabel.setText(MONTHS[currentMonth] + " " + dt.getYear());
         LocalDate firstOfTheMonth = LocalDate.of(dt.getYear(), dt.getMonthValue(), 1);
         Lock lock = daemon.getLock();
         lock.lock();
@@ -124,7 +158,15 @@ public class MonthViewFrame extends JFrame {
             calendarWidgets[day].updateInfo(currentDay, isThisMonth, isToday, happeningThisDay);
         }
         lock.unlock();
-        setVisible(true);
+        repaint();
+    }
+
+    private void nextButtonPressed() {
+        updateGrid(viewedDate.plusMonths(1));
+    }
+
+    private void previousButtonPressed() {
+        updateGrid(viewedDate.minusMonths(1));
     }
 
     public void updateDay(LocalDate d, List<ScheduledEvent> events) {
@@ -136,6 +178,35 @@ public class MonthViewFrame extends JFrame {
 
     public void appear() {
         appear(LocalDateTime.now());
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (e.getSource() == nextButton) {
+            nextButtonPressed();
+        } else if(e.getSource() == previousButton) {
+            previousButtonPressed();
+        }
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
     }
     
 }
