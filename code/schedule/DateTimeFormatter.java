@@ -38,12 +38,16 @@ public class DateTimeFormatter {
         } else if (dt.isBefore(weekFromNow)) {
             day = "This " + DAYS_OF_THE_WEEK[dt.getDayOfWeek().getValue()];
         } else {
-            day = DAYS_OF_THE_WEEK[dt.getDayOfWeek().getValue() - 1];
+            day = DAYS_OF_THE_WEEK[dt.getDayOfWeek().getValue()];
             day += ", " + sMonth + "/" + sDay + "/" + sYear;
         }
 
         
         return day + " at " + toAmPm(dt);
+    }
+
+    public static String getDayOfWeek(LocalDate d) {
+        return DAYS_OF_THE_WEEK[d.getDayOfWeek().getValue()];
     }
 
     public static String format(LocalDate d) {

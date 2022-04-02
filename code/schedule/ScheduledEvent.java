@@ -27,6 +27,11 @@ public class ScheduledEvent implements Comparable<ScheduledEvent> {
     private LocalTime endTime;
     private String location;
 
+    public ScheduledReminder hourBefore;
+    public ScheduledReminder dayBefore;
+    public ScheduledReminder weekBefore;
+    public ScheduledReminder monthBefore;
+
     public ScheduledEvent(String name, String date, String startTime, String endTime, String location) {
         this.name = name;
         this.location = location;
