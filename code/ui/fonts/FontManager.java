@@ -77,4 +77,11 @@ public class FontManager {
         g.drawString(text, x + padding, y + padding + fm.getAscent());
         return h;
     }
+
+    public static void drawCenteredText(Graphics g, FontMetrics fm, String text, int x, int y, int width) {
+        x += width / 2;
+        Rectangle2D r = fm.getStringBounds(text, g);
+        x -= r.getWidth() / 2;
+        g.drawString(text, x, y);
+    }
 }
