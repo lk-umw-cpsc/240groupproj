@@ -80,7 +80,6 @@ public class MonthViewFrame extends JFrame implements MouseListener {
             previousButton.setBorder(new EmptyBorder(24, 16, 8, 0));
             monthLabelContainer.add(previousButton);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         monthLabelContainer.add(Box.createHorizontalGlue());
@@ -92,7 +91,6 @@ public class MonthViewFrame extends JFrame implements MouseListener {
             nextButton.setBorder(new EmptyBorder(24, 0, 8, 16));
             monthLabelContainer.add(nextButton);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         add(monthLabelContainer);
