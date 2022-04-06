@@ -2,11 +2,12 @@ package code.schedule;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class DateTimeFormatter {
 
     private static final String[] DAYS_OF_THE_WEEK = {
-        "Monday", "Tuesday", "Wednesday", "Thursday",
+        null, "Monday", "Tuesday", "Wednesday", "Thursday",
         "Friday", "Saturday", "Sunday"
     };
 
@@ -35,9 +36,9 @@ public class DateTimeFormatter {
         } else if (tomDay == sDay && tomMonth == sMonth && tomYear == sYear) {
             day = "Tomorrow";
         } else if (dt.isBefore(weekFromNow)) {
-            day = "This " + DAYS_OF_THE_WEEK[dt.getDayOfWeek().getValue() - 1];
+            day = "This " + DAYS_OF_THE_WEEK[dt.getDayOfWeek().getValue()];
         } else {
-            day = DAYS_OF_THE_WEEK[dt.getDayOfWeek().getValue() - 1];
+            day = DAYS_OF_THE_WEEK[dt.getDayOfWeek().getValue()];
             day += ", " + sMonth + "/" + sDay + "/" + sYear;
         }
 
@@ -45,9 +46,51 @@ public class DateTimeFormatter {
         return day + " at " + toAmPm(dt);
     }
 
+    public static String getDayOfWeek(LocalDate d) {
+        return DAYS_OF_THE_WEEK[d.getDayOfWeek().getValue()];
+    }
+
+    public static String format(LocalDate d) {
+        return String.format("%s, %d/%d/%d", DAYS_OF_THE_WEEK[d.getDayOfWeek().getValue()],
+            d.getMonthValue(), d.getDayOfMonth(), d.getYear());
+    }
+
     public static String toAmPm(LocalDateTime dt) {
         String time = String.format(":%02d", dt.getMinute());
         int hour = dt.getHour();
+        if (hour >= 12) {
+            if (hour > 12) {
+                hour = hour % 12;
+            }
+            time = hour + time + "PM";
+        } else {
+            if (hour == 0) {
+                hour = 12;
+            }
+            time = hour + time + "AM";
+        }
+        return time;
+    }
+
+    public static String toAmPm(LocalTime t) {
+        String time = String.format(":%02d", t.getMinute());
+        int hour = t.getHour();
+        if (hour >= 12) {
+            if (hour > 12) {
+                hour = hour % 12;
+            }
+            time = hour + time + "PM";
+        } else {
+            if (hour == 0) {
+                hour = 12;
+            }
+            time = hour + time + "AM";
+        }
+        return time;
+    }
+
+    public static String toAmPm(int hour, int minute) {
+        String time = String.format(":%02d", minute);
         if (hour >= 12) {
             if (hour > 12) {
                 hour = hour % 12;

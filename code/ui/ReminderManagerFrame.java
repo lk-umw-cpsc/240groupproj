@@ -38,7 +38,7 @@ public class ReminderManagerFrame extends JFrame {
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
         scrollPane.setPreferredSize(new Dimension(600, 400));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(UIConstants.JSCROLLPANE_VERTICAL_SCROLLBAR_INCREMENT);
         
         scrollPane.setBorder(null);
         add(scrollPane);

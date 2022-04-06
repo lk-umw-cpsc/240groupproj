@@ -1,17 +1,13 @@
 package code.ui;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Rectangle2D;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,7 +19,7 @@ import code.BackgroundDaemon;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
-public class DayWidget extends JComponent implements MouseListener {
+public class CalendarDayWidget extends JComponent implements MouseListener {
 
     private JPopupMenu rightClickMenu;
     private final BackgroundDaemon daemon;
@@ -41,7 +37,7 @@ public class DayWidget extends JComponent implements MouseListener {
 
     private List<ScheduledEvent> events;
 
-    public DayWidget(boolean drawRightBorder, boolean drawBottomBorder) {
+    public CalendarDayWidget(boolean drawRightBorder, boolean drawBottomBorder) {
         drawsRightBorder = drawRightBorder;
         drawsBottomBorder = drawBottomBorder;
 
@@ -49,6 +45,7 @@ public class DayWidget extends JComponent implements MouseListener {
 
         rightClickMenu = new JPopupMenu();
         JMenuItem menuOption = new JMenuItem("View schedule");
+        menuOption.addActionListener(this::viewScheduleChosen);
         rightClickMenu.add(menuOption);
 
         menuOption = new JMenuItem("Add event");
@@ -74,6 +71,11 @@ public class DayWidget extends JComponent implements MouseListener {
         // setFocusable(true);
     }
 
+    public void updateEvents(List<ScheduledEvent> events) {
+        this.events = events;
+        repaint();
+    }
+
     private static final Color BG_COLOR_THIS_MONTH = new Color(255, 255, 255);
     private static final Color BG_COLOR_OTHER_MONTH = new Color(233, 233, 233);
     private static final Color BG_COLOR_TODAY = new Color(248, 255, 224);
@@ -88,7 +90,7 @@ public class DayWidget extends JComponent implements MouseListener {
         int width = getWidth();
         int height = getHeight();
 
-        enableFontAntiAliasing(g);
+        FontManager.enableFontAntiAliasing(g);
 
         if (today) {
             g.setColor(BG_COLOR_TODAY);
@@ -101,8 +103,9 @@ public class DayWidget extends JComponent implements MouseListener {
 
         if (hovered) {
             g.setColor(COLOR_CELL_BORDER_HOVER);
-            ((Graphics2D)g).setStroke(new BasicStroke(3.0f));
-            g.drawRect(1, 1, width - 5, height - 5);
+            g.drawRect(0, 0, width - 2, height - 2);
+            g.drawRect(1, 1, width - 4, height - 4);
+            g.drawRect(2, 2, width - 6, height - 6);
         }
 
         initEventDrawing(g);
@@ -117,7 +120,7 @@ public class DayWidget extends JComponent implements MouseListener {
         g.drawString(dayAsString, 6, 18);
 
         g.setFont(EVENT_FONT);
-        if (!events.isEmpty()) {
+        if (events != null) {
             for (int i = 0, size = events.size(); i < size; i++) {
                 drawEvent(g, events.get(i).toBriefString(), i);
             }
@@ -160,44 +163,31 @@ public class DayWidget extends JComponent implements MouseListener {
         // g.setColor(FG_COLOR_EVENT);
         // g.drawString(brief, 7, 37 + eventNumber * 18);
         if (today) {
-            eventY += eventGap + drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_TODAY, FG_COLOR_EVENT_TODAY, brief, 3, eventY, 3, 3);
+            eventY += eventGap + FontManager.drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_TODAY, FG_COLOR_EVENT_TODAY, brief, 3, eventY, 3, 3);
         } else if (thisMonth) {
-            eventY += eventGap + drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT, FG_COLOR_EVENT, brief, 3, eventY, 3, 3);
+            eventY += eventGap + FontManager.drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT, FG_COLOR_EVENT, brief, 3, eventY, 3, 3);
         } else {
-            eventY += eventGap + drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_OTHER_MONTH, FG_COLOR_EVENT_OTHER_MONTH, brief, 3, eventY, 3, 3);
+            eventY += eventGap + FontManager.drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_OTHER_MONTH, FG_COLOR_EVENT_OTHER_MONTH, brief, 3, eventY, 3, 3);
         }
-    }
-
-    private static int drawStringInRectangle(Graphics g, FontMetrics fm, Color bg, Color fg, String text, int x, int y, int padding, int borderRadius) {
-        Rectangle2D r = fm.getStringBounds(text, g);
-        int h = (int)r.getHeight() + (padding << 1);
-        int w = (int)r.getWidth() + (padding << 1);
-        g.setColor(bg);
-        g.fillRoundRect(x, y, w, h, borderRadius, borderRadius);
-        g.setColor(fg);
-        g.drawString(text, x + padding, y + padding + fm.getAscent());
-        return h;
-    }
-
-    private static void enableFontAntiAliasing(Graphics graphics) {
-        Graphics2D g = (Graphics2D)graphics;
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
     }
 
     private void addEventChosen(ActionEvent e) {
         daemon.getAddEventFrame().appear(this, associatedDate);
     }
 
+    private void viewScheduleChosen(ActionEvent e) {
+        daemon.getDayViewFrame().appear(associatedDate, events);
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getClickCount() == 2) {
-            // do something here
+        if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
+            daemon.getDayViewFrame().appear(associatedDate, events);
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
         
     }
 

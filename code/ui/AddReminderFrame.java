@@ -31,11 +31,11 @@ public class AddReminderFrame extends JFrame implements WindowListener {
     private JTextField descriptionField;
     private JTextField dateField;
     private JTextField timeField;
-
-    private JCheckBox repeatCheckbox;
     private JTextField repeatField;
-    private Box repeatLayer;
+    private JCheckBox repeatCheckbox;
     private JButton addSaveButton;
+
+    private Box repeatLayer;
 
     private Box badNameLayer;
     private Box badDateLayer;
@@ -79,7 +79,9 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             // Add horizontal glue after the label, left-aligning the label
             layer.add(Box.createHorizontalGlue());
         layerPanel.add(layer);
+
             nameField = new JTextField(UIConstants.JTEXTFIELD_DEFAULT_COLUMNS);
+            nameField.addActionListener(this::formSubmitted);
             nameField.setFont(lightFont);
         layerPanel.add(nameField);
 
@@ -100,6 +102,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         layerPanel.add(layer);
 
             descriptionField = new JTextField(UIConstants.JTEXTFIELD_DEFAULT_COLUMNS);
+            descriptionField.addActionListener(this::formSubmitted);
             descriptionField.setFont(lightFont);
         layerPanel.add(descriptionField);
 
@@ -113,6 +116,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         layer = Box.createHorizontalBox();
             dateField = new JTextField(UIConstants.JTEXTFIELD_DEFAULT_COLUMNS);
             dateField.setFont(lightFont);
+            dateField.addActionListener(this::formSubmitted);
             layer.add(dateField);
 
             JButton calendarButton = new JButton("...");
@@ -137,6 +141,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         layerPanel.add(layer);
 
             timeField = new JTextField(UIConstants.JTEXTFIELD_DEFAULT_COLUMNS);
+            timeField.addActionListener(this::formSubmitted);
             timeField.setFont(lightFont);
         layerPanel.add(timeField);
 
@@ -173,6 +178,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             repeatField = new JTextField(2);
             repeatField.setFont(lightFont);
             repeatField.setMaximumSize(repeatField.getPreferredSize());
+            repeatField.addActionListener(this::formSubmitted);
             repeatLayer.add(repeatField);
             label = new JLabel(" days");
             label.setFont(regularFont);
@@ -193,7 +199,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         layer = Box.createHorizontalBox();
             addSaveButton = new JButton("Add Reminder");
             addSaveButton.setFont(regularFont);
-            addSaveButton.addActionListener(this::addReminderPressed);
+            addSaveButton.addActionListener(this::formSubmitted);
             Dimension d = addSaveButton.getPreferredSize();
             addSaveButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, d.height));
         layer.add(addSaveButton);
@@ -249,6 +255,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             repeatLayer.setVisible(false);
         }
         daemon.getReminderManagerFrame().setEnabled(false);
+        setTitle("Edit reminder");
         addSaveButton.setText("Update Reminder");
         nameField.requestFocus();
         pack();
@@ -341,7 +348,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         // hook up with month view here
     }
 
-    private void addReminderPressed(ActionEvent e) {
+    private void formSubmitted(ActionEvent e) {
         // ^([1-9]|1[0-2])/([1-9]|[12]\d|3[01])/(\d\d\d\d)$
         // ^(1[012]|[1-9]):([0-5]\d)(AM|am|PM|pm)$
         String name = nameField.getText();
@@ -437,6 +444,7 @@ public class AddReminderFrame extends JFrame implements WindowListener {
     }
 
     private void cancelEditMode() {
+        setTitle("Create new reminder");
         daemon.getReminderManagerFrame().setEnabled(true);
         daemon.add(editTarget);
         editMode = false;
@@ -445,7 +453,6 @@ public class AddReminderFrame extends JFrame implements WindowListener {
 
     @Override
     public void windowOpened(WindowEvent e) {
-        // TODO Auto-generated method stub
         
     }
 
@@ -458,31 +465,26 @@ public class AddReminderFrame extends JFrame implements WindowListener {
 
     @Override
     public void windowClosed(WindowEvent e) {
-        // TODO Auto-generated method stub
         
     }
 
     @Override
     public void windowIconified(WindowEvent e) {
-        // TODO Auto-generated method stub
         
     }
 
     @Override
     public void windowDeiconified(WindowEvent e) {
-        // TODO Auto-generated method stub
         
     }
 
     @Override
     public void windowActivated(WindowEvent e) {
-        // TODO Auto-generated method stub
         
     }
 
     @Override
     public void windowDeactivated(WindowEvent e) {
-        // TODO Auto-generated method stub
         
     }
 

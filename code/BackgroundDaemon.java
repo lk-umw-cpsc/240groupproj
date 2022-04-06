@@ -1,9 +1,12 @@
 package code;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -15,6 +18,7 @@ import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
 import code.ui.AddEventFrame;
 import code.ui.AddReminderFrame;
+import code.ui.DayViewFrame;
 import code.ui.MonthViewFrame;
 import code.ui.ReminderManagerFrame;
 import code.ui.systemtray.SystemTrayManager;
@@ -44,12 +48,13 @@ public class BackgroundDaemon implements Runnable {
     private volatile boolean running;
 
     private List<ScheduledReminder> reminders;
-    private List<ScheduledEvent> events;
+    private Map<LocalDate, List<ScheduledEvent>> eventsMap;
 
     private AddReminderFrame addReminderFrame;
     private AddEventFrame addEventFrame;
     private ReminderManagerFrame reminderManagerFrame;
     private MonthViewFrame monthViewFrame;
+    private DayViewFrame dayViewFrame;
 
     private SystemTrayManager trayManager;
 
@@ -67,9 +72,11 @@ public class BackgroundDaemon implements Runnable {
 
     private BackgroundDaemon() {
         reminders = new ArrayList<>();
-        events = new ArrayList<>();
+        List<ScheduledEvent> events = new ArrayList<>();
 
         readySignal = new Semaphore(0);
+
+        eventsMap = new HashMap<>();
 
         // events.add(new ScheduledEvent("I'm an event", LocalDate.now(), 
         //     LocalTime.of(8, 0), LocalTime.of(9, 0), "Somewhere"));
@@ -77,6 +84,21 @@ public class BackgroundDaemon implements Runnable {
         // Load data structures from file
         ScheduleIO.loadSchedule(reminders, events);
         Collections.sort(reminders);
+
+        for (ScheduledEvent e : events) {
+            LocalDate d = e.getDate();
+            if (eventsMap.containsKey(d)) {
+                eventsMap.get(d).add(e);
+            } else {
+                List<ScheduledEvent> l = new ArrayList<>();
+                l.add(e);
+                eventsMap.put(d, l);
+            }
+        }
+
+        for (LocalDate d : eventsMap.keySet()) {
+            Collections.sort(eventsMap.get(d));
+        }
         // Collections.sort(events);
 
         // build UI on Swing event thread
@@ -95,6 +117,8 @@ public class BackgroundDaemon implements Runnable {
         addEventFrame = new AddEventFrame(this);
 
         reminderManagerFrame = new ReminderManagerFrame(this);
+
+        dayViewFrame = new DayViewFrame(this);
         // addEventFrame = new AddEventFrame(this);
         trayManager = new SystemTrayManager(this, addReminderFrame, addEventFrame, reminderManagerFrame, monthViewFrame);
         
@@ -112,6 +136,10 @@ public class BackgroundDaemon implements Runnable {
 
     public ReminderManagerFrame getReminderManagerFrame() {
         return reminderManagerFrame;
+    }
+
+    public DayViewFrame getDayViewFrame() {
+        return dayViewFrame;
     }
 
     /**
@@ -137,14 +165,10 @@ public class BackgroundDaemon implements Runnable {
     }
 
     /**
-     * Gets a list of the user's scheduled events.
-     * 
-     * Lock must be locked when accessing the returned data structure.
-     * See getLock().
-     * @return A List<ScheduledEvent> containing user's scheduled events.
+     * update me
      */
-    public List<ScheduledEvent> getEvents() {
-        return events;
+    public Map<LocalDate, List<ScheduledEvent>> getEvents() {
+        return eventsMap;
     }
 
     public void cancel(ScheduledReminder r) {
@@ -158,12 +182,18 @@ public class BackgroundDaemon implements Runnable {
         lock.unlock();
     }
 
-    public void cancel(ScheduledEvent e) {
+    public void cancel(LocalDate d, ScheduledEvent e) {
         lock.lock();
-        if (events.contains(e)) {
-            events.remove(e);
-            if (reminderManagerFrame.isVisible()) {
-                SwingUtilities.invokeLater(reminderManagerFrame::updateList);
+        if (eventsMap.containsKey(d)) {
+            List<ScheduledEvent> events = eventsMap.get(d);
+            if (events.contains(e)) {
+                events.remove(e);
+                if (monthViewFrame.isVisible()) {
+                    monthViewFrame.updateDay(d, events);
+                }
+                if (dayViewFrame.isVisible()) {
+                    dayViewFrame.update(d, events);
+                }
             }
         }
         lock.unlock();
@@ -179,12 +209,23 @@ public class BackgroundDaemon implements Runnable {
         lock.unlock();
     }
 
-    public void add(ScheduledEvent e) {
+    public void add(LocalDate d, ScheduledEvent e) {
         lock.lock();
-        events.add(e);
-        // Collections.sort(events);
-        if (reminderManagerFrame.isVisible()) {
-            SwingUtilities.invokeLater(reminderManagerFrame::updateList);
+        List<ScheduledEvent> list;
+        if (eventsMap.containsKey(d)) {
+            list = eventsMap.get(d);
+            list.add(e);
+            Collections.sort(list);
+        } else {
+            list = new ArrayList<ScheduledEvent>();
+            list.add(e);
+            eventsMap.put(d, list);
+        }
+        if (monthViewFrame.isVisible()) {
+            monthViewFrame.updateDay(d, list);
+        }
+        if (dayViewFrame.isVisible()) {
+            dayViewFrame.update(d, list);
         }
         lock.unlock();
     }
@@ -234,7 +275,11 @@ public class BackgroundDaemon implements Runnable {
             }
 
             if (changed) {
-                ScheduleIO.saveSchedule(reminders, events);
+                List<ScheduledEvent> allEvents = new ArrayList<>();
+                for (List<ScheduledEvent> l : eventsMap.values()) {
+                    allEvents.addAll(l);
+                }
+                ScheduleIO.saveSchedule(reminders, allEvents);
                 if (reminderManagerFrame.isVisible()) {
                     SwingUtilities.invokeLater(reminderManagerFrame::updateList);
                 }
@@ -258,7 +303,11 @@ public class BackgroundDaemon implements Runnable {
         }
 
         lock.lock();
-        ScheduleIO.saveSchedule(reminders, events);
+        List<ScheduledEvent> allEvents = new ArrayList<>();
+        for (List<ScheduledEvent> l : eventsMap.values()) {
+            allEvents.addAll(l);
+        }
+        ScheduleIO.saveSchedule(reminders, allEvents);
         lock.unlock();
         System.exit(0);
     }

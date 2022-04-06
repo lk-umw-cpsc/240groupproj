@@ -25,6 +25,26 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 4/2/2022
+Person: Lauren
+Log: Finished the basic functionality
+I want to tweak the drawing of events within DayViewWidget,
+but I'm going to take a break for now.
+
+Date: 4/1/2022
+Person: Lauren
+Log: Made significant progress on add event frame
+Created DayViewFrame
+DayViewFrame is partially functional. Need to make
+drawing of events look more proper.
+Events now appear in the day view frame and the calendar.
+Adding an event updates the calendar and day view frame
+if that day is visible within those windows.
+We're nearly finished :)
+midnight: fixed bug mention previously
+added form validation to add event frame
+almost there
+
 Date: 3/31/2022
 Person: Lauren
 Log: Placed finishing touches on CalendarViewFrame
