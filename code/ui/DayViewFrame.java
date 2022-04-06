@@ -35,9 +35,9 @@ public class DayViewFrame extends JFrame {
         dayContainer.add(Box.createHorizontalGlue());
 
         JScrollPane scrollPane = new JScrollPane(widget = new DayViewWidget());
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(UIConstants.JSCROLLPANE_VERTICAL_SCROLLBAR_INCREMENT);
-        scrollPane.setPreferredSize(new Dimension(400 + scrollPane.getVerticalScrollBar().getWidth(), 512));
+        scrollPane.setPreferredSize(new Dimension(450 + (int)scrollPane.getVerticalScrollBar().getPreferredSize().getWidth(), 512));
         add(scrollPane);
 
         pack();

@@ -63,7 +63,8 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     }
 
     private void editOptionChosen(ActionEvent e) {
-        BackgroundDaemon.getInstance().getAddEventFrame().appearForEdit(this, editCancelTarget);
+        BackgroundDaemon d = BackgroundDaemon.getInstance();
+        BackgroundDaemon.getInstance().getAddEventFrame().appearForEdit(d.getDayViewFrame(), editCancelTarget);
     }
 
     private void cancelOptionChosen(ActionEvent e) {
@@ -77,9 +78,11 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private static final Color TIME_FIFTEEN_MIN_COLOR = new Color(64, 64, 64);
     private static final Color HOVERED_CELL_BACKGROUND_COLOR = new Color(209, 71, 82);
     private static final Color HOVERED_CELL_FOREGROUND_COLOR = Color.WHITE;
-    
-    private static final Color BG_COLOR_EVENT = new Color(248, 255, 224);
-    private static final Color BG_COLOR_EVENT_HOVER = new Color(173, 217, 22);
+    private static final Color HOVERED_CELL_LINE_COLOR = new Color(32, 32, 32);
+    private static final Color HOVERED_CELL_FOREGROUND_COLOR_BLOCKED = new Color(102, 133, 0);
+    // private static final Color BG_COLOR_EVENT = new Color(248, 255, 224);
+    private static final Color BG_COLOR_EVENT = new Color(173, 217, 22);
+    private static final Color BG_COLOR_EVENT_HOVER = new Color(238, 255, 0);
     private static final Color FG_COLOR_EVENT = Color.BLACK;
 
     private static final Font EVENT_FONT = FontManager.getInstance().getBoldFont();
@@ -122,44 +125,64 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                 g.setFont(EVENT_FONT);
                 String name = e.getName();
                 int stringWidth = (int)g.getFontMetrics().getStringBounds(name + " ", g).getWidth();
-                g.drawString(e.getName(), 80, topY + 21);
+                // g.drawString(e.getName(), 80, topY + 21);
+                FontManager.drawCenteredText(g, g.getFontMetrics(), name, 0, topY + 21, width);
                 String location = e.getLocation();
                 if (!location.isBlank()) {
                     g.setFont(EVENT_LOCATION_FONT);
-                    g.drawString("@ " + e.getLocation(), 80 + stringWidth, topY + 21);
+                    // g.drawString("@ " + e.getLocation(), 80 + stringWidth, topY + 21);
                 }
             }
         }
-    
         int y = 0;
         g.setFont(FontManager.getInstance().getMonospaceFont());
         int cell = 0;
         for (int hour = 0; hour < 24; hour++) {
-            if ((cellDragged < 0 && cell == cellHovered) 
+            /*if ((cellDragged < 0 && cell == cellHovered) 
                     || (cellDragged >= 0 && cell >= cellHovered && cell <= cellDragged)) {
                 g.setColor(HOVERED_CELL_FOREGROUND_COLOR);
             } else {
                 g.setColor(TIME_HOUR_COLOR);                
-            }
-            g.drawString(String.format("%7s", DateTimeFormatter.toAmPm(hour, 0)), 6, y+22);
-            cell++;
-            for (int quarter = 1; quarter < 4; quarter++) {
+            }*/
+            for (int quarter = 0; quarter < 4; quarter++, cell++) {
+                boolean fallsWithinScheduledBlock = false;
+                for (YRange r : hitboxes) {
+                    if (r.contains(y)) {
+                        fallsWithinScheduledBlock = true;
+                        break;
+                    }
+                }
                 if ((cellDragged < 0 && cell == cellHovered) 
                         || (cellDragged >= 0 && cell >= cellHovered && cell <= cellDragged)) {
-                    g.setColor(HOVERED_CELL_FOREGROUND_COLOR);
+                    if (fallsWithinScheduledBlock) {
+                        g.setColor(HOVERED_CELL_FOREGROUND_COLOR_BLOCKED);
+                    } else {
+                        g.setColor(HOVERED_CELL_FOREGROUND_COLOR);
+                    }
                 } else {
-                    g.setColor(TIME_FIFTEEN_MIN_COLOR);
+                    if (quarter == 0) {
+                        g.setColor(TIME_HOUR_COLOR);
+                    } else {
+                        g.setColor(TIME_FIFTEEN_MIN_COLOR);
+                    }
                 }
-                g.drawString(String.format("%7s", DateTimeFormatter.toAmPm(hour, (quarter * 15))),
-                        6, y + quarter * PIXELS_PER_15 + 22);
-                g.setColor(FIFTEEN_MIN_LINE_COLOR);
-                g.drawLine(0, y + (quarter) * PIXELS_PER_15, width - 1, y + (quarter) * PIXELS_PER_15);
-                cell++;
-            }
-            y += PIXELS_PER_HOUR;
-            if (hour < 23) {
-                g.setColor(HOUR_LINE_COLOR);
+                g.drawString(String.format("%7s", DateTimeFormatter.toAmPm(hour, quarter*15)), 6, y + 22);
+                
+                if (fallsWithinScheduledBlock) {
+                    g.setColor(HOVERED_CELL_LINE_COLOR);
+                } else {
+                    if (quarter == 0) {
+                        g.setColor(HOUR_LINE_COLOR);
+                    } else {
+                        g.setColor(FIFTEEN_MIN_LINE_COLOR);
+                    }
+                }
                 g.drawLine(0, y, width - 1, y);
+                y += PIXELS_PER_15;
+                // if (hour < 23) {
+                //     g.setColor(HOUR_LINE_COLOR);
+                //     g.drawLine(0, y, width - 1, y);
+                // }
             }
         }
     }
@@ -179,7 +202,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                 bottomY += (int)(end.getMinute() / 60.0 * PIXELS_PER_HOUR);
                 YRange range = new YRange();
                 range.top = topY;
-                range.bottom = bottomY;
+                range.bottom = bottomY - PIXELS_PER_15 + 1;
                 range.event = e;
                 hitboxes.add(range);
             }
@@ -238,7 +261,8 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                     hourEnd = 23;
                     minuteEnd = 59;
                 }
-                BackgroundDaemon.getInstance().getAddEventFrame().appear(null,
+                BackgroundDaemon d = BackgroundDaemon.getInstance();
+                d.getAddEventFrame().appear(d.getDayViewFrame(),
                         date, LocalTime.of(hour, minute), LocalTime.of(hourEnd, minuteEnd));
                 repaint();
             }
@@ -280,7 +304,8 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                     minuteEnd = 59;
                 }
             }
-            BackgroundDaemon.getInstance().getAddEventFrame().appear(null,
+            BackgroundDaemon d = BackgroundDaemon.getInstance();
+            d.getAddEventFrame().appear(d.getDayViewFrame(),
                 date, LocalTime.of(hourStart, minuteStart), LocalTime.of(hourEnd, minuteEnd));
             cellDragged = -1;
             cellHovered = -1;

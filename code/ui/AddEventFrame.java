@@ -251,7 +251,9 @@ public class AddEventFrame extends JFrame implements WindowListener {
             int minute = Integer.parseInt(m.group(2));
             boolean pm = m.group(3).equalsIgnoreCase("pm");
             if (pm) {
-                hour += 12;
+                if (hour < 12) {
+                    hour += 12;
+                }
             } else if (hour == 12) {
                 hour = 0;
             }
@@ -264,7 +266,9 @@ public class AddEventFrame extends JFrame implements WindowListener {
             int minute = Integer.parseInt(m.group(2));
             boolean pm = m.group(3).equalsIgnoreCase("pm");
             if (pm) {
-                hour += 12;
+                if (hour < 12) {
+                    hour += 12;
+                }
             } else if (hour == 12) {
                 hour = 0;
             }
