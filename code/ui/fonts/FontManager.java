@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Singleton class in charge of loading fonts
+ * Singleton class in charge of loading fonts and drawing text
  */
 public class FontManager {
     private static FontManager instance;
