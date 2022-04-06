@@ -10,8 +10,6 @@ import java.awt.event.WindowListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -22,15 +20,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import code.BackgroundDaemon;
-import code.schedule.DateTimeFormatter;
+import code.schedule.DateTimeUtilities;
 import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
 import code.ui.fonts.FontManager;
 
 public class AddEventFrame extends JFrame implements WindowListener {
-
-    private static final Pattern datePattern = Pattern.compile("^([1-9]|1[0-2])/([1-9]|[12]\\d|3[01])/(\\d\\d\\d\\d)$");
-    private static final Pattern timePattern = Pattern.compile("^(1[012]|[1-9]):([0-5]\\d)(AM|am|PM|pm)$");
 
     private final BackgroundDaemon daemon;
 
@@ -233,47 +228,48 @@ public class AddEventFrame extends JFrame implements WindowListener {
         String startTimeString = startTimeField.getText();
         String endTimeString = endTimeField.getText();
 
-        LocalDate d = null;
-        LocalTime startTime = null;
-        LocalTime endTime = null;
+        LocalDate d = DateTimeUtilities.parseDate(dateString);
+        LocalTime startTime = DateTimeUtilities.parseTime(startTimeString);
+        LocalTime endTime = DateTimeUtilities.parseTime(endTimeString);
 
-        Matcher m = datePattern.matcher(dateString);
-        if (m.matches()) {
-            int month = Integer.parseInt(m.group(1));
-            int day = Integer.parseInt(m.group(2));
-            int year = Integer.parseInt(m.group(3));
-            d = LocalDate.of(year, month, day);
-        }
+        // commented out for testing DateTimeUtilities
+        // Matcher m = datePattern.matcher(dateString);
+        // if (m.matches()) {
+        //     int month = Integer.parseInt(m.group(1));
+        //     int day = Integer.parseInt(m.group(2));
+        //     int year = Integer.parseInt(m.group(3));
+        //     d = LocalDate.of(year, month, day);
+        // }
 
-        m = timePattern.matcher(startTimeString);
-        if (m.matches()) {
-            int hour = Integer.parseInt(m.group(1));
-            int minute = Integer.parseInt(m.group(2));
-            boolean pm = m.group(3).equalsIgnoreCase("pm");
-            if (pm) {
-                if (hour < 12) {
-                    hour += 12;
-                }
-            } else if (hour == 12) {
-                hour = 0;
-            }
-            startTime = LocalTime.of(hour, minute, 0);
-        }
+        // m = timePattern.matcher(startTimeString);
+        // if (m.matches()) {
+        //     int hour = Integer.parseInt(m.group(1));
+        //     int minute = Integer.parseInt(m.group(2));
+        //     boolean pm = m.group(3).equalsIgnoreCase("pm");
+        //     if (pm) {
+        //         if (hour < 12) {
+        //             hour += 12;
+        //         }
+        //     } else if (hour == 12) {
+        //         hour = 0;
+        //     }
+        //     startTime = LocalTime.of(hour, minute, 0);
+        // }
 
-        m = timePattern.matcher(endTimeString);
-        if (m.matches()) {
-            int hour = Integer.parseInt(m.group(1));
-            int minute = Integer.parseInt(m.group(2));
-            boolean pm = m.group(3).equalsIgnoreCase("pm");
-            if (pm) {
-                if (hour < 12) {
-                    hour += 12;
-                }
-            } else if (hour == 12) {
-                hour = 0;
-            }
-            endTime = LocalTime.of(hour, minute, 0);
-        }
+        // m = timePattern.matcher(endTimeString);
+        // if (m.matches()) {
+        //     int hour = Integer.parseInt(m.group(1));
+        //     int minute = Integer.parseInt(m.group(2));
+        //     boolean pm = m.group(3).equalsIgnoreCase("pm");
+        //     if (pm) {
+        //         if (hour < 12) {
+        //             hour += 12;
+        //         }
+        //     } else if (hour == 12) {
+        //         hour = 0;
+        //     }
+        //     endTime = LocalTime.of(hour, minute, 0);
+        // }
 
         boolean errors = false;
         if (name.isEmpty()) {
@@ -332,9 +328,9 @@ public class AddEventFrame extends JFrame implements WindowListener {
             reminderName = "One hour from now: " + event.getName();
             
             if (location.isBlank()) {
-                reminderDescription = DateTimeFormatter.toAmPm(startTime);
+                reminderDescription = DateTimeUtilities.toAmPm(startTime);
             } else {
-                reminderDescription = DateTimeFormatter.toAmPm(startTime) + " @ " + location;
+                reminderDescription = DateTimeUtilities.toAmPm(startTime) + " @ " + location;
             }
             daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
                     dt, 0));
@@ -342,7 +338,7 @@ public class AddEventFrame extends JFrame implements WindowListener {
         if (remindDayBeforeCheckBox.isSelected()) {
             LocalTime startTime = event.getStartTime();
             LocalDateTime dt = LocalDateTime.of(event.getDate(), startTime).minusDays(1);
-            reminderName = "Tomorrow at " + DateTimeFormatter.toAmPm(startTime) + ": " + event.getName();
+            reminderName = "Tomorrow at " + DateTimeUtilities.toAmPm(startTime) + ": " + event.getName();
             if (location.isBlank()) {
                 reminderDescription = "";
             } else {
@@ -356,11 +352,11 @@ public class AddEventFrame extends JFrame implements WindowListener {
             LocalDateTime dt = LocalDateTime.of(event.getDate(), startTime).minusWeeks(1);
             reminderName = "In one week: " + event.getName();
             if (location.isBlank()) {
-                reminderDescription = "Next " + DateTimeFormatter.getDayOfWeek(event.getDate()) + 
-                        " at " + DateTimeFormatter.toAmPm(startTime);
+                reminderDescription = "Next " + DateTimeUtilities.getDayOfWeek(event.getDate()) + 
+                        " at " + DateTimeUtilities.toAmPm(startTime);
             } else {
-                reminderDescription = "Next " + DateTimeFormatter.getDayOfWeek(event.getDate()) + 
-                        " at " + DateTimeFormatter.toAmPm(startTime) + " @ " + location;
+                reminderDescription = "Next " + DateTimeUtilities.getDayOfWeek(event.getDate()) + 
+                        " at " + DateTimeUtilities.toAmPm(startTime) + " @ " + location;
             }
             daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
                     dt, 0));
@@ -371,9 +367,9 @@ public class AddEventFrame extends JFrame implements WindowListener {
             LocalDateTime dt = eventDateTime.minusMonths(1);
             reminderName = "In one month: " + event.getName();
             if (location.isBlank()) {
-                reminderDescription = DateTimeFormatter.format(eventDateTime);
+                reminderDescription = DateTimeUtilities.format(eventDateTime);
             } else {
-                reminderDescription = DateTimeFormatter.format(eventDateTime) + " @ " + location;
+                reminderDescription = DateTimeUtilities.format(eventDateTime) + " @ " + location;
             }
             daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
                     dt, 0));
@@ -391,9 +387,9 @@ public class AddEventFrame extends JFrame implements WindowListener {
 
         nameField.setText(editTarget.getName());
         locationField.setText(editTarget.getLocation());
-        dateField.setText(DateTimeFormatter.toSlashString(editTarget.getDate()));
-        startTimeField.setText(DateTimeFormatter.toAmPm(editTarget.getStartTime()));
-        endTimeField.setText(DateTimeFormatter.toAmPm(editTarget.getEndTime()));
+        dateField.setText(DateTimeUtilities.toSlashString(editTarget.getDate()));
+        startTimeField.setText(DateTimeUtilities.toAmPm(editTarget.getStartTime()));
+        endTimeField.setText(DateTimeUtilities.toAmPm(editTarget.getEndTime()));
 
         setTitle("Edit Event");
         addSaveButton.setText("Update Event");
@@ -407,7 +403,7 @@ public class AddEventFrame extends JFrame implements WindowListener {
         }
         nameField.setText("");
         locationField.setText("");
-        dateField.setText(DateTimeFormatter.toSlashString(d));
+        dateField.setText(DateTimeUtilities.toSlashString(d));
         startTimeField.setText("8:00AM");
         endTimeField.setText("9:00AM");
 
@@ -425,9 +421,9 @@ public class AddEventFrame extends JFrame implements WindowListener {
         }
         nameField.setText("");
         locationField.setText("");
-        dateField.setText(DateTimeFormatter.toSlashString(d));
-        startTimeField.setText(DateTimeFormatter.toAmPm(start));
-        endTimeField.setText(DateTimeFormatter.toAmPm(end));
+        dateField.setText(DateTimeUtilities.toSlashString(d));
+        startTimeField.setText(DateTimeUtilities.toAmPm(start));
+        endTimeField.setText(DateTimeUtilities.toAmPm(end));
 
         setTitle("Add Event");
         addSaveButton.setText("Add Event");
@@ -440,9 +436,9 @@ public class AddEventFrame extends JFrame implements WindowListener {
     public void appear(LocalDateTime dt) {
         nameField.setText("");
         locationField.setText("");
-        dateField.setText(DateTimeFormatter.toSlashString(dt));
-        startTimeField.setText(DateTimeFormatter.toAmPm(dt));
-        endTimeField.setText(DateTimeFormatter.toAmPm(dt.plusHours(1)));
+        dateField.setText(DateTimeUtilities.toSlashString(dt));
+        startTimeField.setText(DateTimeUtilities.toAmPm(dt));
+        endTimeField.setText(DateTimeUtilities.toAmPm(dt.plusHours(1)));
 
         nameField.requestFocus();
         setLocationRelativeTo(null);

@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
-import code.schedule.DateTimeFormatter;
+import code.schedule.DateTimeUtilities;
 import code.schedule.ScheduledReminder;
 import code.ui.fonts.FontManager;
 
@@ -100,7 +100,7 @@ public class ReminderUIEntry implements MouseListener {
         Box timeDateBox = Box.createVerticalBox();
         Box layer = Box.createHorizontalBox();
         layer.add(Box.createHorizontalGlue());
-        JLabel dayLabel = new JLabel(DateTimeFormatter.format(r.getWhenDue()));
+        JLabel dayLabel = new JLabel(DateTimeUtilities.format(r.getWhenDue()));
         dayLabel.setFont(regular);
         layer.add(dayLabel);
         timeDateBox.add(layer);

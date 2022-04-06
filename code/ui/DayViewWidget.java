@@ -18,7 +18,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import code.BackgroundDaemon;
-import code.schedule.DateTimeFormatter;
+import code.schedule.DateTimeUtilities;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
@@ -166,7 +166,7 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                         g.setColor(TIME_FIFTEEN_MIN_COLOR);
                     }
                 }
-                g.drawString(String.format("%7s", DateTimeFormatter.toAmPm(hour, quarter*15)), 6, y + 22);
+                g.drawString(String.format("%7s", DateTimeUtilities.toAmPm(hour, quarter*15)), 6, y + 22);
                 
                 if (fallsWithinScheduledBlock) {
                     g.setColor(HOVERED_CELL_LINE_COLOR);

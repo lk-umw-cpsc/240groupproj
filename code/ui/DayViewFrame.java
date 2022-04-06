@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import code.BackgroundDaemon;
-import code.schedule.DateTimeFormatter;
+import code.schedule.DateTimeUtilities;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
@@ -46,7 +46,7 @@ public class DayViewFrame extends JFrame {
     public void appear(LocalDate d, List<ScheduledEvent> events) {
         viewedDate = d;
         widget.updateDay(d, events);
-        dayLabel.setText(DateTimeFormatter.format(d));
+        dayLabel.setText(DateTimeUtilities.format(d));
         setLocationRelativeTo(null);
         setVisible(true);
     }
