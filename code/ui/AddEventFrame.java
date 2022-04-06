@@ -314,7 +314,7 @@ public class AddEventFrame extends JFrame implements WindowListener {
 
     private void formSubmitted(ActionEvent e) {
         ScheduledEvent event = validateForm();
-        if (validateForm() == null)
+        if (event == null)
             return;
         if (editTarget != null) {
             daemon.cancel(editTarget.getDate(), editTarget);
