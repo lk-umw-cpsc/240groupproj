@@ -124,13 +124,27 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
                 g.setColor(FG_COLOR_EVENT);
                 g.setFont(EVENT_FONT);
                 String name = e.getName();
-                int stringWidth = (int)g.getFontMetrics().getStringBounds(name + " ", g).getWidth();
                 // g.drawString(e.getName(), 80, topY + 21);
-                FontManager.drawCenteredText(g, g.getFontMetrics(), name, 0, topY + 21, width);
+                // FontManager.drawCenteredText(g, g.getFontMetrics(), name, 0, topY + 21, width);
                 String location = e.getLocation();
-                if (!location.isBlank()) {
+                if (location.isBlank()) {
+                    int nameWidth = (int)g.getFontMetrics().getStringBounds(name, g).getWidth();
+                    int x = width / 2 - nameWidth / 2;
+                    if (x < 80) {
+                        x = 80;
+                    }
+                    g.drawString(name, x, topY + 21);
+                } else {
+                    location = "@ " + location;
+                    int nameWidth = (int)g.getFontMetrics().getStringBounds(name + " ", g).getWidth();
+                    int locationWidth = (int)g.getFontMetrics(EVENT_LOCATION_FONT).getStringBounds(location, g).getWidth();
+                    int x = width / 2 - (nameWidth + locationWidth) / 2;
+                    if (x < 80) {
+                        x = 80;
+                    }
+                    g.drawString(name, x, topY + 21);
                     g.setFont(EVENT_LOCATION_FONT);
-                    // g.drawString("@ " + e.getLocation(), 80 + stringWidth, topY + 21);
+                    g.drawString(location, x + nameWidth, topY + 21);
                 }
             }
         }
