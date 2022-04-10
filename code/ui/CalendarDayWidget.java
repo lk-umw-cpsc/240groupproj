@@ -3,7 +3,6 @@ package code.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -120,7 +119,6 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
         g.setFont(DAY_FONT);
         g.drawString(dayAsString, 6, 18);
 
-        g.setFont(EVENT_FONT);
         if (events != null) {
             for (int i = 0, size = events.size(); i < size; i++) {
                 drawEvent(g, events.get(i));
@@ -139,14 +137,11 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
     }
 
     
-    private static final Font EVENT_FONT = FontManager.getInstance().getSmallFont();
-    private FontMetrics eventFontMetrics;
 
     private int eventY;
     private final int eventYStart = 25;
     private final int eventGap = 4;
     private void initEventDrawing(Graphics g) {
-        eventFontMetrics = g.getFontMetrics(EVENT_FONT);
         eventY = eventYStart;
     }
 
