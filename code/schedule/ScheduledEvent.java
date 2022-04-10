@@ -4,11 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import code.ui.DrawableCalendarNote;
 import code.ui.fonts.FontManager;
@@ -100,6 +101,54 @@ public class ScheduledEvent implements Comparable<ScheduledEvent>, DrawableCalen
 
     public void setLocation(String s) {
         this.location = s;
+    }
+
+    public ScheduledReminder getHourBeforeReminder() {
+        return hourBefore;
+    }
+
+    public ScheduledReminder getDayBeforeReminder() {
+        return dayBefore;
+    }
+
+    public ScheduledReminder getWeekBeforeReminder() {
+        return weekBefore;
+    }
+
+    public ScheduledReminder getMonthBeforeReminder() {
+        return monthBefore;
+    }
+
+    public void setHourBeforeReminder(ScheduledReminder r) {
+        hourBefore = r;
+    }
+
+    public void setDayBeforeReminder(ScheduledReminder r) {
+        dayBefore = r;
+    }
+
+    public void setWeekBeforeReminder(ScheduledReminder r) {
+        weekBefore = r;
+    }
+
+    public void setMonthBeforeReminder(ScheduledReminder r) {
+        monthBefore = r;
+    }
+
+    public void clearHourBeforeReminder() {
+        hourBefore = null;
+    }
+
+    public void clearDayBeforeReminder() {
+        dayBefore = null;
+    }
+
+    public void clearWeekBeforeReminder() {
+        weekBefore = null;
+    }
+
+    public void clearMonthBeforeReminder() {
+        monthBefore = null;
     }
 
     public String toBriefString() {

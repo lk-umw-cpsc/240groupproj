@@ -332,7 +332,7 @@ public class AddEventFrame extends JFrame implements WindowListener {
             } else {
                 reminderDescription = DateTimeUtilities.toAmPm(startTime) + " @ " + location;
             }
-            daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
+            event.setHourBeforeReminder(new ScheduledReminder(reminderName, reminderDescription, 
                     dt, 0));
         }
         if (remindDayBeforeCheckBox.isSelected()) {
@@ -344,7 +344,7 @@ public class AddEventFrame extends JFrame implements WindowListener {
             } else {
                 reminderDescription = "@ " + location;
             }
-            daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
+            event.setDayBeforeReminder(new ScheduledReminder(reminderName, reminderDescription, 
                     dt, 0));
         }
         if (remindWeekBeforeCheckBox.isSelected()) {
@@ -358,7 +358,7 @@ public class AddEventFrame extends JFrame implements WindowListener {
                 reminderDescription = "Next " + DateTimeUtilities.getDayOfWeek(event.getDate()) + 
                         " at " + DateTimeUtilities.toAmPm(startTime) + " @ " + location;
             }
-            daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
+            event.setWeekBeforeReminder(new ScheduledReminder(reminderName, reminderDescription, 
                     dt, 0));
         }
         if (remindMonthBeforeCheckBox.isSelected()) {
@@ -371,7 +371,7 @@ public class AddEventFrame extends JFrame implements WindowListener {
             } else {
                 reminderDescription = DateTimeUtilities.format(eventDateTime) + " @ " + location;
             }
-            daemon.add(new ScheduledReminder(reminderName, reminderDescription, 
+            event.setMonthBeforeReminder(new ScheduledReminder(reminderName, reminderDescription, 
                     dt, 0));
         }
         clearForm();
@@ -390,6 +390,11 @@ public class AddEventFrame extends JFrame implements WindowListener {
         dateField.setText(DateTimeUtilities.toSlashString(editTarget.getDate()));
         startTimeField.setText(DateTimeUtilities.toAmPm(editTarget.getStartTime()));
         endTimeField.setText(DateTimeUtilities.toAmPm(editTarget.getEndTime()));
+
+        remindHourBeforeCheckBox.setSelected(editTarget.getHourBeforeReminder() != null);
+        remindDayBeforeCheckBox.setSelected(editTarget.getDayBeforeReminder() != null);
+        remindWeekBeforeCheckBox.setSelected(editTarget.getWeekBeforeReminder() != null);
+        remindMonthBeforeCheckBox.setSelected(editTarget.getMonthBeforeReminder() != null);
 
         setTitle("Edit Event");
         addSaveButton.setText("Update Event");

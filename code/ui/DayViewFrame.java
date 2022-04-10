@@ -9,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
 import code.BackgroundDaemon;
 import code.schedule.DateTimeUtilities;
@@ -31,7 +32,8 @@ public class DayViewFrame extends JFrame {
         add(dayContainer);
         dayContainer.add(Box.createHorizontalGlue());
         dayContainer.add(dayLabel = new JLabel("placeholder"));
-        dayLabel.setFont(FontManager.getInstance().getRegularFont());
+        dayLabel.setBorder(new EmptyBorder(4, 0, 4, 0));
+        dayLabel.setFont(FontManager.getInstance().getRegularFont().deriveFont(24.0f));
         dayContainer.add(Box.createHorizontalGlue());
 
         JScrollPane scrollPane = new JScrollPane(widget = new DayViewWidget());
