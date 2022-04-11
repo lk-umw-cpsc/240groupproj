@@ -91,11 +91,11 @@ public class SystemTrayManager {
         menuTab.add(option);
         
         //-----------
-        menuTab.addSeparator();
+        // menuTab.addSeparator();
 
         option = new MenuItem("Manage events...");
         //option.addActionListener(this::manageReminders);
-        menuTab.add(option);
+        // menuTab.add(option);
 
         // Reminders R
         menuTab = new Menu("Reminders...");
@@ -111,7 +111,7 @@ public class SystemTrayManager {
         option.addActionListener(this::addOneHourReminder);
         menuTab.add(option);
 
-        option = new MenuItem("Add evening rmeinder...");
+        option = new MenuItem("Add evening reminder...");
         option.addActionListener(this::addEveningReminder);
         menuTab.add(option);
 
@@ -144,7 +144,7 @@ public class SystemTrayManager {
         // Medical M
 
         menuTab = new Menu("Medical...");
-        popupMenu.add(menuTab);
+        // popupMenu.add(menuTab);
 
         option = new MenuItem("Add new Prescription...");
         //option.addActionListener(this::addReminder);
@@ -155,7 +155,7 @@ public class SystemTrayManager {
         menuTab.add(option);
         
         //-----------
-        menuTab.addSeparator();
+        // menuTab.addSeparator();
 
         option = new MenuItem("View Prescriptions...");
         //option.addActionListener(this::addReminder);
@@ -168,18 +168,18 @@ public class SystemTrayManager {
 
         //Settings S
         menuTab = new Menu("Settings...");
-        popupMenu.add(menuTab);
+        // popupMenu.add(menuTab);
 
 
         //-----------
-        popupMenu.addSeparator();
+        // popupMenu.addSeparator();
 
 
         // Information I
 
-        option = new MenuItem("About Cal...");
+        // option = new MenuItem("About Cal...");
         //option.addActionListener(this::addReminder);
-        popupMenu.add(option);
+        // popupMenu.add(option);
 
         //-----------
         popupMenu.addSeparator();
