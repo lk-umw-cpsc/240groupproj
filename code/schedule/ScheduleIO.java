@@ -38,7 +38,6 @@ public class ScheduleIO {
     public static void saveSchedule(List<ScheduledReminder> reminders, List<ScheduledEvent> events) {
         saveEvents(events);
         saveReminders(reminders);
-
     }
 
     public static void loadEvents(List<ScheduledEvent> events) {
