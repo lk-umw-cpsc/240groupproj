@@ -29,10 +29,10 @@ public class BasicCalendarNote implements DrawableCalendarNote {
     protected Color foregroundColorOtherMonth;
     protected Color backgroundColorOtherMonth;
 
-    protected BufferedImage image;
-
     protected String briefString;
 
+    private BufferedImage image;
+    
     private static final Font NOTE_FONT = FontManager.getInstance().getSmallFont();
     
     private static final int PADDING = 3;
