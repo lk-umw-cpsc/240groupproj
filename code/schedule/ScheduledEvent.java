@@ -1,7 +1,6 @@
 package code.schedule;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -38,8 +37,6 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
     private LocalTime startTime;
     private LocalTime endTime;
     private String location;
-
-    private BufferedImage image;
 
     public ScheduledReminder hourBefore;
     public ScheduledReminder dayBefore;
