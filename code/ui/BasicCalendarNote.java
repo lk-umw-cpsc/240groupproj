@@ -9,6 +9,18 @@ import java.awt.image.BufferedImage;
 
 import code.ui.fonts.FontManager;
 
+/**
+ * This class allows for drawing of basic calendar notes.
+ * 
+ * The foreground and background colors of this class are used
+ * to draw text in a rectangle on the calendar grid with
+ * background and foreground colors changing depending on
+ * whether a particular date is the current day or whether
+ * that date falls within the currently-viewed month.
+ * 
+ * Extending this class and altering the foreground and background
+ * colors allows you to customize the colors of your calendar notes.
+ */
 public class BasicCalendarNote implements DrawableCalendarNote {
     protected Color foregroundColor;
     protected Color backgroundColor;
