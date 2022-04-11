@@ -1,16 +1,11 @@
 package code.schedule;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import code.ui.DrawableCalendarNote;
-import code.ui.fonts.FontManager;
+import code.ui.BasicCalendarNote;
 
 /**
  * This represents a blocked out portion of the user's schedule.
@@ -29,12 +24,20 @@ import code.ui.fonts.FontManager;
  * Implementation assigned to Jayden
  */
 
-public class ScheduledEvent implements Comparable<ScheduledEvent>, DrawableCalendarNote {
+public class ScheduledEvent extends BasicCalendarNote implements Comparable<ScheduledEvent> {
+
+    private static final Color BG_COLOR_EVENT_TODAY = new Color(173, 217, 22);
+    private static final Color FG_COLOR_EVENT_TODAY = Color.BLACK;
+    private static final Color BG_COLOR_EVENT = new Color(209, 71, 82);
+    private static final Color FG_COLOR_EVENT = Color.WHITE;
+    private static final Color BG_COLOR_EVENT_OTHER_MONTH = new Color(237, 140, 148);
+    private static final Color FG_COLOR_EVENT_OTHER_MONTH = Color.WHITE;
+
     private String name;
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    private String location = "none2";
+    private String location;
 
     private BufferedImage image;
 
@@ -43,7 +46,19 @@ public class ScheduledEvent implements Comparable<ScheduledEvent>, DrawableCalen
     public ScheduledReminder weekBefore;
     public ScheduledReminder monthBefore;
 
+    public ScheduledEvent() {
+        foregroundColor = FG_COLOR_EVENT;
+        backgroundColor = BG_COLOR_EVENT;
+
+        foregroundColorToday = FG_COLOR_EVENT_TODAY;
+        backgroundColorToday = BG_COLOR_EVENT_TODAY;
+
+        foregroundColorOtherMonth = FG_COLOR_EVENT_OTHER_MONTH;
+        backgroundColorOtherMonth = BG_COLOR_EVENT_OTHER_MONTH;
+    }
+
     public ScheduledEvent(String name, String date, String startTime, String endTime, String location) {
+        this();
         this.name = name;
         this.location = location;
         this.date = LocalDate.parse(date);
@@ -51,14 +66,17 @@ public class ScheduledEvent implements Comparable<ScheduledEvent>, DrawableCalen
         this.endTime = LocalTime.parse(endTime);
         // end = start.plusMinutes(lDur);
         this.location = location;
+        briefString = toBriefString();
     }
 
     public ScheduledEvent(String desc, LocalDate date, LocalTime startTime, LocalTime endTime, String location) {
+        this();
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.name = desc;
         this.location = location;
+        briefString = toBriefString();
     }
 
     public String getName() {
@@ -182,39 +200,5 @@ public class ScheduledEvent implements Comparable<ScheduledEvent>, DrawableCalen
             return dateComparison;
         }
         return startTime.compareTo(e.startTime);
-    }
-
-    private static final Font EVENT_FONT = FontManager.getInstance().getSmallFont();
-
-    private static final Color BG_COLOR_EVENT_TODAY = new Color(173, 217, 22);
-    private static final Color FG_COLOR_EVENT_TODAY = Color.BLACK;
-    private static final Color BG_COLOR_EVENT = new Color(209, 71, 82);
-    private static final Color FG_COLOR_EVENT = Color.WHITE;
-    private static final Color BG_COLOR_EVENT_OTHER_MONTH = new Color(237, 140, 148);
-    private static final Color FG_COLOR_EVENT_OTHER_MONTH = Color.WHITE;
-
-    @Override
-    public BufferedImage getNote(Graphics canvas, boolean today, boolean thisMonth) {
-        if (image != null) {
-            return image;
-        }
-        final int padding = 3;
-        FontMetrics fm = canvas.getFontMetrics(EVENT_FONT);
-        Rectangle2D nameBox = fm.getStringBounds(toBriefString(), canvas);
-        int nameWidth = (int)nameBox.getWidth();
-
-        image = new BufferedImage(
-                nameWidth + 2 * padding, (int)nameBox.getHeight() + padding * 2, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = image.getGraphics();
-        FontManager.enableFontAntiAliasing(g);
-        g.setFont(EVENT_FONT);
-        if (today) {
-            FontManager.drawStringInRectangle(g, fm, BG_COLOR_EVENT_TODAY, FG_COLOR_EVENT_TODAY, toBriefString(), 0, 0, padding, 3);
-        } else if (thisMonth) {
-            FontManager.drawStringInRectangle(g, fm, BG_COLOR_EVENT, FG_COLOR_EVENT, toBriefString(), 0, 0, padding, 3);
-        } else {
-            FontManager.drawStringInRectangle(g, fm, BG_COLOR_EVENT_OTHER_MONTH, FG_COLOR_EVENT_OTHER_MONTH, toBriefString(), 0, 0, padding, 3);
-        }
-        return image;
     }
 }
