@@ -2,6 +2,7 @@ package code.schedule;
 
 import java.awt.Color;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import code.ui.BasicCalendarNote;
@@ -44,6 +45,7 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
     public ScheduledReminder monthBefore;
 
     public ScheduledEvent() {
+        // colors for the event when viewed in the month view frame
         foregroundColor = FG_COLOR_EVENT;
         backgroundColor = BG_COLOR_EVENT;
 
@@ -54,7 +56,7 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
         backgroundColorOtherMonth = BG_COLOR_EVENT_OTHER_MONTH;
     }
 
-    public ScheduledEvent(String name, String date, String startTime, String endTime, String location) {
+    public ScheduledEvent(String name, String date, String startTime, String endTime, String location, String reminders) {
         this();
         this.name = name;
         this.location = location;
@@ -64,6 +66,58 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
         // end = start.plusMinutes(lDur);
         this.location = location;
         briefString = toBriefString();
+
+        String reminderName;
+        String reminderDescription;
+        if (reminders.charAt(0) == 'y') {
+            LocalDateTime eventDateTime = LocalDateTime.of(this.date, this.startTime);
+            LocalDateTime dt = eventDateTime.minusMonths(1);
+            reminderName = "In one month: " + this.name;
+            if (location.isBlank()) {
+                reminderDescription = DateTimeUtilities.format(eventDateTime);
+            } else {
+                reminderDescription = DateTimeUtilities.format(eventDateTime) + " @ " + location;
+            }
+            monthBefore = new ScheduledReminder(reminderName, reminderDescription, 
+                    dt, 0);
+
+        }
+        if (reminders.charAt(1) == 'y') {
+            LocalDateTime dt = LocalDateTime.of(this.date, this.startTime).minusWeeks(1);
+            reminderName = "In one week: " + this.name;
+            if (location.isBlank()) {
+                reminderDescription = "Next " + DateTimeUtilities.getDayOfWeek(this.date) + 
+                        " at " + DateTimeUtilities.toAmPm(this.startTime);
+            } else {
+                reminderDescription = "Next " + DateTimeUtilities.getDayOfWeek(this.date) + 
+                        " at " + DateTimeUtilities.toAmPm(this.startTime) + " @ " + location;
+            }
+            weekBefore = new ScheduledReminder(reminderName, reminderDescription, 
+                    dt, 0);
+        }
+        if (reminders.charAt(2) == 'y') {
+            LocalDateTime dt = LocalDateTime.of(this.date, this.startTime).minusDays(1);
+            reminderName = "Tomorrow at " + DateTimeUtilities.toAmPm(this.startTime) + ": " + this.name;
+            if (location.isBlank()) {
+                reminderDescription = "";
+            } else {
+                reminderDescription = "@ " + location;
+            }
+            dayBefore = new ScheduledReminder(reminderName, reminderDescription, 
+                    dt, 0);
+        }
+        if (reminders.charAt(3) == 'y') {
+            LocalDateTime dt = LocalDateTime.of(this.date, this.startTime).minusHours(1);
+            reminderName = "One hour from now: " + this.name;
+            
+            if (location.isBlank()) {
+                reminderDescription = DateTimeUtilities.toAmPm(this.startTime);
+            } else {
+                reminderDescription = DateTimeUtilities.toAmPm(this.startTime) + " @ " + location;
+            }
+            hourBefore = new ScheduledReminder(reminderName, reminderDescription, 
+                    dt, 0);
+        }
     }
 
     public ScheduledEvent(String desc, LocalDate date, LocalTime startTime, LocalTime endTime, String location) {
@@ -197,5 +251,30 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
             return dateComparison;
         }
         return startTime.compareTo(e.startTime);
+    }
+
+    public String getReminderFlagString() {
+        String flags = "";
+        if (monthBefore != null) {
+            flags += 'y';
+        } else {
+            flags += 'n';
+        }
+        if (weekBefore != null) {
+            flags += 'y';
+        } else {
+            flags += 'n';
+        }
+        if (dayBefore != null) {
+            flags += 'y';
+        } else {
+            flags += 'n';
+        }
+        if (hourBefore != null) {
+            flags += 'y';
+        } else {
+            flags += 'n';
+        }
+        return flags;
     }
 }

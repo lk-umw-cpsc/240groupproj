@@ -55,8 +55,12 @@ public class ScheduleIO {
                 String[] parser = newLine.split("###");
                 if (parser[4].equals("NONE"))
                     parser[4] = "";
+                String reminders = "ffff";
+                if (parser.length >= 6) {
+                    reminders = parser[5];
+                }
                 ScheduledEvent temp = new ScheduledEvent(parser[0], parser[1], parser[2], parser[3],
-                        parser[4]);
+                        parser[4], reminders);
                 events.add(temp);
             }
 
@@ -94,14 +98,14 @@ public class ScheduleIO {
 
         try (PrintWriter fileOut = new PrintWriter(EVENTS_FILE)) {
 
-            fileOut.println("Name###Date###StartTime###EndTime###location");
+            fileOut.println("Name###Date###StartTime###EndTime###location###reminderflags");
             for (ScheduledEvent event : events) {
                 String location = event.getLocation();
                 if (location.isEmpty())
                     location = "NONE";
                 fileOut.println(event.getName() + "###" + event.getDate()
                         + "###" + event.getStartTime() + "###" + event.getEndTime()
-                        + "###" + location);
+                        + "###" + location + "###" + event.getReminderFlagString());
             }
 
             fileOut.flush();
