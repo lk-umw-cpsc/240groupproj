@@ -39,7 +39,7 @@ public class BasicCalendarNote implements DrawableCalendarNote {
     private static final int BORDER_RADIUS = 3;
 
     @Override
-    public BufferedImage getNote(Graphics canvas, boolean today, boolean thisMonth) {
+    public final BufferedImage getNote(Graphics canvas, boolean today, boolean thisMonth) {
         if (image != null) {
             return image;
         }
