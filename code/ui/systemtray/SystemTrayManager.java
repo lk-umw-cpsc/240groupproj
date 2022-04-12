@@ -83,7 +83,7 @@ public class SystemTrayManager {
         popupMenu.add(option);
 
         // Events E
-        Menu menuTab = new Menu("Events...");
+        Menu menuTab = new Menu("Events");
         popupMenu.add(menuTab);
 
         option = new MenuItem("Add event...");
@@ -98,7 +98,7 @@ public class SystemTrayManager {
         // menuTab.add(option);
 
         // Reminders R
-        menuTab = new Menu("Reminders...");
+        menuTab = new Menu("Reminders");
         popupMenu.add(menuTab);
 
         option = new MenuItem("Add reminder...");
