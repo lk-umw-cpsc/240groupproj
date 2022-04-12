@@ -65,9 +65,6 @@ public class ReminderManagerFrame extends JFrame {
         List<ScheduledReminder> reminders = daemon.getReminders();
         if (reminders.isEmpty()) {
             Box emptyRemindersBox = Box.createHorizontalBox();
-            emptyRemindersBox.setBorder(
-                    new EmptyBorder(UIConstants.PADDING, UIConstants.PADDING, 
-                    UIConstants.PADDING, UIConstants.PADDING));
 
             emptyRemindersBox.add(Box.createHorizontalGlue());
             JLabel label;
