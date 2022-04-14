@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.locks.Lock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import code.BackgroundDaemon;
+import code.schedule.DateTimeUtilities;
 import code.schedule.ScheduledReminder;
 import code.ui.fonts.FontManager;
 
@@ -302,7 +305,13 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         if (editMode) {
             cancelEditMode();
         }
-        LocalDateTime now = LocalDateTime.now().plusMinutes(1);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime next8am = LocalDateTime.of(
+                now.getYear(), now.getMonthValue(), now.getDayOfMonth(),
+                8, 0);
+        if (next8am.compareTo(now) < 0) {
+            next8am = next8am.plusDays(1);
+        }
 
         if (daysBetweenRepeats > 0) {
             repeatCheckbox.setSelected(true);
@@ -321,8 +330,8 @@ public class AddReminderFrame extends JFrame implements WindowListener {
 
         nameField.setText("");
         descriptionField.setText("");
-        dateField.setText(now.getMonthValue() + "/" + now.getDayOfMonth() + "/" + now.getYear());
-        timeField.setText("");
+        dateField.setText(next8am.getMonthValue() + "/" + next8am.getDayOfMonth() + "/" + next8am.getYear());
+        timeField.setText(DateTimeUtilities.toAmPm(next8am));
 
         addSaveButton.setText("Add Reminder");
         nameField.requestFocus();
@@ -386,6 +395,9 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             }
         } else {
             badTimeLayer.setVisible(false);
+            LocalTime now = LocalTime.now();
+            hour = now.getHour() + 3;
+            minute = now.getMinute();
         }
 
         int month = -1;

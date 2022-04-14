@@ -164,9 +164,6 @@ public class BackgroundDaemon implements Runnable {
         return reminders;
     }
 
-    /**
-     * update me
-     */
     public Map<LocalDate, List<ScheduledEvent>> getEvents() {
         return eventsMap;
     }
@@ -260,12 +257,10 @@ public class BackgroundDaemon implements Runnable {
                 ScheduledReminder r = reminders.get(i);
                 if (r.isDue()) {
                     trayManager.showNotification(r.getName(), r.getDescription());
-                    System.out.println(r.getName() + " expired!");
                     if (r.repeats()) {
                         do {
                             r.repeat();
                         } while (r.isDue());
-                        System.out.println("Reminder will repeat at " + r.getWhenDue());
                     } else {
                         reminders.remove(i);
                         i--; // don't skip next one!
@@ -289,6 +284,35 @@ public class BackgroundDaemon implements Runnable {
                 trayManager.dayChanged();
                 if (reminderManagerFrame.isVisible()) {
                     SwingUtilities.invokeLater(reminderManagerFrame::updateList);
+                }
+            }
+
+            for (List<ScheduledEvent> events : eventsMap.values()) {
+                for (ScheduledEvent e : events) {
+                    ScheduledReminder r;
+                    r = e.getHourBeforeReminder();
+                    if (r != null && r.isDue()) {
+                        e.clearHourBeforeReminder();
+                        trayManager.showNotification(r.getName(), r.getDescription());
+                    }
+
+                    r = e.getDayBeforeReminder();
+                    if (r != null && r.isDue()) {
+                        e.clearDayBeforeReminder();
+                        trayManager.showNotification(r.getName(), r.getDescription());
+                    }
+
+                    r = e.getWeekBeforeReminder();
+                    if (r != null && r.isDue()) {
+                        e.clearWeekBeforeReminder();
+                        trayManager.showNotification(r.getName(), r.getDescription());
+                    }
+
+                    r = e.getMonthBeforeReminder();
+                    if (r != null && r.isDue()) {
+                        e.clearMonthBeforeReminder();
+                        trayManager.showNotification(r.getName(), r.getDescription());
+                    }
                 }
             }
             

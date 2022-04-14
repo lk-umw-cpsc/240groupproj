@@ -3,11 +3,11 @@ package code.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -119,10 +119,9 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
         g.setFont(DAY_FONT);
         g.drawString(dayAsString, 6, 18);
 
-        g.setFont(EVENT_FONT);
         if (events != null) {
             for (int i = 0, size = events.size(); i < size; i++) {
-                drawEvent(g, events.get(i).toBriefString(), i);
+                drawEvent(g, events.get(i));
             }
             // drawEvent(g, "8a Pretend this is an event", 0);
             // drawEvent(g, "12p Another event", 1);
@@ -137,24 +136,16 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
         }
     }
 
-    private static final Color BG_COLOR_EVENT_TODAY = new Color(173, 217, 22);
-    private static final Color FG_COLOR_EVENT_TODAY = Color.BLACK;
-    private static final Color BG_COLOR_EVENT = new Color(209, 71, 82);
-    private static final Color FG_COLOR_EVENT = Color.WHITE;
-    private static final Color BG_COLOR_EVENT_OTHER_MONTH = new Color(237, 140, 148);
-    private static final Color FG_COLOR_EVENT_OTHER_MONTH = Color.WHITE;
-    private static final Font EVENT_FONT = FontManager.getInstance().getSmallFont();
-    private FontMetrics eventFontMetrics;
+    
 
     private int eventY;
     private final int eventYStart = 25;
     private final int eventGap = 4;
     private void initEventDrawing(Graphics g) {
-        eventFontMetrics = g.getFontMetrics(EVENT_FONT);
         eventY = eventYStart;
     }
 
-    private void drawEvent(Graphics g, String brief, int eventNumber) {
+    private void drawEvent(Graphics g, DrawableCalendarNote n) {
         // int width = eventFontMetrics.stringWidth(brief) + 8;
 
         // g.setColor(BG_COLOR_EVENT);
@@ -162,13 +153,17 @@ public class CalendarDayWidget extends JComponent implements MouseListener {
         
         // g.setColor(FG_COLOR_EVENT);
         // g.drawString(brief, 7, 37 + eventNumber * 18);
-        if (today) {
+        /*if (today) {
             eventY += eventGap + FontManager.drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_TODAY, FG_COLOR_EVENT_TODAY, brief, 3, eventY, 3, 3);
         } else if (thisMonth) {
             eventY += eventGap + FontManager.drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT, FG_COLOR_EVENT, brief, 3, eventY, 3, 3);
         } else {
             eventY += eventGap + FontManager.drawStringInRectangle(g, eventFontMetrics, BG_COLOR_EVENT_OTHER_MONTH, FG_COLOR_EVENT_OTHER_MONTH, brief, 3, eventY, 3, 3);
-        }
+        }*/
+        BufferedImage image = n.getNote(g, today, thisMonth);
+        g.drawImage(image, 3, eventY, null);
+        eventY += image.getHeight() + eventGap;
+
     }
 
     private void addEventChosen(ActionEvent e) {

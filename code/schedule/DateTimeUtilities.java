@@ -1,10 +1,13 @@
 package code.schedule;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class DateTimeFormatter {
+public class DateTimeUtilities {
 
     private static final String[] DAYS_OF_THE_WEEK = {
         null, "Monday", "Tuesday", "Wednesday", "Thursday",
@@ -111,5 +114,46 @@ public class DateTimeFormatter {
 
     public static String toSlashString(LocalDate d) {
         return d.getMonthValue() + "/" + d.getDayOfMonth() + "/" + d.getYear();
-    } 
+    }
+
+    private static final Pattern datePattern = Pattern.compile("^([1-9]|1[0-2])/([1-9]|[12]\\d|3[01])/(\\d\\d\\d\\d)$");
+    
+    public static LocalDate parseDate(String d) {
+        Matcher m = datePattern.matcher(d);
+        if (!m.matches()) {
+            return null;
+        }
+        int year = Integer.parseInt(m.group(3));
+        int month = Integer.parseInt(m.group(1));
+        int day = Integer.parseInt(m.group(2));
+        try {
+            return LocalDate.of(year, month, day);
+        } catch (DateTimeException e) {
+            return null;
+        }
+    }
+    
+    private static final Pattern timePattern = Pattern.compile("^(1[012]|[1-9]):([0-5]\\d)(AM|am|PM|pm)$");
+
+    public static LocalTime parseTime(String t) {
+        Matcher m = timePattern.matcher(t);
+        if (!m.matches()) {
+            return null;
+        }
+        int hour = Integer.parseInt(m.group(1));
+        int minute = Integer.parseInt(m.group(2));
+        boolean pm = m.group(3).equalsIgnoreCase("pm");
+        if (pm) {
+            if (hour < 12) {
+                hour += 12;
+            }
+        } else if (hour == 12) {
+            hour = 0;
+        }
+        try {
+            return LocalTime.of(hour, minute, 0);
+        } catch (DateTimeException e) {
+            return null;
+        }
+    }
 }

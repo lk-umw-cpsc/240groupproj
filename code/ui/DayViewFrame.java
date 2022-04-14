@@ -9,9 +9,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
 import code.BackgroundDaemon;
-import code.schedule.DateTimeFormatter;
+import code.schedule.DateTimeUtilities;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
@@ -31,7 +32,8 @@ public class DayViewFrame extends JFrame {
         add(dayContainer);
         dayContainer.add(Box.createHorizontalGlue());
         dayContainer.add(dayLabel = new JLabel("placeholder"));
-        dayLabel.setFont(FontManager.getInstance().getRegularFont());
+        dayLabel.setBorder(new EmptyBorder(4, 0, 4, 0));
+        dayLabel.setFont(FontManager.getInstance().getRegularFont().deriveFont(24.0f));
         dayContainer.add(Box.createHorizontalGlue());
 
         JScrollPane scrollPane = new JScrollPane(widget = new DayViewWidget());
@@ -46,7 +48,7 @@ public class DayViewFrame extends JFrame {
     public void appear(LocalDate d, List<ScheduledEvent> events) {
         viewedDate = d;
         widget.updateDay(d, events);
-        dayLabel.setText(DateTimeFormatter.format(d));
+        dayLabel.setText(DateTimeUtilities.format(d));
         setLocationRelativeTo(null);
         setVisible(true);
     }
