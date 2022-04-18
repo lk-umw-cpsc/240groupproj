@@ -47,6 +47,14 @@ public class SystemTrayManager {
     private Calendar cal = Calendar.getInstance();
     private int dayNumber = cal.get(Calendar.DAY_OF_MONTH);
 
+    /**
+     * Creates a system tray icon with options to control the app
+     * @param d a reference to the application's background daemon
+     * @param arf a reference to the app's AddReminderFrame
+     * @param aef a reference to the app's AddEventFrame
+     * @param rmf a reference to the app's ReminderManagerFrame
+     * @param mvf a reference to the app's MonthViewFrame
+     */
     public SystemTrayManager(BackgroundDaemon d, 
             AddReminderFrame arf, AddEventFrame aef, ReminderManagerFrame rmf, MonthViewFrame mvf) {
         daemon = d;
@@ -199,6 +207,11 @@ public class SystemTrayManager {
         }
     }
 
+    /**
+     * Shows notification in the user's OS's notification area
+     * @param title The title for the notification 
+     * @param message The body text for the notification
+     */
     public void showNotification(String title, String message) {
 
         BufferedImage notification = calendarDay.grabImage(32);
@@ -215,6 +228,9 @@ public class SystemTrayManager {
         
     }
 
+    /**
+     * Method called by BackgroundDaemon when the day changes at midnight
+     */
     public void dayChanged() {
         cal = Calendar.getInstance();
         dayNumber = cal.get(Calendar.DAY_OF_MONTH);
@@ -222,10 +238,18 @@ public class SystemTrayManager {
         trayIcon.setImage(daySprite);
     }
 
+    /**
+     * Method called when the Show Calendar... option is chosen
+     * @param e Event info from Swing
+     */
     private void showCalendar(ActionEvent e) {
         monthViewFrame.appear();
     }
 
+    /**
+     * Method called when the 'Add Reminder...' option is chosen
+     * @param e Event info from Swing
+     */
     private void addReminder(ActionEvent e) {
         LocalDateTime inSixHours = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS).plusHours(6);
         if (inSixHours.getHour() > 21) {
@@ -236,10 +260,18 @@ public class SystemTrayManager {
         addReminderFrame.appear(inSixHours);
     }
 
+    /**
+     * Method called when the 'Add one hour reminder...' option is chosen
+     * @param e Event info from Swing
+     */
     private void addOneHourReminder(ActionEvent e) {
         addReminderFrame.appear(LocalDateTime.now().plusHours(1));
     }
 
+    /**
+     * Method called when the 'Add evening reminder...' option is chosen
+     * @param e Event info from Swing
+     */
     private void addEveningReminder(ActionEvent e) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime target;
@@ -254,32 +286,60 @@ public class SystemTrayManager {
         addReminderFrame.appear(target);
     }
 
+    /**
+     * Method called when the 'Add tomorrow reminder...' option is chosen
+     * @param e Event info from Swing
+     */
     private void addTomorrowReminder(ActionEvent e) {
         LocalDateTime tomorrow = LocalDateTime.now().plusDays(1);
         tomorrow = tomorrow.truncatedTo(ChronoUnit.DAYS).plusHours(8);
         addReminderFrame.appear(tomorrow);
     }
 
+    /**
+     * Method called when the 'Add Daily reminder...' option is pressed
+     * @param e Event info from Swing
+     */
     private void addDailyReminder(ActionEvent e) {
         addReminderFrame.appear(1);
     }
 
+    /**
+     * Method called when the 'Add Weekly reminder...' option is pressed
+     * @param e Event info from Swing
+     */
     private void addWeeklyReminder(ActionEvent e) {
         addReminderFrame.appear(7);
     }
 
+    /**
+     * Method called when the 'Add monthly reminder...' option is pressed
+     * @param e Event info from Swing
+     */
     private void addMonthlyReminder(ActionEvent e) {
         addReminderFrame.appear(30);
     }
 
+    /**
+     * Method caled when the 'Add event...' option is pressed
+     * @param e Event info from Swing
+     */
     private void addEvent(ActionEvent e) {
         addEventFrame.appear(LocalDateTime.now());
     }
 
+    /**
+     * Method called when the 'Manage reminders...' option is chosen
+     * @param e Event info from Swing
+     */
     private void manageReminders(ActionEvent e) {
         reminderManagerFrame.appear();
     }
 
+    /**
+     * Method called when the 'Exit' option is chosen
+     * @param e Event info from Swing
+     */
     private void exit(ActionEvent e) 
     {
         // Check to see if any windows are open first?

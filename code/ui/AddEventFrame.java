@@ -25,6 +25,9 @@ import code.schedule.ScheduledEvent;
 import code.schedule.ScheduledReminder;
 import code.ui.fonts.FontManager;
 
+/**
+ * A JFrame used to add events to the user's calendar
+ */
 public class AddEventFrame extends JFrame implements WindowListener {
 
     private final BackgroundDaemon daemon;
@@ -49,6 +52,11 @@ public class AddEventFrame extends JFrame implements WindowListener {
 
     private ScheduledEvent editTarget;
     
+    /**
+     * Creates (but doesn't show) an AddEventFrame and all of its
+     * child components
+     * @param daemon a reference to the BackgroundDaemon
+     */
     public AddEventFrame(BackgroundDaemon daemon) {
         super("Add Event");
         this.daemon = daemon;
@@ -221,6 +229,11 @@ public class AddEventFrame extends JFrame implements WindowListener {
         pack(); 
     }
 
+    /**
+     * Validates form input. If any invalid input is given, the form notifies
+     * the user that their input was invalid
+     * @return a ScheduledEvent if the user gave valid input, otherwise null
+     */
     private ScheduledEvent validateForm() {
         String name = nameField.getText();
         String location = locationField.getText();
@@ -308,6 +321,13 @@ public class AddEventFrame extends JFrame implements WindowListener {
         return new ScheduledEvent(name, d, startTime, endTime, location);
     }
 
+    /**
+     * Method called when the user hits the Enter key or
+     * clicks the 'Add Event' button.
+     * Validates user input. If valid input is given, the AddEventFrame
+     * closes and the BackgroundDaemon is passed the new ScheduledEvent
+     * @param e Event info passed by Swing
+     */
     private void formSubmitted(ActionEvent e) {
         ScheduledEvent event = validateForm();
         if (event == null)
@@ -384,6 +404,12 @@ public class AddEventFrame extends JFrame implements WindowListener {
         clearForm();
     }
 
+    /**
+     * Causes the AddEventFrame to display in edit mode, editing a
+     * specific ScheduledEvent
+     * @param owner The component this AEF should center itself on when appearing
+     * @param editTarget The ScheduledEvent to edit
+     */
     public void appearForEdit(Component owner, ScheduledEvent editTarget) {
         if (this.editTarget != null) {
             cancelEdit();
@@ -409,6 +435,12 @@ public class AddEventFrame extends JFrame implements WindowListener {
         setVisible(true);
     }
 
+    /**
+     * Causes the AddEventFrame to display in 'new' mode, with
+     * a given date placed in the event date field
+     * @param owner The component this AEF should center itself on when appearing
+     * @param d The date to place in the date field
+     */
     public void appear(Component owner, LocalDate d) {
         if (editTarget != null) {
             cancelEdit();
@@ -427,6 +459,14 @@ public class AddEventFrame extends JFrame implements WindowListener {
         setVisible(true);
     }
 
+    /**
+     * Causes this AddEventFrame to display in 'new' mode, with
+     * date, start and end time fields filled in.
+     * @param owner The component this AEF should center itself on when appearing
+     * @param d The date to place in the date field
+     * @param start The time to place in the start time field
+     * @param end The time to place in the end time field
+     */
     public void appear(Component owner, LocalDate d, LocalTime start, LocalTime end) {
         if (editTarget != null) {
             cancelEdit();
@@ -445,6 +485,11 @@ public class AddEventFrame extends JFrame implements WindowListener {
         setVisible(true);
     }
     
+    /**
+     * Causes this AddEventFrame to appear with a given date and
+     * start time. The end time is set to one hour after the start time.
+     * @param dt The date and time to use to fill the form
+     */
     public void appear(LocalDateTime dt) {
         nameField.setText("");
         locationField.setText("");
@@ -457,12 +502,18 @@ public class AddEventFrame extends JFrame implements WindowListener {
         setVisible(true);
     }
 
+    /**
+     * Method called to cancel editing (user closed window, etc)
+     */
     private void cancelEdit() {
         editTarget = null;
         clearForm();
         daemon.getDayViewFrame().setEnabled(true);
     }
 
+    /**
+     * Clears the form's input fields and hides its error messages
+     */
     private void clearForm() {
         nameField.setText("");
         locationField.setText("");
@@ -486,6 +537,10 @@ public class AddEventFrame extends JFrame implements WindowListener {
         
     }
 
+    /**
+     * Method called when the user closes this AEF.
+     * Cancels editing if the user was editing an event
+     */
     @Override
     public void windowClosing(WindowEvent e) {
         if (editTarget != null) {
