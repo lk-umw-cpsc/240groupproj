@@ -344,8 +344,11 @@ public class AddEventFrame extends JFrame implements WindowListener {
             } else {
                 reminderDescription = "@ " + location;
             }
-            event.setDayBeforeReminder(new ScheduledReminder(reminderName, reminderDescription, 
-                    dt, 0));
+            ScheduledReminder r = new ScheduledReminder(reminderName, reminderDescription, 
+            dt, 0);
+            if (!r.isDue()) {
+                event.setDayBeforeReminder(r);
+            }
         }
         if (remindWeekBeforeCheckBox.isSelected()) {
             LocalTime startTime = event.getStartTime();
@@ -358,8 +361,11 @@ public class AddEventFrame extends JFrame implements WindowListener {
                 reminderDescription = "Next " + DateTimeUtilities.getDayOfWeek(event.getDate()) + 
                         " at " + DateTimeUtilities.toAmPm(startTime) + " @ " + location;
             }
-            event.setWeekBeforeReminder(new ScheduledReminder(reminderName, reminderDescription, 
-                    dt, 0));
+            ScheduledReminder r = new ScheduledReminder(reminderName, reminderDescription, 
+                    dt, 0);
+            if (!r.isDue()) {
+                event.setWeekBeforeReminder(r);
+            }
         }
         if (remindMonthBeforeCheckBox.isSelected()) {
             LocalTime startTime = event.getStartTime();
@@ -371,8 +377,9 @@ public class AddEventFrame extends JFrame implements WindowListener {
             } else {
                 reminderDescription = DateTimeUtilities.format(eventDateTime) + " @ " + location;
             }
-            event.setMonthBeforeReminder(new ScheduledReminder(reminderName, reminderDescription, 
-                    dt, 0));
+            ScheduledReminder r = new ScheduledReminder(reminderName, reminderDescription, dt, 0);
+            event.setMonthBeforeReminder(r);
+            
         }
         clearForm();
     }
