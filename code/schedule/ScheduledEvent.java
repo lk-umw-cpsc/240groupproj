@@ -170,54 +170,105 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
         this.location = s;
     }
 
+    /**
+     * Gets a reference to the hour-before reminder associated with this
+     * event, if there is one
+     * @return the reference, otherwise null
+     */
     public ScheduledReminder getHourBeforeReminder() {
         return hourBefore;
     }
 
+    /**
+     * Gets a reference to the day-before reminder associated with this
+     * event, if there is one
+     * @return the reference, otherwise null
+     */
     public ScheduledReminder getDayBeforeReminder() {
         return dayBefore;
     }
 
+    /**
+     * Gets a reference to the week-before reminder associated with this
+     * event, if there is one
+     * @return the reference, otherwise null
+     */
     public ScheduledReminder getWeekBeforeReminder() {
         return weekBefore;
     }
 
+    /**
+     * Gets a reference to the month-before reminder associated with this
+     * event, if there is one
+     * @return the reference, otherwise null
+     */
     public ScheduledReminder getMonthBeforeReminder() {
         return monthBefore;
     }
 
+    /**
+     * Sets or cancels the hour-before reminder for this event
+     * @return a reference to the reminder, or null to cancel
+     */
     public void setHourBeforeReminder(ScheduledReminder r) {
         hourBefore = r;
     }
 
+    /**
+     * Sets or cancels the day-before reminder for this event
+     * @return a reference to the reminder, or null to cancel
+     */
     public void setDayBeforeReminder(ScheduledReminder r) {
         dayBefore = r;
     }
 
+    /**
+     * Sets or cancels the week-before reminder for this event
+     * @return a reference to the reminder, or null to cancel
+     */
     public void setWeekBeforeReminder(ScheduledReminder r) {
         weekBefore = r;
     }
 
+    /**
+     * Sets or cancels the month-before reminder for this event
+     * @return a reference to the reminder, or null to cancel
+     */
     public void setMonthBeforeReminder(ScheduledReminder r) {
         monthBefore = r;
     }
 
+    /**
+     * Clears the hour-before reminder for this event
+     */
     public void clearHourBeforeReminder() {
         hourBefore = null;
     }
 
+    /**
+     * Clears the day-before reminder for this event
+     */
     public void clearDayBeforeReminder() {
         dayBefore = null;
     }
 
+    /**
+     * Clears the week-before reminder for this event
+     */
     public void clearWeekBeforeReminder() {
         weekBefore = null;
     }
 
+    /**
+     * Clears the month-before reminder for this event
+     */
     public void clearMonthBeforeReminder() {
         monthBefore = null;
     }
 
+    /**
+     * Gets a brief string for this event. This is used by the Calendar
+     */
     public String toBriefString() {
         int hour = startTime.getHour();
         int minute = startTime.getMinute();
@@ -244,6 +295,12 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
         return brief + " " + name;
     }
 
+    /**
+     * Compares to ScheduledEvents
+     * @param e the event to compare this to
+     * @return 0 if they fall on the same date, < 0 if this one comes before,
+     * otherwise > 0
+     */
     @Override
     public int compareTo(ScheduledEvent e) {
         int dateComparison = date.compareTo(e.date);
@@ -253,6 +310,11 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
         return startTime.compareTo(e.startTime);
     }
 
+    /**
+     * Gets a String used by ScheduleIO to save whether the user
+     * wants to be reminded about this event
+     * @return A String containing something like "yyny" for example
+     */
     public String getReminderFlagString() {
         String flags = "";
         if (monthBefore != null) {
