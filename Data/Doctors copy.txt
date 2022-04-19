@@ -1,5 +1,0 @@
-Name###LastVisit###PhoneNumber###officeLocation###website###specialization
-Dr. Elizabeth Blackwell###2-17-2021###111-222-3333###12 Hastings Cir Bristol, England###https://www.womenshistory.org/education-resources/biographies/elizabeth-blackwell######
-Sir Alexander Fleming###6-05-2021###111-222-3334###St. Paul's Churchyard, London EC4M 8AD###https://www.nobelprize.org/prizes/medicine/1945/fleming/facts/###Medicine
-Dr. Helen Taussig###11-30-2021###111-222-3335###1986 Cambridge Dr Chester County, PA###https://msa.maryland.gov/megafile/msa/speccol/sc3500/sc3520/013500/013565/html/13565bio.html###Cardiology
-Dr. Helene Gayle###3-17-2022###111-222-3336###514 living St Buffalo, NY###https://www.cct.org/people/dr-helene-gayle/######

@@ -1,10 +1,11 @@
 package code.medical;
 import java.util.ArrayList;
 
-
+/**
+ * This tab creates doctors for the program
+ */
 public class Doctor
 {
-    
     private String name;
     private String lastVisit;
     private String phoneNumber;
@@ -13,6 +14,9 @@ public class Doctor
     private String website;
     private String specialization;
     
+    /**
+     * This is the default constructor that creates a basic Dr
+     */
     public Doctor()
     {
         this.name = "";
@@ -24,6 +28,16 @@ public class Doctor
         this.specialization = "No Specialization";
     }
 
+    /**
+     * This is a doctor constructor that accepts specific params 
+     * Default to creating doctors requires this information
+     * @param name Name of doctor First last
+     * @param lastVisit Last visit by string (may be converted to calender sheet)
+     * @param phoneNumber Phone number
+     * @param officeLocation Street address
+     * @param website website if available
+     * @param specialization focus (PCP, orthodontist)
+     */
     public Doctor(String name, String lastVisit, String phoneNumber, String officeLocation, String website, String specialization)
     {
         this.name = name;
@@ -101,6 +115,9 @@ public class Doctor
         drPrescriptionList.add(prescription);
     }
 
+    /**
+     * This retrieves all doctors prescriptions from list
+     */
     public void viewDoctorsPrescriptions()
     {
         System.out.printf("%-25s" + "%4s" + "%4s\n", "Prescription", "Quantity", "Refills");
@@ -112,6 +129,9 @@ public class Doctor
         
     }
 
+    /**
+     * this lists a specific doctors prescriptions
+     */
     public void listDrPrescriptions()
     {
         if (drPrescriptionList.size() > 0)

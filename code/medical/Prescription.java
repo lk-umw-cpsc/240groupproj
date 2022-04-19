@@ -1,5 +1,8 @@
 package code.medical;
 
+/**
+ * This class holds constructors getters and setters for prescriptions
+ */
 public class Prescription 
 {
     
@@ -8,6 +11,9 @@ public class Prescription
     private int refills;
     private String doctorName;
     
+    /**
+     * Default constructor that applies default settings
+     */
     public Prescription()
     {
         this.name = "";
@@ -15,6 +21,14 @@ public class Prescription
         this.refills = 0;
         this.doctorName = "";
     }
+
+    /**
+     * Constructor that receives params to build a prescription
+     * @param name Medical or common name of medicine
+     * @param quantity quantity left
+     * @param refills refills left
+     * @param doctorName Prescribing doctors name first and last
+     */
     public Prescription(String name, int quantity, int refills, String doctorName)
     {
         this.name = name;

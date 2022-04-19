@@ -40,6 +40,11 @@ public class ScheduleIO {
         saveReminders(reminders);
     }
 
+
+    /**
+     * This grabs the file data from the reminders_File variable
+     * @param events converts data in the events.txt into the events list
+     */
     public static void loadEvents(List<ScheduledEvent> events) {
         if (!EVENTS_FILE.exists()) {
             return;
@@ -70,6 +75,10 @@ public class ScheduleIO {
 
     }
 
+    /**
+     * This grabs the file data from the reminders_File variable
+     * @param reminders converts the data in the reminders.txt into the reminders list
+     */
     public static void loadReminders(List<ScheduledReminder> reminders) {
         if (!REMINDERS_FILE.exists()) {
             return;
@@ -94,6 +103,9 @@ public class ScheduleIO {
 
     }
 
+    /**
+     * Grabs the events list and overrides the events.txt file
+     */
     public static void saveEvents(List<ScheduledEvent> events) {
 
         try (PrintWriter fileOut = new PrintWriter(EVENTS_FILE)) {
@@ -115,6 +127,10 @@ public class ScheduleIO {
 
     }
 
+
+    /**
+     * Grabs the events list and overrides the reminders.txt file
+     */
     public static void saveReminders(List<ScheduledReminder> reminders) {
 
         try (PrintWriter fileOut = new PrintWriter(REMINDERS_FILE)) {

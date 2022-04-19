@@ -25,6 +25,10 @@ Add below this line!
 
 Paste over new entry here.
 
+Date: 4/18/2022
+Person: Joon
+Log: Added comments to code
+
 Date: 4/2/2022
 Person: Lauren
 Log: Finished the basic functionality

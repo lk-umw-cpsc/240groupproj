@@ -5,19 +5,21 @@ import java.util.Scanner;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-//import java.io.IOException;
 import java.io.IOException;
 
-//import java.io.FileOutputStream;
-//import java.io.PrintWriter;
-//import java.time.format.TextStyle;
 
-
+/**
+ * This class was supposed to integrate the medical IO tab but I ran out of time -Joon
+ */
 public class MedicalIO 
 {
     private static ArrayList<Prescription> prescriptionList = new ArrayList<Prescription>();  
     private static ArrayList<Doctor> doctorList = new ArrayList<Doctor>();  
 
+    /**
+     * This ran medicalTest for testing purposes
+     * @throws FileNotFoundException if no file is found
+     */
     public static void medicalTest() throws FileNotFoundException
     {
 
@@ -38,6 +40,9 @@ public class MedicalIO
 
     }
 
+    /**
+     * This would run to build the medical data at the begging of program start
+     */
     public void buildMedical()
     {
         try {
@@ -52,7 +57,9 @@ public class MedicalIO
 
     }
 
-
+    /**
+     * System print out of doctors data
+     */
     public static void listDoctors()
     {
         for (Doctor doctor : doctorList)
@@ -66,8 +73,9 @@ public class MedicalIO
         }
     }
 
-    
-
+    /**
+     * List of prescriptions by doctors
+     */
     public static void listPrescriptions()
     {
         System.out.printf("%-30s" + "%-14s" + "%-20s" + "%25s\n" ,"Prescription", "Quantity", "Refills", "Prescriber");
@@ -79,6 +87,9 @@ public class MedicalIO
         
     }
 
+    /**
+     * connects a dr to their prescriptions 
+     */
     public static void connectDrPrescriptions()
     {
         for (Doctor doctor : doctorList)
@@ -100,7 +111,10 @@ public class MedicalIO
 
     }
 
-    
+    /**
+     * Builds the doctors list from that Doctors.txt file
+     * @throws FileNotFoundException throws if no doctors.txt
+     */
     public static void buildDoctorList() throws FileNotFoundException
     {
 
@@ -120,6 +134,10 @@ public class MedicalIO
 
     }
     
+    /**
+     * Builds the prescription list from the prescriptions .txt
+     * @throws FileNotFoundException throws if there's no prescriptions.txt
+     */
     public static void buildPrescriptionList() throws FileNotFoundException
     {
 
