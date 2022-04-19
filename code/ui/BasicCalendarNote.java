@@ -40,6 +40,10 @@ public class BasicCalendarNote implements DrawableCalendarNote {
     private static final int PADDING = 3;
     private static final int BORDER_RADIUS = 3;
 
+    /**
+     * Returns a pre-rendered image containing this BasicCalendarNote's
+     * text within a text box
+     */
     @Override
     public final BufferedImage getNote(Graphics canvas, boolean today, boolean thisMonth) {
         if (image != null) {

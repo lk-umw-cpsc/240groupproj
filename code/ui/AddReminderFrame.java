@@ -8,7 +8,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.locks.Lock;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +24,9 @@ import code.schedule.DateTimeUtilities;
 import code.schedule.ScheduledReminder;
 import code.ui.fonts.FontManager;
 
+/**
+ * JFrame form used to add reminders to the application
+ */
 public class AddReminderFrame extends JFrame implements WindowListener {
 
     private static final Pattern datePattern = Pattern.compile("^([1-9]|1[0-2])/([1-9]|[12]\\d|3[01])/(\\d\\d\\d\\d)$");
@@ -51,12 +53,19 @@ public class AddReminderFrame extends JFrame implements WindowListener {
     private boolean editMode;
     private ScheduledReminder editTarget;
         
+    /**
+     * Creates a new ARF
+     * @param daemon a reference to the application's background daemon
+     */
     public AddReminderFrame(BackgroundDaemon daemon) {
         super("Create new reminder");
         this.daemon = daemon;
         setResizable(false);
     }
     
+    /**
+     * Creates and adds this AEF's children to its content pane
+     */
     public void build() {
         addWindowListener(this);
 
@@ -122,8 +131,8 @@ public class AddReminderFrame extends JFrame implements WindowListener {
             dateField.addActionListener(this::formSubmitted);
             layer.add(dateField);
 
-            JButton calendarButton = new JButton("...");
-            calendarButton.addActionListener(this::showCalendarPressed);
+            // JButton calendarButton = new JButton("...");
+            // calendarButton.addActionListener(this::showCalendarPressed);
             // layer.add(calendarButton);
         layerPanel.add(layer);
 
@@ -216,6 +225,11 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Causes this AEF to appear in edit mode, editing a pre-existing
+     * reminder.
+     * @param r the reminder to edit
+     */
     public void appear(ScheduledReminder r) {
         if (editMode) {
             cancelEditMode();
@@ -265,6 +279,11 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         setVisible(true);
     }
 
+    /**
+     * Causes this AEF to appear in add mode, displaying a form
+     * to create a new reminder
+     * @param dt The time and date for the reminder to appear in the form
+     */
     public void appear(LocalDateTime dt) {
         if (editMode) {
             cancelEditMode();
@@ -301,6 +320,11 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         setVisible(true);
     }
 
+    /**
+     * Causes this AEF to appear in add mode with a given number of
+     * days between repeats.
+     * @param daysBetweenRepeats The number of days between repeats
+     */
     public void appear(int daysBetweenRepeats) {
         if (editMode) {
             cancelEditMode();
@@ -339,6 +363,11 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         setVisible(true);
     }
 
+    /**
+     * Method called when the user checks or unchecks the
+     * 'Repeat' checkbox
+     * @param e Event info from Swing
+     */
     private void repeatCheckboxChanged(ActionEvent e) {
         if (repeatCheckbox.isSelected()) {
             repeatField.setText("1");
@@ -353,10 +382,11 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         }
     }
 
-    private void showCalendarPressed(ActionEvent e) {
-        // hook up with month view here
-    }
-
+    /**
+     * Method called when the user hits the Enter key or
+     * presses the add button
+     * @param e Event info from Swing
+     */
     private void formSubmitted(ActionEvent e) {
         // ^([1-9]|1[0-2])/([1-9]|[12]\d|3[01])/(\d\d\d\d)$
         // ^(1[012]|[1-9]):([0-5]\d)(AM|am|PM|pm)$
@@ -455,6 +485,9 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         setVisible(false);
     }
 
+    /**
+     * Cancels edit mode
+     */
     private void cancelEditMode() {
         setTitle("Create new reminder");
         daemon.getReminderManagerFrame().setEnabled(true);
@@ -468,6 +501,10 @@ public class AddReminderFrame extends JFrame implements WindowListener {
         
     }
 
+    /**
+     * Method called when the user closes the window
+     * Cancels edit mode
+     */
     @Override
     public void windowClosing(WindowEvent e) {
         if (editMode) {

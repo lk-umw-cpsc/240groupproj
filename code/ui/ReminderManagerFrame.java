@@ -16,12 +16,20 @@ import code.BackgroundDaemon;
 import code.schedule.ScheduledReminder;
 import code.ui.fonts.FontManager;
 
+/**
+ * Frame used to edit and cancel reminders
+ */
 public class ReminderManagerFrame extends JFrame {
 
     private BackgroundDaemon daemon;
 
     private Box reminderContainer;
 
+    /**
+     * Creates a reminder manager frame and its child components
+     * Does not make the frame visible
+     * @param daemon A reference to the application's background daemon
+     */
     public ReminderManagerFrame(BackgroundDaemon daemon) {
         super("Your Reminders");
         this.daemon = daemon;
@@ -49,15 +57,26 @@ public class ReminderManagerFrame extends JFrame {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Causes the add reminder frame to appear in edit mode, editing
+     * a given reminder
+     * @param r the reminder to edit within the ARF
+     */
     public void editReminder(ScheduledReminder r) {
         daemon.getReminderFrame().appear(r);
     }
 
+    /**
+     * Causes this RMF to become visible
+     */
     public void appear() {
         updateList();
         setVisible(true);
     }
 
+    /**
+     * Updates this RMF's list of reminders
+     */
     public void updateList() {
         reminderContainer.removeAll();
         Lock l = daemon.getLock();
@@ -90,6 +109,10 @@ public class ReminderManagerFrame extends JFrame {
         reminderContainer.repaint();
     }
     
+    /**
+     * Cancels a given reminder
+     * @param r The reminder to cancel
+     */
     public void cancelReminder(ScheduledReminder r) {
         daemon.cancel(r);
     }

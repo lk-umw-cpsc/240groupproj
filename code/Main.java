@@ -15,12 +15,11 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class Main {
 
+    /**
+     * Entry point
+     * @param args command line args passed by the OS
+     */
     public static void main(String[] args) {
-        //MedicalIO.connectDrPrescriptions();
-        //MedicalIO.listDrPrescriptions();
-        //BackgroundDaemon.testLoadAndSave();
-
-        
         if (!SystemTray.isSupported()) {
             System.out.println("System tray is not supported on this OS. Exiting.");
             return;
@@ -32,6 +31,10 @@ public class Main {
         new Thread(BackgroundDaemon.getInstance()).start();
     }
 
+    /**
+     * Sets the system look & feel to the user's OS L&F
+     * Also sets the Mac Dock image if the user is on a Mac
+     */
     private static void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

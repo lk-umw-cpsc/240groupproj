@@ -22,6 +22,9 @@ import code.schedule.DateTimeUtilities;
 import code.schedule.ScheduledReminder;
 import code.ui.fonts.FontManager;
 
+/**
+ * This class represents a single entry within the reminders management frame
+ */
 public class ReminderUIEntry implements MouseListener {
 
     private static ImageIcon xIcon;
@@ -41,6 +44,11 @@ public class ReminderUIEntry implements MouseListener {
     private JLabel xButton;
     private JLabel editButton;
 
+    /**
+     * Creates a new ReminderUIEntry with a given parent and reminder
+     * @param parent the RMF that owns this RUIE
+     * @param r a reminder that will have its info displayed in this RUIE
+     */
     public ReminderUIEntry(ReminderManagerFrame parent, ScheduledReminder r) {
         this.parent = parent;
         reminder = r;
@@ -128,18 +136,32 @@ public class ReminderUIEntry implements MouseListener {
         container.setBackground(Color.WHITE);
     }
 
+    /**
+     * Gets this RUIE's reminder
+     * @return a reference to the reminder
+     */
     public ScheduledReminder getReminder() {
         return reminder;
     }
 
+    /**
+     * Gets the underlying component for this RUIE
+     * @return a reference to the container
+     */
     public Component getContainer() {
         return container;
     }
 
+    /**
+     * Cancels this RUIE's reminder
+     */
     private void cancel() {
         parent.cancelReminder(reminder);
     }
 
+    /**
+     * Opens the parent frame in edit mode, editing this reminder
+     */
     private void edit() {
         parent.editReminder(reminder);
     }
@@ -149,6 +171,10 @@ public class ReminderUIEntry implements MouseListener {
         
     }
 
+    /**
+     * Method called by Swing when components are clicked on
+     * @param e Event info from Swing
+     */
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getSource() == xButton) {

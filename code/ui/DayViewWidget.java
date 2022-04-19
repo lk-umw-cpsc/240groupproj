@@ -22,6 +22,9 @@ import code.schedule.DateTimeUtilities;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
+/**
+ * This widget contain's the user's schedule for a given day, with 15-minute blocks
+ */
 public class DayViewWidget extends JComponent implements MouseListener, MouseMotionListener {
 
     private static final int PIXELS_PER_HOUR = 128;
@@ -45,6 +48,9 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
 
     private JPopupMenu rightClickMenu;
 
+    /**
+     * Creates the widget
+     */
     public DayViewWidget() {
         setPreferredSize(new Dimension(450, PIXELS_PER_HOUR * 24));
         cellHovered = -1;
@@ -62,11 +68,20 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
         addMouseMotionListener(this);
     }
 
+    /**
+     * Method called when the user double left-clicks or right clicks and chooses
+     * edit on an event
+     * @param e Event info passed by Swing
+     */
     private void editOptionChosen(ActionEvent e) {
         BackgroundDaemon d = BackgroundDaemon.getInstance();
         BackgroundDaemon.getInstance().getAddEventFrame().appearForEdit(d.getDayViewFrame(), editCancelTarget);
     }
 
+    /**
+     * Method called when the user right clicks on an event and chooses cancel
+     * @param e event info passed by Swing
+     */
     private void cancelOptionChosen(ActionEvent e) {
         BackgroundDaemon.getInstance().cancel(date, editCancelTarget);
     }
@@ -88,6 +103,10 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     private static final Font EVENT_FONT = FontManager.getInstance().getBoldFont();
     private static final Font EVENT_LOCATION_FONT = FontManager.getInstance().getLightFont();
     @Override
+    /**
+     * Method called when the component needs to repaint itself
+     * @param g Graphics context passed by Swing
+     */
     public void paint(Graphics g) {
         FontManager.enableFontAntiAliasing(g);
         int width = getWidth();
@@ -201,6 +220,11 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
         }
     }
 
+    /**
+     * Updates the day visible in the frame
+     * @param d The date to show
+     * @param events The events occuring on that date
+     */
     public void updateDay(LocalDate d, List<ScheduledEvent> events) {
         date = d;
         this.events = events;
@@ -225,6 +249,10 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     }
 
     @Override
+    /**
+     * Method called when the user drags the mouse within the component
+     * @param e Event info passed by swing
+     */
     public void mouseDragged(MouseEvent e) {
         if (pressing) {
             pressing = false;
@@ -244,6 +272,10 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     }
 
     @Override
+    /**
+     * Method called when the user moves the mouse within the compoent
+     * @param e Event info passed by Swing
+     */
     public void mouseMoved(MouseEvent e) {
         int newHover = e.getY() / PIXELS_PER_15;
         if (newHover != cellHovered) {
@@ -254,6 +286,10 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     }
 
     @Override
+    /**
+     * Method called when the user clicks the mouse within the component
+     * @param e Event info passed by Swing
+     */
     public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             pressing = false;
@@ -285,6 +321,10 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
     }
 
     @Override
+    /**
+     * Method called when the user presses a mouse button
+     * @param e event info passed by Swing
+     */
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             pressing = true;
@@ -293,6 +333,10 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
         }
     }
 
+    /**
+     * Method called when the user released a mouse button
+     * @param e event info passed by Swing
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         // ???
@@ -341,6 +385,10 @@ public class DayViewWidget extends JComponent implements MouseListener, MouseMot
         
     }
 
+    /**
+     * Method called when the user's cursor exits the component
+     * @param e Event info passed by Swing
+     */
     @Override
     public void mouseExited(MouseEvent e) {
         cellHovered = -1;

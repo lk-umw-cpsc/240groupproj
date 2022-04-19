@@ -16,6 +16,10 @@ import code.schedule.DateTimeUtilities;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
+/**
+ * Frame that display the user's schedule for the day and allows
+ * creating new events for that day
+ */
 public class DayViewFrame extends JFrame {
 
     private JLabel dayLabel;
@@ -24,6 +28,11 @@ public class DayViewFrame extends JFrame {
 
     private final BackgroundDaemon daemon;
     
+    /**
+     * Creates a new DVF, adding its children to the window. Does not
+     * make the window visible
+     * @param daemon a reference to the app's background daemon
+     */
     public DayViewFrame(BackgroundDaemon daemon) {
         super("Day View");
         this.daemon = daemon;
@@ -45,6 +54,11 @@ public class DayViewFrame extends JFrame {
         pack();
     }
 
+    /**
+     * Causes this DVF to appear, loading a given date's events
+     * @param d The date to show within the DVF
+     * @param events The events to list within the DVF
+     */
     public void appear(LocalDate d, List<ScheduledEvent> events) {
         viewedDate = d;
         widget.updateDay(d, events);
@@ -53,6 +67,11 @@ public class DayViewFrame extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Causes the DFV to rerender itself if it is showing the updated date
+     * @param d The date that was updated
+     * @param events The new list of events for the given date
+     */
     public void update(LocalDate d, List<ScheduledEvent> events) {
         if (d.equals(viewedDate)) {
             widget.updateDay(d, events);

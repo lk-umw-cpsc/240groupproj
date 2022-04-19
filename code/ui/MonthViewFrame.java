@@ -28,6 +28,10 @@ import code.BackgroundDaemon;
 import code.schedule.ScheduledEvent;
 import code.ui.fonts.FontManager;
 
+/**
+ * This frame contains the month (calendar) view. Appears when the user
+ * chooses "View calendar..."
+ */
 public class MonthViewFrame extends JFrame implements MouseListener {
 
     private static final String[] DAYS_OF_THE_WEEK = {
@@ -56,8 +60,10 @@ public class MonthViewFrame extends JFrame implements MouseListener {
     private final Color CALENDAR_HEADING_BACKGROUND_COLOR = new Color(209, 71, 82);
     private final Color CALENDAR_HEADING_FOREGROUND_COLOR = Color.WHITE;
 
-    // private ?[][] calendarWidgets;
-
+    /**
+     * Creates (but does not make visible) a new MVF
+     * @param d a reference to the app's background daemon
+     */
     public MonthViewFrame(BackgroundDaemon d) {
         super("Month View"); // get a better name for this
         daemon = d;
@@ -128,11 +134,19 @@ public class MonthViewFrame extends JFrame implements MouseListener {
         setLocationRelativeTo(null);
     }
 
+    /**
+     * Causes this MVF to appear with a given month visible
+     * @param dt A date that falls within the month to view
+     */
     public void appear(LocalDateTime dt) {
         updateGrid(dt);
         setVisible(true);
     }
 
+    /**
+     * Updates this MVF's grid, making a different month visible
+     * @param dt a date that falls within the month to view
+     */
     private void updateGrid(LocalDateTime dt) {
         this.viewedDate = dt;
         LocalDate today = LocalDate.now();
@@ -159,14 +173,25 @@ public class MonthViewFrame extends JFrame implements MouseListener {
         repaint();
     }
 
+    /**
+     * Method called when the next button is pressed
+     */
     private void nextButtonPressed() {
         updateGrid(viewedDate.plusMonths(1));
     }
 
+    /**
+     * Method called when the previous button is pressed
+     */
     private void previousButtonPressed() {
         updateGrid(viewedDate.minusMonths(1));
     }
 
+    /**
+     * Updates a given day's list of events
+     * @param d The date to update
+     * @param events The new list of updates for that date
+     */
     public void updateDay(LocalDate d, List<ScheduledEvent> events) {
         CalendarDayWidget widget = widgetsMap.get(d);
         if (widget != null) {
@@ -174,6 +199,9 @@ public class MonthViewFrame extends JFrame implements MouseListener {
         }
     }
 
+    /**
+     * Causes this MVF to appear with the current month visible
+     */
     public void appear() {
         appear(LocalDateTime.now());
     }
@@ -188,6 +216,9 @@ public class MonthViewFrame extends JFrame implements MouseListener {
         
     }
 
+    /**
+     * Method called by Swing when the user releases the mouse button
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
         if (e.getSource() == nextButton) {

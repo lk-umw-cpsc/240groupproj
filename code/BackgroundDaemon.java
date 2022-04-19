@@ -63,6 +63,12 @@ public class BackgroundDaemon implements Runnable {
 
     private static BackgroundDaemon instance;
 
+    /**
+     * Obtains a reference to the BackgroundDaemon singleton
+     * Instantiates a new BackgroundDaemon in the event one hasn't been
+     * made yet
+     * @return a reference to the singleton
+     */
     public static synchronized BackgroundDaemon getInstance() {
         if (instance == null) {
             instance = new BackgroundDaemon();
@@ -70,6 +76,10 @@ public class BackgroundDaemon implements Runnable {
         return instance;
     }
 
+    /**
+     * Creates a new BackgroundDaemon, loading app info from the user's
+     * hard drive
+     */
     private BackgroundDaemon() {
         reminders = new ArrayList<>();
         List<ScheduledEvent> events = new ArrayList<>();
@@ -105,6 +115,10 @@ public class BackgroundDaemon implements Runnable {
         SwingUtilities.invokeLater(this::buildGUI);
     }
 
+    /**
+     * Creates the frames used by the program. Does not make them
+     * visible
+     */
     private void buildGUI () {
         // dayViewFrame = new DayViewFrame(this);
         // weekViewFrame = new WeekViewFrame(this);
@@ -126,18 +140,34 @@ public class BackgroundDaemon implements Runnable {
         readySignal.release();
     }
 
+    /**
+     * Returns a reference to the app's ReminderFrame
+     * @return a reference to the frame
+     */
     public AddReminderFrame getReminderFrame() {
         return addReminderFrame;
     }
 
+    /**
+     * Returns a reference to the app's AEF
+     * @return a reference to the AEF
+     */
     public AddEventFrame getAddEventFrame() {
         return addEventFrame;
     }
 
+    /**
+     * Returns a reference to the app's RMF
+     * @return a reference to the RMF
+     */
     public ReminderManagerFrame getReminderManagerFrame() {
         return reminderManagerFrame;
     }
 
+    /**
+     * Gets a reference to the app's DVF
+     * @return a reference to the DVF
+     */
     public DayViewFrame getDayViewFrame() {
         return dayViewFrame;
     }
@@ -164,10 +194,22 @@ public class BackgroundDaemon implements Runnable {
         return reminders;
     }
 
+    /**
+     * Gets a Map of LocalDates to Lists of ScheduledEvents representing
+     * the user's schedule
+     * Lock must be locked when accessing the return data structure.
+     * See getLock().
+     * @return a reference to the Map
+     */
     public Map<LocalDate, List<ScheduledEvent>> getEvents() {
         return eventsMap;
     }
 
+    /**
+     * Cancels a given ScheduledReminder and updates any open frames where
+     * the reminder is visible
+     * @param r The reminder to cancel
+     */
     public void cancel(ScheduledReminder r) {
         lock.lock();
         if (reminders.contains(r)) {
@@ -179,6 +221,11 @@ public class BackgroundDaemon implements Runnable {
         lock.unlock();
     }
 
+    /**
+     * Cancels a ScheduledEvent scheduled on a specific date
+     * @param d the LocalDate the event falls on
+     * @param e the event to cancel
+     */
     public void cancel(LocalDate d, ScheduledEvent e) {
         lock.lock();
         if (eventsMap.containsKey(d)) {
@@ -196,6 +243,10 @@ public class BackgroundDaemon implements Runnable {
         lock.unlock();
     }
 
+    /**
+     * Adds a new reminder to the app. Updates any open frames in the process
+     * @param r the reminder to add
+     */
     public void add(ScheduledReminder r) {
         lock.lock();
         reminders.add(r);
@@ -206,6 +257,12 @@ public class BackgroundDaemon implements Runnable {
         lock.unlock();
     }
 
+    /**
+     * Adds a new event occurring on a given date, updating any open frames
+     * in which the event is visible in the process
+     * @param d the date the event falls on
+     * @param e the event to add
+     */
     public void add(LocalDate d, ScheduledEvent e) {
         lock.lock();
         List<ScheduledEvent> list;
@@ -235,6 +292,10 @@ public class BackgroundDaemon implements Runnable {
         thread.interrupt(); // wake run() from its long sleep
     }
     
+    /**
+     * This method is where the app checks to see if the date has changed
+     * and whether any reminders are due
+     */
     public void run() {
         // Wait until buildGUI finishes
         try {
