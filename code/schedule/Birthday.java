@@ -24,8 +24,9 @@ public class Birthday{
     private LocalDate dob;
     private ArrayList<Gift> gifts; // = new ArrayList<String>();
     private int age;
+    
 
-    public Birthday(String name, String date) throws ParseException{
+    public Birthday(String name, LocalDate date) {
         this.name = name;
         /*SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date d = formatter.parse(date);
@@ -33,7 +34,7 @@ public class Birthday{
         ZonedDateTime zone = i.atZone(ZoneId.systemDefault());
         dob = zone.toLocalDate();
         */
-        dob = LocalDate.parse(date);
+        dob = date;
         Period p = Period.between(dob, LocalDate.now());
         age = p.getYears();
     }
@@ -50,7 +51,7 @@ public class Birthday{
         return dob.toString();
     }
 
-    public void setBOD(String d) {
+    public void setDOB(String d) {
         dob = LocalDate.parse(d);
         Period p = Period.between(dob, LocalDate.now());
         age = p.getYears();
@@ -58,6 +59,13 @@ public class Birthday{
 
     public int getAge() {
         return this.age;
+    }
+
+    public void updateAge() {
+        LocalDate today = LocalDate.now();
+        if (today.getDayofMonth() == dob.getDayOfMonth())
+        Period p = Period.between(dob, LocalDate.now());
+        age = p.getYears();
     }
 
     public void addGift(String n) {
