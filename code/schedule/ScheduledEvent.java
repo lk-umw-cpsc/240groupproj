@@ -10,18 +10,14 @@ import code.ui.BasicCalendarNote;
 /**
  * This represents a blocked out portion of the user's schedule.
  * 
- * Doctor's appointments, scheduled meetings, etc. should all
- * BE A ScheduledEvent (subclass)
+ * Doctor's appointments, scheduled meetings, etc. will all
+ * be A ScheduledEvent (subclass)
  * 
  * Includes a List of optional ScheduledReminders to remind
  * the user about the event/appointment/etc.
  * 
- * Start time
- * End time/duration
- * Desc
- * Location?
+ * Also includes a start/end time, as well as a location for extra utility.
  * 
- * Implementation assigned to Jayden
  */
 
 public class ScheduledEvent extends BasicCalendarNote implements Comparable<ScheduledEvent> {
@@ -44,8 +40,10 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
     public ScheduledReminder weekBefore;
     public ScheduledReminder monthBefore;
 
+    /**
+     * Colors for the event when viewed in the month view frame
+     */
     public ScheduledEvent() {
-        // colors for the event when viewed in the month view frame
         foregroundColor = FG_COLOR_EVENT;
         backgroundColor = BG_COLOR_EVENT;
 
@@ -56,6 +54,15 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
         backgroundColorOtherMonth = BG_COLOR_EVENT_OTHER_MONTH;
     }
 
+    /**
+     * Constructor for the ScheduledEvent object. 
+     * @param name The name of the event
+     * @param date what day the event takes place on, then parsed as a LocalDate type
+     * @param startTime the start time of the event, parsed as LocalTime type
+     * @param endTime the end time of the event, parsed as LocalTime type
+     * @param location The location of the event
+     * @param reminders Takes a string of characters, and uses their placements to determine the frequency of reminders in the app
+     */
     public ScheduledEvent(String name, String date, String startTime, String endTime, String location, String reminders) {
         this();
         this.name = name;
@@ -120,52 +127,102 @@ public class ScheduledEvent extends BasicCalendarNote implements Comparable<Sche
         }
     }
 
-    public ScheduledEvent(String desc, LocalDate date, LocalTime startTime, LocalTime endTime, String location) {
+    /**
+     * Constructor for Scheduled event object, used to create event without reminders
+     * Also used when inputting LocalDate and LocalTime variables instead of strings for date, startTime, and endTime
+     * Mainly used for validateForm method in AddEventFrame.java class
+     * @param name The name of the event
+     * @param date The date of the event
+     * @param startTime The time the event starts
+     * @param endTime The time the event ends
+     * @param location The location of the event
+     */
+    public ScheduledEvent(String name, LocalDate date, LocalTime startTime, LocalTime endTime, String location) {
         this();
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.name = desc;
+        this.name = name;
         this.location = location;
         briefString = toBriefString();
     }
 
+    /**
+     * Getter method for the name of the event
+     * @return String of the name of the event
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Setter method for the date of the event
+     * @param d The date of the event as a LocalDate type
+     */
     public void setDate(LocalDate d) {
         date = d;
     }
 
-    public void setStartTime(LocalTime t) {
-        startTime = t;
-    }
-
-    public void setEndTime(LocalTime t) {
-        endTime = t;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
-
+    /**
+     * Setter method for the name of the event
+     * @param name The name of the event
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Setter method for the startTime variable
+     * @param t The start time of the event as a LocalTime type
+     */
+    public void setStartTime(LocalTime t) {
+        startTime = t;
+    }
+
+    /**
+     * Setter method for the endTime variable
+     * @param t The end time of the event as a LocalTime type
+     */
+    public void setEndTime(LocalTime t) {
+        endTime = t;
+    }
+
+    /**
+     * Getter for the date of the event
+     * @return LocalDate type variable of the date of the event
+     */
+    public LocalDate getDate() {
+        return date;
+    }
+
+    /**
+     * Getter for the start time of the event 
+     * @return The start time of the event
+     */
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    /** 
+     * Getter for the end time of the event 
+     * @return LocalTime of the end time of the event
+     */
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * Getter for the location of the event
+     * @return String of the location of the event
+     */
     public String getLocation() {
         return this.location;
     }
 
+    /**
+     * Setter for the location of the event
+     * @param s Where the event takes place
+     */
     public void setLocation(String s) {
         this.location = s;
     }
