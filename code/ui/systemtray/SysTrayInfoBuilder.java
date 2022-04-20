@@ -1,5 +1,8 @@
 package code.ui.systemtray;
 
+/**
+ * class & method comments to be implemented by Joon
+ */
 public class SysTrayInfoBuilder 
 {
     
