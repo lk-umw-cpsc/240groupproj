@@ -245,45 +245,6 @@ public class AddEventFrame extends JFrame implements WindowListener {
         LocalTime startTime = DateTimeUtilities.parseTime(startTimeString);
         LocalTime endTime = DateTimeUtilities.parseTime(endTimeString);
 
-        // commented out for testing DateTimeUtilities
-        // Matcher m = datePattern.matcher(dateString);
-        // if (m.matches()) {
-        //     int month = Integer.parseInt(m.group(1));
-        //     int day = Integer.parseInt(m.group(2));
-        //     int year = Integer.parseInt(m.group(3));
-        //     d = LocalDate.of(year, month, day);
-        // }
-
-        // m = timePattern.matcher(startTimeString);
-        // if (m.matches()) {
-        //     int hour = Integer.parseInt(m.group(1));
-        //     int minute = Integer.parseInt(m.group(2));
-        //     boolean pm = m.group(3).equalsIgnoreCase("pm");
-        //     if (pm) {
-        //         if (hour < 12) {
-        //             hour += 12;
-        //         }
-        //     } else if (hour == 12) {
-        //         hour = 0;
-        //     }
-        //     startTime = LocalTime.of(hour, minute, 0);
-        // }
-
-        // m = timePattern.matcher(endTimeString);
-        // if (m.matches()) {
-        //     int hour = Integer.parseInt(m.group(1));
-        //     int minute = Integer.parseInt(m.group(2));
-        //     boolean pm = m.group(3).equalsIgnoreCase("pm");
-        //     if (pm) {
-        //         if (hour < 12) {
-        //             hour += 12;
-        //         }
-        //     } else if (hour == 12) {
-        //         hour = 0;
-        //     }
-        //     endTime = LocalTime.of(hour, minute, 0);
-        // }
-
         boolean errors = false;
         if (name.isEmpty()) {
             errors = true;
