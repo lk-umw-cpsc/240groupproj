@@ -25,6 +25,12 @@ public class ScheduleIO {
     private static final File EVENTS_FILE = new File("Data/Events.txt");
     private static final File REMINDERS_FILE = new File("Data/Reminders.txt");
 
+    /**
+     * Loads the user's reminders and events from the hard drive into the app
+     * data structures
+     * @param reminders a List which reminders will be placed in
+     * @param events a List which events will be placed in
+     */
     public static void loadSchedule(List<ScheduledReminder> reminders, List<ScheduledEvent> events) {
         loadEvents(events);
         loadReminders(reminders);
@@ -35,6 +41,11 @@ public class ScheduleIO {
         // MedicalIO.buildMedical();
     }
 
+    /**
+     * Saves the user's reminders and events to the user's hard drive
+     * @param reminders A List containing the user's reminders
+     * @param events a List containing the user's events
+     */
     public static void saveSchedule(List<ScheduledReminder> reminders, List<ScheduledEvent> events) {
         saveEvents(events);
         saveReminders(reminders);

@@ -13,9 +13,6 @@ import code.ui.BasicCalendarNote;
  * Doctor's appointments, scheduled meetings, etc. will all
  * be A ScheduledEvent (subclass)
  * 
- * Includes a List of optional ScheduledReminders to remind
- * the user about the event/appointment/etc.
- * 
  * Also includes a start/end time, as well as a location for extra utility.
  * 
  */
